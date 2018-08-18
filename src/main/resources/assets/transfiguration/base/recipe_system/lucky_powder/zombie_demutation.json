@@ -1,0 +1,15 @@
+{
+  "type": "transfiguration:lucky_powder",
+  "inputs": [
+    {
+      "type": "base:entity",
+      "entity": "minecraft:zombie"
+    }
+  ],
+  "outputs": [
+    {
+      "type": "base:entity",
+      "entity": "minecraft:villager"
+    }
+  ]
+}

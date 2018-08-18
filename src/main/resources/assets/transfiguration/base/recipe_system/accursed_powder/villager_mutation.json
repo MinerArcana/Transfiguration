@@ -1,0 +1,32 @@
+{
+  "type": "transfiguration:accursed_powder",
+  "inputs": [
+    {
+      "type": "minecraft:entity",
+      "entity": "minecraft:villager"
+    }
+  ],
+  "outputs": [
+    {
+      "type": "base:one_of",
+      "options": [
+        {
+          "type": "minecraft:entity",
+          "entity": "minecraft:zombie"
+        },
+        {
+          "type": "minecraft:entity",
+          "entity": "minecraft:pig_zombie"
+        },
+        {
+          "type": "minecraft:entity",
+          "entity": "minecraft:illager"
+        },
+        {
+          "type": "minecraft:entity",
+          "entity": "minecraft:witch"
+        }
+      ]
+    }
+  ]
+}
