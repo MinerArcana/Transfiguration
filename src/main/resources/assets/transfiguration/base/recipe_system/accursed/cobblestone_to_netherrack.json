@@ -1,0 +1,19 @@
+{
+  "type": "transfiguration:accursed",
+  "inputs": [
+    {
+      "type": "base:blockstate",
+      "blockState": {
+        "block": "minecraft:cobblestone"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "type": "base:blockstate",
+      "blockState": {
+        "block": "minecraft:netherrack"
+      }
+    }
+  ]
+}

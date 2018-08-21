@@ -1,8 +1,8 @@
 {
-  "type": "transfiguration:accursed_powder",
+  "type": "transfiguration:accursed",
   "inputs": [
     {
-      "type": "minecraft:entity",
+      "type": "base:entity",
       "entity": "minecraft:villager"
     }
   ],
@@ -11,19 +11,19 @@
       "type": "base:one_of",
       "options": [
         {
-          "type": "minecraft:entity",
+          "type": "base:entity",
           "entity": "minecraft:zombie"
         },
         {
-          "type": "minecraft:entity",
-          "entity": "minecraft:pig_zombie"
+          "type": "base:entity",
+          "entity": "zombie_pigman"
         },
         {
-          "type": "minecraft:entity",
-          "entity": "minecraft:illager"
+          "type": "base:entity",
+          "entity": "minecraft:illusion_illager"
         },
         {
-          "type": "minecraft:entity",
+          "type": "base:entity",
           "entity": "minecraft:witch"
         }
       ]

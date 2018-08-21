@@ -1,5 +1,5 @@
 {
-  "type": "transfiguration:lucky_powder",
+  "type": "transfiguration:lucky",
   "inputs": [
     {
       "type": "base:entity",

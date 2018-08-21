@@ -1,10 +1,10 @@
 {
-  "type": "transfiguration:accursed_powder",
+  "type": "transfiguration:lucky",
   "inputs": [
     {
       "type": "base:blockstate",
       "blockState": {
-        "block": "minecraft:cobblestone"
+        "block": "minecraft:netherrack"
       }
     }
   ],
@@ -12,7 +12,7 @@
     {
       "type": "base:blockstate",
       "blockState": {
-        "block": "minecraft:netherrack"
+        "block": "minecraft:cobblestone"
       }
     }
   ]
