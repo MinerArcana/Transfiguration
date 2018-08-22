@@ -76,10 +76,10 @@ public class Transfiguration extends BaseModFoundation<Transfiguration> {
             String color = magicType.get("color").getString();
             RecipeType recipeType = new ClickRecipeType(new ResourceLocation(ID, name));
 
-            ItemTransfiguring itemMagicPowder = new ItemTransfiguring(name + "_powder", recipeType, color,
+            ItemTransfiguring itemMagicPowder = new ItemTransfiguring(name + "_powder", recipeType, color, false,
                     tuple -> tuple.getFirst().shrink(1));
 
-            ItemTransfiguring itemMagicWand = new ItemTransfiguring(name + "_wand", recipeType, color,
+            ItemTransfiguring itemMagicWand = new ItemTransfiguring(name + "_wand", recipeType, color, true,
                     tuple -> tuple.getFirst().damageItem(1, tuple.getSecond()));
             itemMagicWand.setMaxDamage(2056);
 
