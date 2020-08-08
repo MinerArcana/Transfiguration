@@ -1,0 +1,10 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:netheri",
+  "ingredient": {
+    "block": "minecraft:sand"
+  },
+  "result": {
+    "block": "minecraft:soul_sand"
+  }
+}
