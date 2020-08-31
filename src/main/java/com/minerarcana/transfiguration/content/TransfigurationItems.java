@@ -2,20 +2,22 @@ package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.item.TransfiguringItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import com.minerarcana.transfiguration.item.TransfiguringWandItem;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 
 public class TransfigurationItems {
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Transfiguration.ID);
 
-    public static final RegistryObject<TransfiguringItem> NETHERI_DUST = ITEMS.register("netheri_dust", () ->
-            new TransfiguringItem(Transfiguration.NETHERI, new Item.Properties().group(ItemGroup.MISC)));
+    public static final RegistryEntry<TransfiguringItem> NETHERI_DUST = Transfiguration.getRegistrate()
+            .object("netheri_dust")
+            .item(properties -> new TransfiguringItem(Transfiguration.NETHERI, properties))
+            .register();
 
-    public static void register(IEventBus modEventBus) {
-        ITEMS.register(modEventBus);
+    public static final RegistryEntry<TransfiguringWandItem> NETHERI_WAND = Transfiguration.getRegistrate()
+            .object("netheri_wand")
+            .item(properties -> new TransfiguringWandItem(Transfiguration.NETHERI, properties))
+            .register();
+
+    public static void setup() {
+
     }
 }

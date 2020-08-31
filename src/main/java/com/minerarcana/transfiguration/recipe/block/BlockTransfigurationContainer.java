@@ -7,6 +7,8 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class BlockTransfigurationContainer extends EmptyInventory {
     private final LivingEntity caster;
     private final BlockState targeted;
@@ -17,7 +19,7 @@ public class BlockTransfigurationContainer extends EmptyInventory {
         this(context.getPlayer(), context.getWorld(), context.getPos());
     }
 
-    public BlockTransfigurationContainer(LivingEntity caster, World world, BlockPos targetedPos) {
+    public BlockTransfigurationContainer(@Nullable LivingEntity caster, World world, BlockPos targetedPos) {
         this.caster = caster;
         this.targeted = world.getBlockState(targetedPos);
         this.world = world;
