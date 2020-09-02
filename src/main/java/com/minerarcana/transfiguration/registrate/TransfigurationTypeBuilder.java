@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.registrate;
 
+import com.minerarcana.transfiguration.item.TransfiguringCatalystItem;
 import com.minerarcana.transfiguration.item.TransfiguringDustItem;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
@@ -40,8 +41,19 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                 .lang("%s Dust");
     }
 
+    public ItemBuilder<TransfiguringCatalystItem, TransfigurationTypeBuilder<T, P>> catalyst() {
+        return this.item("catalyst", TransfiguringCatalystItem::new)
+                .properties(properties -> properties.maxStackSize(1))
+                .properties(properties -> properties.maxDamage(256))
+                .model((context, provider) -> provider.generated(context, provider.modLoc("item/catalyst")))
+                .color(TransfigurationColors.transfiguringTypeColors(0))
+                .lang("%s Catalyst");
+    }
+
     public ItemBuilder<TransfiguringWandItem, TransfigurationTypeBuilder<T, P>> wand() {
         return this.item("wand", TransfiguringWandItem::new)
+                .properties(properties -> properties.maxStackSize(1))
+                .properties(properties -> properties.maxDamage(256))
                 .model((context, provider) -> provider.generated(context, provider.modLoc("item/wand"),
                         provider.modLoc("item/wand_overlay")))
                 .color(TransfigurationColors.transfiguringTypeColors(1))

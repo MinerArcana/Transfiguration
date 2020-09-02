@@ -19,6 +19,8 @@ public class TransfigurationTypes {
             .primaryColor(DyeColor.RED.getColorValue())
             .dust()
             .build()
+            .catalyst()
+            .build()
             .wand()
             .build()
             .register();

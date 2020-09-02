@@ -2,12 +2,10 @@ package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class TransfiguringCatalystItem extends TransfiguringItem {
