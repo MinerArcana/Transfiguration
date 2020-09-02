@@ -1,6 +1,7 @@
 package com.minerarcana.transfiguration.item;
 
-import com.minerarcana.transfiguration.content.TransfigurationItems;
+import com.minerarcana.transfiguration.content.TransfigurationEntities;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -14,8 +15,8 @@ public class TransfiguringItemGroup extends ItemGroup {
     @Override
     @Nonnull
     public ItemStack createIcon() {
-        return TransfigurationItems.NETHERI_DUST
-                .map(ItemStack::new)
+        return TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM
+                .map(item -> item.withTransfigurationType(TransfigurationTypes.NETHERI.get()))
                 .orElse(ItemStack.EMPTY);
     }
 }

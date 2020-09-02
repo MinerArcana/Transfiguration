@@ -21,6 +21,7 @@ public class TransfigurationEntities {
                     .object("transfiguring_projectile")
                     .item(TransfiguringProjectileItem::new)
                     .model((context, modelProvider) -> modelProvider.generated(context, new ResourceLocation("item/fire_charge")))
+                    .color(() -> () -> TransfiguringProjectileItem::getColor)
                     .register();
 
     public static void setup() {

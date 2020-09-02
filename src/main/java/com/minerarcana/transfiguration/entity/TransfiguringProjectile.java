@@ -1,16 +1,19 @@
 package com.minerarcana.transfiguration.entity;
 
-import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
+import com.minerarcana.transfiguration.item.ITransfiguring;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationContainer;
-import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
+import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 
@@ -34,15 +37,29 @@ public class TransfiguringProjectile extends ProjectileItemEntity {
     }
 
     @Override
-    protected void func_230299_a_(BlockRayTraceResult blockRayTraceResult) {
-        BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
-        blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
-        BlockTransfigurationContainer container = new BlockTransfigurationContainer(null, world,
-                blockRayTraceResult.getPos());
-
-        world.getRecipeManager().getRecipe(Transfiguration.NETHERI.getBlockRecipeType(), container, world)
-                .ifPresent(recipe -> recipe.transfigure(container));
+    protected void func_230299_a_(@Nonnull BlockRayTraceResult blockRayTraceResult) {
+        TransfigurationType type = this.getTransfigurationType();
+        if (type != null) {
+            BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
+            blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
+            BlockTransfigurationContainer container = new BlockTransfigurationContainer(null, world,
+                    blockRayTraceResult.getPos());
+            world.getRecipeManager().getRecipe(type.getBlockRecipeType(), container, world)
+                    .ifPresent(recipe -> recipe.transfigure(container));
+        }
     }
 
+    private TransfigurationType getTransfigurationType() {
+        ItemStack itemStack = this.getItem();
+        if (itemStack.getItem() instanceof ITransfiguring) {
+            return ((ITransfiguring) itemStack.getItem()).getType();
+        }
+        return null;
+    }
 
+    @Override
+    @Nonnull
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
 }

@@ -65,7 +65,7 @@ minecraft {
             properties 'fml.earlyprogresswindow': 'false'
 
             args '--all', '--output', file('src/generated/resources/'),
-                    '--mod', 'transport', '--reports',
+                    '--mod', 'transfiguration', '--reports',
                     '--existing', sourceSets.main.resources.srcDirs[0]
         }
     }
@@ -89,7 +89,7 @@ configurations {
 
 shadowJar {
     configurations = [project.configurations.shade]
-    relocate 'com.tterrag.registrate', 'xyz.brassgoggledcoders.transport.repack.registrate'
+    relocate 'com.tterrag.registrate', 'com.minerarcana.transfiguration.repack.registrate'
     classifier ''
 }
 

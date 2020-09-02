@@ -3,34 +3,60 @@ package com.minerarcana.transfiguration.transfiguring;
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import com.minerarcana.transfiguration.util.ResourceLocationHelper;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.NonNullLazy;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class TransfigurationType {
-    private final ResourceLocation id;
-    private final ResourceLocation blockRecipeId;
-    private final NonNullLazy<IRecipeType<BlockTransfigurationRecipe>> blockRecipeType;
+import javax.annotation.Nonnull;
 
-    public TransfigurationType(String id) {
-        this(Transfiguration.rl(id));
-    }
+public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType> {
+    private final int primaryColor;
 
-    public TransfigurationType(ResourceLocation id) {
-        this.id = id;
-        this.blockRecipeId = ResourceLocationHelper.append(id, "block");
-        this.blockRecipeType = NonNullLazy.of(() -> IRecipeType.register(blockRecipeId.toString()));
-    }
+    private ResourceLocation blockRecipeId;
+    private IRecipeType<BlockTransfigurationRecipe> blockRecipeType;
+    private String translationKey;
+    private ITextComponent displayName;
 
-    public ResourceLocation getId() {
-        return this.id;
+    public TransfigurationType(int primaryColor) {
+        this.primaryColor = primaryColor;
     }
 
     public ResourceLocation getBlockRecipeId() {
+        if (this.blockRecipeId == null){
+            this.blockRecipeId = ResourceLocationHelper.append(this.getRegistryName(), "block");
+        }
         return this.blockRecipeId;
     }
 
     public IRecipeType<BlockTransfigurationRecipe> getBlockRecipeType() {
-        return this.blockRecipeType.get();
+        if (this.blockRecipeType == null) {
+            this.blockRecipeType = IRecipeType.register(this.getBlockRecipeId().toString());
+        }
+        return this.blockRecipeType;
+    }
+
+    public int getPrimaryColor() {
+        return primaryColor;
+    }
+
+    @Nonnull
+    public String getTranslationKey() {
+        if (this.translationKey == null) {
+            this.translationKey = Util.makeTranslationKey("transfiguration_type", this.getRegistryName());
+        }
+        return this.translationKey;
+    }
+
+    @Nonnull
+    public ITextComponent getDisplayName() {
+        if (this.displayName == null) {
+            this.displayName = new TranslationTextComponent(this.getTranslationKey());
+        }
+        return this.displayName;
     }
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "transfiguration:item/wand",
+    "layer1": "transfiguration:item/wand_overlay"
+  }
+}

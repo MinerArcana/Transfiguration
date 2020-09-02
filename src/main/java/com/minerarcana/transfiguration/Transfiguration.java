@@ -1,10 +1,8 @@
 package com.minerarcana.transfiguration;
 
-import com.google.common.collect.Maps;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
-import com.minerarcana.transfiguration.content.TransfigurationItems;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.entity.TransfiguringProjectile;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
 import com.minerarcana.transfiguration.parser.FunctionObjectParser;
 import com.minerarcana.transfiguration.parser.IObjectParser;
@@ -14,40 +12,44 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
-import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 
-import java.util.Map;
+import java.util.Objects;
 
 @Mod(Transfiguration.ID)
 public class Transfiguration {
     public static final String ID = "transfiguration";
 
-    public static final Map<String, TransfigurationType> TRANSFIGURATION_TYPES = Maps.newHashMap();
+    public static IForgeRegistry<TransfigurationType> transfigurationTypes;
 
     public static final IObjectParser<TransfigurationType> TRANSFIGURATION_TYPE_PARSER = new FunctionObjectParser<>(
-            TRANSFIGURATION_TYPES::get, transfigurationType -> transfigurationType.getBlockRecipeId().toString());
+            transfigurationType -> transfigurationTypes.getValue(new ResourceLocation(transfigurationType)),
+            transfigurationType -> Objects.requireNonNull(transfigurationType.getRegistryName()).toString()
+    );
 
-    public static final TransfigurationType NETHERI = new TransfigurationType("netheri");
-
-    private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID));
+    private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID)
+            .itemGroup(TransfiguringItemGroup::new, "Transfiguration"));
 
     public Transfiguration() {
+
+        transfigurationTypes = new RegistryBuilder<TransfigurationType>()
+                .setName(rl("transfiguration_types"))
+                .setType(TransfigurationType.class)
+                .create();
+
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         TransfigurationRecipes.register(modEventBus);
-        TransfigurationItems.setup();
+        TransfigurationTypes.setup();
         TransfigurationEntities.setup();
 
         modEventBus.addListener(this::handleClient);
-        TRANSFIGURATION_TYPES.put(Transfiguration.rl("netheri").toString(), NETHERI);
-
-        Transfiguration.getRegistrate()
-                .itemGroup(TransfiguringItemGroup::new, "Transfiguration");
     }
 
     public static Registrate getRegistrate() {
