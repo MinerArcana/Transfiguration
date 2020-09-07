@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipeSerializer;
+import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipeSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.block.SingleBlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.block.TagBlockIngredient;
@@ -9,6 +10,7 @@ import com.minerarcana.transfiguration.recipe.ingedient.block.TagBlockIngredient
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityTypeEntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.BlockStateResultSerializer;
+import com.minerarcana.transfiguration.recipe.result.EntityResultSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -24,6 +26,11 @@ public class TransfigurationRecipes {
     public static final RegistryObject<BlockTransfigurationRecipeSerializer> BLOCK_TRANSFIGURATION = SERIALIZERS.register(
             "block_transfiguration", BlockTransfigurationRecipeSerializer::new
     );
+
+    public static final RegistryEntry<EntityTransfigurationRecipeSerializer> ENTITY_TRANSFIGURATION =
+            Transfiguration.getRegistrate()
+                    .object("entity_transfiguration")
+                    .simple(IRecipeSerializer.class, EntityTransfigurationRecipeSerializer::new);
 
     public static final RegistryEntry<BlockIngredientSerializer<TagBlockIngredient>> TAG_BLOCK_INGREDIENT_SERIALIZER =
             Transfiguration.getRegistrate()
@@ -44,6 +51,11 @@ public class TransfigurationRecipes {
             Transfiguration.getRegistrate()
                     .object("blockstate")
                     .simple(ResultSerializer.class, BlockStateResultSerializer::new);
+
+    public static final RegistryEntry<EntityResultSerializer> ENTITY_RESULT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("entity")
+                    .simple(ResultSerializer.class, EntityResultSerializer::new);
 
     public static void register(IEventBus modEventBus) {
         SERIALIZERS.register(modEventBus);

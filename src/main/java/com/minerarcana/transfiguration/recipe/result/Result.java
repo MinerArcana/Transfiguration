@@ -7,7 +7,7 @@ import net.minecraft.util.ActionResultType;
 
 public abstract class Result implements ISerializable<ResultSerializer<?>> {
 
-    public abstract ActionResultType handle(TransfigurationContainer transfigurationContainer);
+    public abstract ActionResultType handle(TransfigurationContainer<?> transfigurationContainer);
 
     public abstract ItemStack getOutputRepresentation();
 }

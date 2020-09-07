@@ -2,9 +2,10 @@ package com.minerarcana.transfiguration.entity;
 
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.item.ITransfiguring;
-import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationContainer;
+import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
@@ -12,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -42,9 +44,20 @@ public class TransfiguringProjectile extends ProjectileItemEntity {
         if (type != null) {
             BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
             blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
-            BlockTransfigurationContainer container = new BlockTransfigurationContainer(null, world,
-                    blockRayTraceResult.getPos());
+            TransfigurationContainer<BlockState> container = new TransfigurationContainer<BlockState>(blockstate,
+                    null, world, blockRayTraceResult.getPos());
             world.getRecipeManager().getRecipe(type.getBlockRecipeType(), container, world)
+                    .ifPresent(recipe -> recipe.transfigure(container));
+        }
+    }
+
+    @Override
+    protected void onEntityHit(@Nonnull EntityRayTraceResult entityRayTraceResult) {
+        TransfigurationType type = this.getTransfigurationType();
+        if (type != null) {
+            TransfigurationContainer<Entity> container = new TransfigurationContainer<>(entityRayTraceResult.getEntity(),
+                    null, world, entityRayTraceResult.getEntity().getPosition());
+            world.getRecipeManager().getRecipe(type.getEntityRecipeType(), container, world)
                     .ifPresent(recipe -> recipe.transfigure(container));
         }
     }

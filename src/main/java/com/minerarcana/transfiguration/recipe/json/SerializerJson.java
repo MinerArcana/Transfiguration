@@ -6,6 +6,7 @@ import com.google.gson.JsonPrimitive;
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
@@ -27,6 +28,17 @@ public class SerializerJson {
     public static BlockIngredient getBlockIngredient(JsonObject jsonObject, String fieldName) {
         return getSerializable(jsonObject, fieldName, Transfiguration.blockIngredientSerializers::getValue,
                 TransfigurationRecipes.SINGLE_BLOCK_INGREDIENT_SERIALIZER.get()::parse);
+    }
+
+    @Nonnull
+    public static EntityIngredient getEntityIngredient(JsonObject jsonObject) {
+        return getEntityIngredient(jsonObject, "ingredient");
+    }
+
+    @Nonnull
+    public static EntityIngredient getEntityIngredient(JsonObject jsonObject, String fieldName) {
+        return getSerializable(jsonObject, fieldName, Transfiguration.entityIngredientSerializers::getValue,
+                TransfigurationRecipes.ENTITY_TYPE_ENTITY_INGREDIENT_SERIALIZER.get()::parse);
     }
 
     @Nonnull

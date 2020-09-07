@@ -1,0 +1,11 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:netheri",
+  "ingredient": {
+    "entity": "minecraft:horse"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:strider"
+  }
+}

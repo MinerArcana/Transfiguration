@@ -1,7 +1,8 @@
 package com.minerarcana.transfiguration.item;
 
-import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationContainer;
+import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -23,7 +24,9 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
     @Override
     @Nonnull
     public ActionResultType onItemUse(@Nonnull ItemUseContext context) {
-        BlockTransfigurationContainer blockTransfigurationContainer = new BlockTransfigurationContainer(context);
+        TransfigurationContainer<BlockState> blockTransfigurationContainer = new TransfigurationContainer<>(
+                context.getWorld().getBlockState(context.getPos()), context.getPlayer(), context.getWorld(),
+                context.getPos());
         ActionResultType resultType = context.getWorld().getRecipeManager().getRecipe(
                 this.getType(context.getItem()).getBlockRecipeType(), blockTransfigurationContainer, context.getWorld())
                 .map(blockTransfigurationRecipe -> blockTransfigurationRecipe.transfigure(blockTransfigurationContainer))

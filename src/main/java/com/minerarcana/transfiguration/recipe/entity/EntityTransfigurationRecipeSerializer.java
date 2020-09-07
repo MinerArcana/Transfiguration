@@ -1,0 +1,64 @@
+package com.minerarcana.transfiguration.recipe.entity;
+
+import com.google.gson.JsonObject;
+import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.json.RegistryJson;
+import com.minerarcana.transfiguration.recipe.json.SerializerJson;
+import com.minerarcana.transfiguration.recipe.result.Result;
+import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
+import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>
+        implements IRecipeSerializer<EntityTransfigurationRecipe> {
+
+    @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
+    public EntityTransfigurationRecipe read(ResourceLocation recipeId, JsonObject json) {
+        return new EntityTransfigurationRecipe(recipeId, RegistryJson.getTransfigurationType(json),
+                SerializerJson.getEntityIngredient(json), SerializerJson.getResult(json));
+    }
+
+    @Override
+    @Nullable
+    @ParametersAreNonnullByDefault
+    public EntityTransfigurationRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+        TransfigurationType transfigurationType = buffer.readRegistryId();
+        EntityIngredientSerializer<?> serializer = buffer.readRegistryId();
+        EntityIngredient ingredient = serializer.parse(buffer);
+        ResultSerializer<?> resultSerializer = buffer.readRegistryId();
+        Result result = resultSerializer.parse(buffer);
+        return new EntityTransfigurationRecipe(recipeId, transfigurationType, ingredient, result);
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public void write(PacketBuffer buffer, EntityTransfigurationRecipe recipe) {
+        buffer.writeRegistryId(recipe.getTransfigurationType());
+        writeIngredient(buffer, recipe.getIngredient());
+        writeResult(buffer, recipe.getResult());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends EntityIngredient> void  writeIngredient(PacketBuffer packetBuffer, T blockIngredient) {
+        EntityIngredientSerializer<T> serializer = (EntityIngredientSerializer<T>) blockIngredient.getSerializer();
+        serializer.write(packetBuffer, blockIngredient);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Result> void  writeResult(PacketBuffer packetBuffer, T result) {
+        ResultSerializer<T> serializer = (ResultSerializer<T>) result.getSerializer();
+        serializer.write(packetBuffer, result);
+    }
+}

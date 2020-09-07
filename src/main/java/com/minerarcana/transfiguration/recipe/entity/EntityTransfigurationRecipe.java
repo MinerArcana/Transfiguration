@@ -1,11 +1,11 @@
-package com.minerarcana.transfiguration.recipe.block;
+package com.minerarcana.transfiguration.recipe.entity;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
-import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -17,14 +17,14 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class BlockTransfigurationRecipe implements IRecipe<TransfigurationContainer<BlockState>> {
+public class EntityTransfigurationRecipe implements IRecipe<TransfigurationContainer<Entity>> {
     private final ResourceLocation recipeId;
     private final TransfigurationType transfigurationType;
-    private final BlockIngredient ingredient;
+    private final EntityIngredient ingredient;
     private final Result result;
 
-    public BlockTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
-                                      BlockIngredient ingredient, Result result) {
+    public EntityTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
+                                       EntityIngredient ingredient, Result result) {
         this.transfigurationType = transfigurationType;
         this.recipeId = recipeId;
         this.ingredient = ingredient;
@@ -33,18 +33,19 @@ public class BlockTransfigurationRecipe implements IRecipe<TransfigurationContai
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean matches(TransfigurationContainer<BlockState> inv, World world) {
+    public boolean matches(TransfigurationContainer<Entity> inv, World world) {
         return ingredient.test(inv.getTargeted());
     }
 
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
-    public ItemStack getCraftingResult(TransfigurationContainer<BlockState> inv) {
+    public ItemStack getCraftingResult(TransfigurationContainer<Entity> inv) {
         return result.getOutputRepresentation();
     }
 
-    public ActionResultType transfigure(TransfigurationContainer<BlockState> inv) {
+    public ActionResultType transfigure(TransfigurationContainer<Entity> inv) {
+        inv.getTargeted().remove(false);
         return result.handle(inv);
     }
 
@@ -68,20 +69,20 @@ public class BlockTransfigurationRecipe implements IRecipe<TransfigurationContai
     @Override
     @Nonnull
     public IRecipeSerializer<?> getSerializer() {
-        return TransfigurationRecipes.BLOCK_TRANSFIGURATION.get();
+        return TransfigurationRecipes.ENTITY_TRANSFIGURATION.get();
     }
 
     @Override
     @Nonnull
     public IRecipeType<?> getType() {
-        return transfigurationType.getBlockRecipeType();
+        return transfigurationType.getEntityRecipeType();
     }
 
     public TransfigurationType getTransfigurationType() {
         return transfigurationType;
     }
 
-    public BlockIngredient getIngredient() {
+    public EntityIngredient getIngredient() {
         return ingredient;
     }
 
