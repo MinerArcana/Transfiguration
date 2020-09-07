@@ -16,6 +16,7 @@ public class TransfigurationTypes {
     public static final RegistryEntry<TransfigurationType> NETHERI = Transfiguration.getRegistrate()
             .object("netheri")
             .entry(TRANSFIGURATION_TYPE)
+            .lang("Netheri")
             .primaryColor(DyeColor.RED.getColorValue())
             .dust()
             .build()

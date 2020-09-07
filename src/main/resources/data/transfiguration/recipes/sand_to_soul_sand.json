@@ -5,6 +5,7 @@
     "block": "minecraft:sand"
   },
   "result": {
+    "type": "transfiguration:blockstate",
     "block": "minecraft:soul_sand"
   }
 }

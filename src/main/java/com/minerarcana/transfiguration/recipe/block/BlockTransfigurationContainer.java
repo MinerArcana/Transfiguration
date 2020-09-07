@@ -1,6 +1,6 @@
 package com.minerarcana.transfiguration.recipe.block;
 
-import com.minerarcana.transfiguration.recipe.EmptyInventory;
+import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemUseContext;
@@ -9,36 +9,19 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockTransfigurationContainer extends EmptyInventory {
-    private final LivingEntity caster;
+public class BlockTransfigurationContainer extends TransfigurationContainer {
     private final BlockState targeted;
-    private final World world;
-    private final BlockPos targetedPos;
 
     public BlockTransfigurationContainer(ItemUseContext context) {
         this(context.getPlayer(), context.getWorld(), context.getPos());
     }
 
     public BlockTransfigurationContainer(@Nullable LivingEntity caster, World world, BlockPos targetedPos) {
-        this.caster = caster;
+        super(caster, world, targetedPos);
         this.targeted = world.getBlockState(targetedPos);
-        this.world = world;
-        this.targetedPos = targetedPos;
-    }
-
-    public LivingEntity getCaster() {
-        return caster;
     }
 
     public BlockState getTargeted() {
         return this.targeted;
-    }
-
-    public World getWorld() {
-        return world;
-    }
-
-    public BlockPos getTargetedPos() {
-        return targetedPos;
     }
 }

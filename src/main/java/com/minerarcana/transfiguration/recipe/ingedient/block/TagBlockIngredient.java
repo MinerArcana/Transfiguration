@@ -1,7 +1,6 @@
 package com.minerarcana.transfiguration.recipe.ingedient.block;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.recipe.ingedient.serializer.ISerializer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.tags.ITag;
@@ -29,7 +28,7 @@ public class TagBlockIngredient extends BlockIngredient {
 
     @Override
     @Nonnull
-    public BlockIngredientSerializer<? extends BlockIngredient> getSerializer() {
+    public BlockIngredientSerializer<?> getSerializer() {
         return TransfigurationRecipes.TAG_BLOCK_INGREDIENT_SERIALIZER.get();
     }
 

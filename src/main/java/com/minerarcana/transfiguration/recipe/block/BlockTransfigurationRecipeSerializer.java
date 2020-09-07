@@ -5,6 +5,8 @@ import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
+import com.minerarcana.transfiguration.recipe.result.Result;
+import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
@@ -23,7 +25,7 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
     @ParametersAreNonnullByDefault
     public BlockTransfigurationRecipe read(ResourceLocation recipeId, JsonObject json) {
         return new BlockTransfigurationRecipe(recipeId, RegistryJson.getTransfigurationType(json),
-                SerializerJson.getBlockIngredient(json), SerializerJson.getRecipeResult(json));
+                SerializerJson.getBlockIngredient(json), SerializerJson.getResult(json));
     }
 
     @Override
@@ -33,15 +35,28 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
         TransfigurationType transfigurationType = buffer.readRegistryId();
         BlockIngredientSerializer<?> serializer = buffer.readRegistryId();
         BlockIngredient ingredient = serializer.parse(buffer);
-
-        return new BlockTransfigurationRecipe(recipeId, transfigurationType, ingredient, null);
+        ResultSerializer<?> resultSerializer = buffer.readRegistryId();
+        Result result = resultSerializer.parse(buffer);
+        return new BlockTransfigurationRecipe(recipeId, transfigurationType, ingredient, result);
     }
 
     @Override
     @ParametersAreNonnullByDefault
     public void write(PacketBuffer buffer, BlockTransfigurationRecipe recipe) {
         buffer.writeRegistryId(recipe.getTransfigurationType());
-        BlockIngredient blockIngredient = recipe.getIngredient();
-        buffer.writeRegistryId(blockIngredient.getSerializer());
+        writeIngredient(buffer, recipe.getIngredient());
+        writeResult(buffer, recipe.getResult());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends BlockIngredient> void  writeIngredient(PacketBuffer packetBuffer, T blockIngredient) {
+        BlockIngredientSerializer<T> serializer = (BlockIngredientSerializer<T>) blockIngredient.getSerializer();
+        serializer.write(packetBuffer, blockIngredient);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Result> void  writeResult(PacketBuffer packetBuffer, T result) {
+        ResultSerializer<T> serializer = (ResultSerializer<T>) result.getSerializer();
+        serializer.write(packetBuffer, result);
     }
 }

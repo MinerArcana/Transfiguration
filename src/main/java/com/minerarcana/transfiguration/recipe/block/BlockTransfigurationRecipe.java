@@ -1,8 +1,8 @@
 package com.minerarcana.transfiguration.recipe.block;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.recipe.RecipeResult;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
+import com.minerarcana.transfiguration.recipe.result.Result;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -19,10 +19,10 @@ public class BlockTransfigurationRecipe implements IRecipe<BlockTransfigurationC
     private final ResourceLocation recipeId;
     private final TransfigurationType transfigurationType;
     private final BlockIngredient ingredient;
-    private final RecipeResult result;
+    private final Result result;
 
     public BlockTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
-                                      BlockIngredient ingredient, RecipeResult result) {
+                                      BlockIngredient ingredient, Result result) {
         this.transfigurationType = transfigurationType;
         this.recipeId = recipeId;
         this.ingredient = ingredient;
@@ -39,12 +39,11 @@ public class BlockTransfigurationRecipe implements IRecipe<BlockTransfigurationC
     @Nonnull
     @ParametersAreNonnullByDefault
     public ItemStack getCraftingResult(BlockTransfigurationContainer inv) {
-        return result.getRecipeOutput();
+        return result.getOutputRepresentation();
     }
 
     public ActionResultType transfigure(BlockTransfigurationContainer inv) {
-        inv.getWorld().setBlockState(inv.getTargetedPos(), result.getBlockState());
-        return ActionResultType.SUCCESS;
+        return result.handle(inv);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class BlockTransfigurationRecipe implements IRecipe<BlockTransfigurationC
     @Override
     @Nonnull
     public ItemStack getRecipeOutput() {
-        return result.getRecipeOutput();
+        return result.getOutputRepresentation();
     }
 
     @Override
@@ -84,7 +83,7 @@ public class BlockTransfigurationRecipe implements IRecipe<BlockTransfigurationC
         return ingredient;
     }
 
-    public RecipeResult getResult() {
+    public Result getResult() {
         return result;
     }
 }

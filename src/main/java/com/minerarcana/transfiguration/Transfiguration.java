@@ -7,6 +7,7 @@ import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityTypeEntityIngredient;
+import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import com.tterrag.registrate.Registrate;
 import net.minecraft.client.Minecraft;
@@ -31,6 +32,7 @@ public class Transfiguration {
     public static IForgeRegistry<TransfigurationType> transfigurationTypes;
     public static IForgeRegistry<BlockIngredientSerializer<?>> blockIngredientSerializers;
     public static IForgeRegistry<EntityIngredientSerializer<?>> entityIngredientSerializers;
+    public static IForgeRegistry<ResultSerializer<?>> resultSerializers;
 
     private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID)
             .itemGroup(TransfiguringItemGroup::new, "Transfiguration"));
@@ -44,8 +46,10 @@ public class Transfiguration {
 
         makeRegistry("block_ingredient_serializers", BlockIngredientSerializer.class);
         makeRegistry("entity_ingredient_serializers", EntityIngredientSerializer.class);
+        makeRegistry("result_serializers", ResultSerializer.class);
         blockIngredientSerializers = RegistryManager.ACTIVE.getRegistry(BlockIngredientSerializer.class);
         entityIngredientSerializers = RegistryManager.ACTIVE.getRegistry(EntityIngredientSerializer.class);
+        resultSerializers = RegistryManager.ACTIVE.getRegistry(ResultSerializer.class);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         TransfigurationRecipes.register(modEventBus);

@@ -1,7 +1,6 @@
 package com.minerarcana.transfiguration.recipe.ingedient.entity;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.recipe.ingedient.serializer.ISerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 

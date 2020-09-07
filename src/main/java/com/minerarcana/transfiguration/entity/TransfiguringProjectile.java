@@ -52,7 +52,7 @@ public class TransfiguringProjectile extends ProjectileItemEntity {
     private TransfigurationType getTransfigurationType() {
         ItemStack itemStack = this.getItem();
         if (itemStack.getItem() instanceof ITransfiguring) {
-            return ((ITransfiguring) itemStack.getItem()).getType();
+            return ((ITransfiguring) itemStack.getItem()).getType(itemStack);
         }
         return null;
     }

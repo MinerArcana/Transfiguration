@@ -2,14 +2,17 @@ package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
-public class TransfiguringProjectileItem extends Item {
+public class TransfiguringProjectileItem extends Item implements ITransfiguring {
     public TransfiguringProjectileItem(Properties properties) {
         super(properties);
     }
@@ -39,5 +42,15 @@ public class TransfiguringProjectileItem extends Item {
             }
         }
         return -1;
+    }
+
+    @Override
+    public TransfigurationType getType(ItemStack itemStack) {
+        return getTransfigurationType(itemStack);
+    }
+
+    @Override
+    public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
+
     }
 }

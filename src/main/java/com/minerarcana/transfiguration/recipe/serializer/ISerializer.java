@@ -1,9 +1,8 @@
-package com.minerarcana.transfiguration.recipe.ingedient.serializer;
+package com.minerarcana.transfiguration.recipe.serializer;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 

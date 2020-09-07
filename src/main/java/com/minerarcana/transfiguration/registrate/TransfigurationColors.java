@@ -10,7 +10,7 @@ public class TransfigurationColors {
     public static NonNullSupplier<Supplier<IItemColor>> transfiguringTypeColors(int colorLayer) {
         return () -> () -> (itemStack, layer) -> {
             if (layer == colorLayer && itemStack.getItem() instanceof ITransfiguring) {
-                return ((ITransfiguring) itemStack.getItem()).getType().getPrimaryColor();
+                return ((ITransfiguring) itemStack.getItem()).getType(itemStack).getPrimaryColor();
             } else {
                 return -1;
             }
