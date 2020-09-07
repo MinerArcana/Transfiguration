@@ -2,7 +2,7 @@ package com.minerarcana.transfiguration.recipe.block;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.RecipeResult;
-import com.minerarcana.transfiguration.recipe.ingedient.BlockIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -16,9 +16,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class BlockTransfigurationRecipe implements IRecipe<BlockTransfigurationContainer> {
-    private final TransfigurationType transfigurationType;
-
     private final ResourceLocation recipeId;
+    private final TransfigurationType transfigurationType;
     private final BlockIngredient ingredient;
     private final RecipeResult result;
 
@@ -28,7 +27,6 @@ public class BlockTransfigurationRecipe implements IRecipe<BlockTransfigurationC
         this.recipeId = recipeId;
         this.ingredient = ingredient;
         this.result = result;
-
     }
 
     @Override
@@ -78,15 +76,15 @@ public class BlockTransfigurationRecipe implements IRecipe<BlockTransfigurationC
         return transfigurationType.getBlockRecipeType();
     }
 
+    public TransfigurationType getTransfigurationType() {
+        return transfigurationType;
+    }
+
     public BlockIngredient getIngredient() {
         return ingredient;
     }
 
     public RecipeResult getResult() {
         return result;
-    }
-
-    public TransfigurationType getTransfigurationType() {
-        return transfigurationType;
     }
 }

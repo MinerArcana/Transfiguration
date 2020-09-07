@@ -4,8 +4,9 @@ import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
-import com.minerarcana.transfiguration.parser.FunctionObjectParser;
-import com.minerarcana.transfiguration.parser.IObjectParser;
+import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityTypeEntityIngredient;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import com.tterrag.registrate.Registrate;
 import net.minecraft.client.Minecraft;
@@ -19,30 +20,32 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
-
-import java.util.Objects;
+import net.minecraftforge.registries.RegistryManager;
 
 @Mod(Transfiguration.ID)
 public class Transfiguration {
     public static final String ID = "transfiguration";
 
     public static IForgeRegistry<TransfigurationType> transfigurationTypes;
-
-    public static final IObjectParser<TransfigurationType> TRANSFIGURATION_TYPE_PARSER = new FunctionObjectParser<>(
-            transfigurationType -> transfigurationTypes.getValue(new ResourceLocation(transfigurationType)),
-            transfigurationType -> Objects.requireNonNull(transfigurationType.getRegistryName()).toString()
-    );
+    public static IForgeRegistry<BlockIngredientSerializer<?>> blockIngredientSerializers;
+    public static IForgeRegistry<EntityIngredientSerializer<?>> entityIngredientSerializers;
 
     private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID)
             .itemGroup(TransfiguringItemGroup::new, "Transfiguration"));
 
+    @SuppressWarnings("unchecked")
     public Transfiguration() {
-
         transfigurationTypes = new RegistryBuilder<TransfigurationType>()
                 .setName(rl("transfiguration_types"))
                 .setType(TransfigurationType.class)
                 .create();
+
+        makeRegistry("block_ingredient_serializers", BlockIngredientSerializer.class);
+        makeRegistry("entity_ingredient_serializers", EntityIngredientSerializer.class);
+        blockIngredientSerializers = RegistryManager.ACTIVE.getRegistry(BlockIngredientSerializer.class);
+        entityIngredientSerializers = RegistryManager.ACTIVE.getRegistry(EntityIngredientSerializer.class);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         TransfigurationRecipes.register(modEventBus);
@@ -65,5 +68,12 @@ public class Transfiguration {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         rendererManager.register(TransfigurationEntities.TRANSFIGURING_PROJECTILE.get(),
                 new SpriteRenderer<>(rendererManager, itemRenderer));
+    }
+
+    private static <T extends IForgeRegistryEntry<T>> void makeRegistry(String name, Class<T> type) {
+        new RegistryBuilder<T>()
+                .setName(rl(name))
+                .setType(type)
+                .create();
     }
 }
