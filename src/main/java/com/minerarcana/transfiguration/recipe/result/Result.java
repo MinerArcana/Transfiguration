@@ -5,9 +5,13 @@ import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
 
+import javax.annotation.Nonnull;
+
 public abstract class Result implements ISerializable<ResultSerializer<?>> {
 
-    public abstract ActionResultType handle(TransfigurationContainer<?> transfigurationContainer);
+    @Nonnull
+    public abstract ActionResultType handle(@Nonnull TransfigurationContainer<?> transfigurationContainer);
 
+    @Nonnull
     public abstract ItemStack getOutputRepresentation();
 }

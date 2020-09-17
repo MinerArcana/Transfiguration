@@ -18,11 +18,13 @@ public class EntityResult extends Result {
     }
 
     @Override
-    public ActionResultType handle(TransfigurationContainer<?> transfigurationContainer) {
+    @Nonnull
+    public ActionResultType handle(@Nonnull TransfigurationContainer<?> transfigurationContainer) {
         return summon(transfigurationContainer, entityType);
     }
 
     @Override
+    @Nonnull
     public ItemStack getOutputRepresentation() {
         return ItemStack.EMPTY;
     }

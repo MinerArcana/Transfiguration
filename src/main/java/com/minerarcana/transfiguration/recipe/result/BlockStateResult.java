@@ -17,12 +17,14 @@ public class BlockStateResult extends Result {
     }
 
     @Override
-    public ActionResultType handle(TransfigurationContainer<?> transfigurationContainer) {
+    @Nonnull
+    public ActionResultType handle(@Nonnull TransfigurationContainer<?> transfigurationContainer) {
         transfigurationContainer.getWorld().setBlockState(transfigurationContainer.getTargetedPos(), blockState);
         return ActionResultType.SUCCESS;
     }
 
     @Override
+    @Nonnull
     public ItemStack getOutputRepresentation() {
         return new ItemStack(blockState.getBlock().asItem());
     }

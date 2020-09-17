@@ -17,12 +17,14 @@ public class EntityTagResult extends Result {
     }
 
     @Override
-    public ActionResultType handle(TransfigurationContainer<?> transfigurationContainer) {
+    @Nonnull
+    public ActionResultType handle(@Nonnull TransfigurationContainer<?> transfigurationContainer) {
         EntityType<?> entityType = tag.getRandomElement(transfigurationContainer.getWorld().rand);
         return EntityResult.summon(transfigurationContainer, entityType);
     }
 
     @Override
+    @Nonnull
     public ItemStack getOutputRepresentation() {
         return ItemStack.EMPTY;
     }
