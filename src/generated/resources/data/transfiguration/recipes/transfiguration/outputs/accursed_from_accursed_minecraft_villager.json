@@ -1,0 +1,12 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:accursed",
+  "ingredient": {
+    "type": "transfiguration:entity_type",
+    "entity": "minecraft:villager"
+  },
+  "result": {
+    "type": "transfiguration:entity_tag",
+    "tag": "transfiguration:outputs/accursed"
+  }
+}

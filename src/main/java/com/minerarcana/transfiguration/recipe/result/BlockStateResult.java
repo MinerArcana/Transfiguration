@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.recipe.result;
 
+import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -16,7 +17,7 @@ public class BlockStateResult extends Result {
     }
 
     @Override
-    public ActionResultType handle(TransfigurationContainer transfigurationContainer) {
+    public ActionResultType handle(TransfigurationContainer<?> transfigurationContainer) {
         transfigurationContainer.getWorld().setBlockState(transfigurationContainer.getTargetedPos(), blockState);
         return ActionResultType.SUCCESS;
     }
@@ -29,7 +30,7 @@ public class BlockStateResult extends Result {
     @Nonnull
     @Override
     public ResultSerializer<?> getSerializer() {
-        return null;
+        return TransfigurationRecipes.BLOCK_STATE_RESULT_SERIALIZER.get();
     }
 
     public BlockState getBlockState() {

@@ -19,20 +19,7 @@ public class EntityResult extends Result {
 
     @Override
     public ActionResultType handle(TransfigurationContainer<?> transfigurationContainer) {
-        Entity entity = entityType.create(transfigurationContainer.getWorld());
-        if (entity != null) {
-            if (transfigurationContainer.getWorld().isRemote()) {
-                return ActionResultType.CONSUME;
-            } else {
-                BlockPos blockPos = transfigurationContainer.getTargetedPos();
-                entity.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                transfigurationContainer.getWorld().addEntity(entity);
-                return ActionResultType.SUCCESS;
-            }
-
-        } else {
-            return ActionResultType.FAIL;
-        }
+        return summon(transfigurationContainer, entityType);
     }
 
     @Override
@@ -52,5 +39,22 @@ public class EntityResult extends Result {
 
     public static EntityResult create(EntityType<?> entityType) {
         return new EntityResult(entityType);
+    }
+
+    public static ActionResultType summon(TransfigurationContainer<?> transfigurationContainer, EntityType<?> entityType) {
+        Entity entity = entityType.create(transfigurationContainer.getWorld());
+        if (entity != null) {
+            if (transfigurationContainer.getWorld().isRemote()) {
+                return ActionResultType.CONSUME;
+            } else {
+                BlockPos blockPos = transfigurationContainer.getTargetedPos();
+                entity.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                transfigurationContainer.getWorld().addEntity(entity);
+                return ActionResultType.SUCCESS;
+            }
+
+        } else {
+            return ActionResultType.FAIL;
+        }
     }
 }

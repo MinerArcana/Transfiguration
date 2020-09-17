@@ -1,0 +1,12 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:accursed",
+  "ingredient": {
+    "type": "transfiguration:block",
+    "block": "minecraft:dirt"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:coarse_dirt"
+  }
+}

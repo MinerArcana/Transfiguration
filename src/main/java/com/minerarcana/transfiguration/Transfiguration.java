@@ -1,8 +1,6 @@
 package com.minerarcana.transfiguration;
 
-import com.minerarcana.transfiguration.content.TransfigurationEntities;
-import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.content.TransfigurationTypes;
+import com.minerarcana.transfiguration.content.*;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
@@ -10,6 +8,7 @@ import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityTypeEntityI
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -35,7 +34,10 @@ public class Transfiguration {
     public static IForgeRegistry<ResultSerializer<?>> resultSerializers;
 
     private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID)
-            .itemGroup(TransfiguringItemGroup::new, "Transfiguration"));
+            .itemGroup(TransfiguringItemGroup::new, "Transfiguration")
+            .addDataGenerator(ProviderType.RECIPE, TransfigurationAdditionalData::addRecipes)
+            .addDataGenerator(ProviderType.ENTITY_TAGS, TransfigurationAdditionalData::addEntityTypeTags)
+    );
 
     @SuppressWarnings("unchecked")
     public Transfiguration() {
