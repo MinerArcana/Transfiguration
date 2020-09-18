@@ -6,11 +6,6 @@ import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientS
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.advancements.IRequirementsStrategy;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
@@ -23,26 +18,20 @@ import java.util.function.Consumer;
 public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegistryEntry<T>> {
     private final TransfigurationType transfigurationType;
     private final IRecipeSerializer<?> recipeSerializer;
-    private final String recipeType;
     private IFinishedObject<T> ingredient;
     private IFinishedObject<ResultSerializer<?>> result;
-    private Advancement.Builder advancementBuilder;
 
-    private TransfigurationRecipeBuilder(TransfigurationType transfigurationType, IRecipeSerializer<?> recipeSerializer,
-                                         String recipeType) {
+    private TransfigurationRecipeBuilder(TransfigurationType transfigurationType, IRecipeSerializer<?> recipeSerializer) {
         this.transfigurationType = transfigurationType;
         this.recipeSerializer = recipeSerializer;
-        this.recipeType = recipeType;
     }
 
     public static TransfigurationRecipeBuilder<BlockIngredientSerializer<?>> block(TransfigurationType transfigurationType) {
-        return new TransfigurationRecipeBuilder<>(transfigurationType, TransfigurationRecipes.BLOCK_TRANSFIGURATION.get(),
-                "block");
+        return new TransfigurationRecipeBuilder<>(transfigurationType, TransfigurationRecipes.BLOCK_TRANSFIGURATION.get());
     }
 
     public static TransfigurationRecipeBuilder<EntityIngredientSerializer<?>> entity(TransfigurationType transfigurationType) {
-        return new TransfigurationRecipeBuilder<>(transfigurationType, TransfigurationRecipes.ENTITY_TRANSFIGURATION.get(),
-                "entity");
+        return new TransfigurationRecipeBuilder<>(transfigurationType, TransfigurationRecipes.ENTITY_TRANSFIGURATION.get());
     }
 
     public TransfigurationRecipeBuilder<T> withIngredient(IFinishedObject<T> ingredient) {
@@ -52,14 +41,6 @@ public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegis
 
     public TransfigurationRecipeBuilder<T> withResult(IFinishedObject<ResultSerializer<?>> result) {
         this.result = result;
-        return this;
-    }
-
-    public TransfigurationRecipeBuilder<T> withCriterion(String name, ICriterionInstance criterionInstance) {
-        if (this.advancementBuilder == null) {
-            this.advancementBuilder = Advancement.Builder.builder();
-        }
-        this.advancementBuilder.withCriterion(name, criterionInstance);
         return this;
     }
 
@@ -75,14 +56,8 @@ public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegis
                     Objects.requireNonNull(transfigurationType.getRegistryName()).getPath() + "_" +
                     ingredient.getId().toString().replace(":", "_"));
         }
-        if (this.advancementBuilder != null) {
-            this.advancementBuilder.withParentId(new ResourceLocation("recipes/root"))
-                    .withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id))
-                    .withRewards(AdvancementRewards.Builder.recipe(id))
-                    .withRequirementsStrategy(IRequirementsStrategy.OR);
-        }
-        recipeConsumer.accept(new TransfigurationFinishedRecipe<>(recipeSerializer, recipeType, id, transfigurationType,
-                ingredient, result, advancementBuilder));
+        recipeConsumer.accept(new TransfigurationFinishedRecipe<>(recipeSerializer, id, transfigurationType,
+                ingredient, result));
     }
 
     protected void validate(ResourceLocation id) {

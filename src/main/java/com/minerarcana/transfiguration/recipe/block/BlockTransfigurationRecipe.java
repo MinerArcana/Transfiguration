@@ -88,4 +88,9 @@ public class BlockTransfigurationRecipe implements IRecipe<TransfigurationContai
     public Result getResult() {
         return result;
     }
+
+    @Override
+    public boolean isDynamic() {
+        return true;
+    }
 }

@@ -78,6 +78,11 @@ public class EntityTransfigurationRecipe implements IRecipe<TransfigurationConta
         return transfigurationType.getEntityRecipeType();
     }
 
+    @Override
+    public boolean isDynamic() {
+        return true;
+    }
+
     public TransfigurationType getTransfigurationType() {
         return transfigurationType;
     }

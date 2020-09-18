@@ -21,24 +21,15 @@ public class TransfigurationFinishedRecipe<T extends ISerializer<?> & IForgeRegi
     private final TransfigurationType transfigurationType;
     private final IFinishedObject<T> ingredient;
     private final IFinishedObject<ResultSerializer<?>> result;
-    private final Advancement.Builder advancementBuilder;
-    private final ResourceLocation advancementID;
 
-    public TransfigurationFinishedRecipe(IRecipeSerializer<?> recipeSerializer, String recipeType, ResourceLocation id,
+    public TransfigurationFinishedRecipe(IRecipeSerializer<?> recipeSerializer, ResourceLocation id,
                                          TransfigurationType transfigurationType, IFinishedObject<T> ingredient,
-                                         IFinishedObject<ResultSerializer<?>> result, @Nullable Advancement.Builder advancementBuilder) {
+                                         IFinishedObject<ResultSerializer<?>> result) {
         this.recipeSerializer = recipeSerializer;
         this.id = id;
         this.transfigurationType = transfigurationType;
         this.ingredient = ingredient;
         this.result = result;
-        this.advancementBuilder = advancementBuilder;
-        if (advancementBuilder != null) {
-            this.advancementID = new ResourceLocation(id.getNamespace(), "recipes/transfiguration/" + recipeType +
-                    "/" + id.getPath());
-        } else {
-            this.advancementID = null;
-        }
     }
 
     @Override
@@ -63,12 +54,12 @@ public class TransfigurationFinishedRecipe<T extends ISerializer<?> & IForgeRegi
     @Nullable
     @Override
     public JsonObject getAdvancementJson() {
-        return advancementBuilder != null ? advancementBuilder.serialize() : null;
+        return null;
     }
 
     @Nullable
     @Override
     public ResourceLocation getAdvancementID() {
-        return advancementID;
+        return null;
     }
 }
