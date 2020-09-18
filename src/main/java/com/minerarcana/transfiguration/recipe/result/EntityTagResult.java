@@ -10,9 +10,9 @@ import net.minecraft.util.ActionResultType;
 import javax.annotation.Nonnull;
 
 public class EntityTagResult extends Result {
-    private final ITag.INamedTag<EntityType<?>> tag;
+    private final ITag<EntityType<?>> tag;
 
-    public EntityTagResult(ITag.INamedTag<EntityType<?>> tag) {
+    public EntityTagResult(ITag<EntityType<?>> tag) {
         this.tag = tag;
     }
 
@@ -35,7 +35,7 @@ public class EntityTagResult extends Result {
         return TransfigurationRecipes.ENTITY_TAG_RESULT_SERIALIZER.get();
     }
 
-    public ITag.INamedTag<EntityType<?>> getTag() {
+    public ITag<EntityType<?>> getTag() {
         return tag;
     }
 }
