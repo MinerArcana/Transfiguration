@@ -16,7 +16,7 @@ public class ResultBuilder {
     }
 
     public static FinishedObject<ResultSerializer<?>> blockTag(ITag.INamedTag<Block> tag) {
-        return new FinishedObject<>(TransfigurationRecipes.BLOCK_STATE_RESULT_SERIALIZER.get(),
+        return new FinishedObject<>(TransfigurationRecipes.BLOCK_TAG_RESULT_SERIALIZER.get(),
                 tag::getName, jsonObject -> jsonObject.addProperty("tag",
                 tag.getName().toString()));
     }

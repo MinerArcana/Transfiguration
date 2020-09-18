@@ -6,12 +6,10 @@ import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import com.minerarcana.transfiguration.util.ResourceLocationHelper;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dan200.computercraft.api.client.TransformedModel;
-import dan200.computercraft.api.turtle.ITurtleAccess;
-import dan200.computercraft.api.turtle.ITurtleUpgrade;
-import dan200.computercraft.api.turtle.TurtleSide;
-import dan200.computercraft.api.turtle.TurtleUpgradeType;
+import dan200.computercraft.api.turtle.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.TransformationMatrix;
@@ -66,6 +64,22 @@ public class TransfiguringTurtleUpgrade implements ITurtleUpgrade {
                 0.0f, 0.0f, 0.0f, 1.0f,
         });
         return TransformedModel.of(getCraftingItem(), new TransformationMatrix(transform));
+    }
+
+    @Nonnull
+    @Override
+    public TurtleCommandResult useTool(@Nonnull ITurtleAccess turtle, @Nonnull TurtleSide side, @Nonnull TurtleVerb verb, @Nonnull Direction direction) {
+        switch (verb) {
+            case DIG:
+                return dig(turtle, direction);
+            case ATTACK:
+
+        }
+    }
+
+    @Nonnull
+    private TurtleCommandResult dig(@Nonnull ITurtleAccess turtle, @Nonnull Direction direction) {
+        turtle.
     }
 
     @Nonnull
