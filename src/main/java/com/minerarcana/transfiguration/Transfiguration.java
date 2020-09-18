@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration;
 
+import com.minerarcana.transfiguration.compat.cctweaked.CCTweaked;
 import com.minerarcana.transfiguration.content.*;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
@@ -60,6 +61,8 @@ public class Transfiguration {
         TransfigurationEntities.setup();
 
         modEventBus.addListener(this::handleClient);
+
+        CCTweaked.setup();
     }
 
     public static Registrate getRegistrate() {
