@@ -3,6 +3,7 @@ package com.minerarcana.transfiguration.recipe.ingedient.block;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
+import com.minerarcana.transfiguration.recipe.json.TagJson;
 import net.minecraft.network.PacketBuffer;
 
 import javax.annotation.Nonnull;
@@ -17,12 +18,7 @@ public class TagBlockIngredientSerializer extends BlockIngredientSerializer<TagB
     @Override
     @Nonnull
     public TagBlockIngredient parse(@Nonnull JsonObject json) {
-        JsonPrimitive tagName = json.getAsJsonPrimitive("tag");
-        if (tagName != null) {
-            return TagBlockIngredient.create(tagName.getAsString());
-        } else {
-            throw new JsonParseException("Failed to find 'tag'");
-        }
+        return new TagBlockIngredient(TagJson.getBlockTag(json));
     }
 
     @Override

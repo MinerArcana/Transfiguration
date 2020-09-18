@@ -1,6 +1,7 @@
 package com.minerarcana.transfiguration.recipe.json;
 
 import com.google.gson.JsonObject;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
@@ -11,10 +12,19 @@ import net.minecraft.util.ResourceLocation;
 public class TagJson {
     public static ITag<EntityType<?>> getEntityTypeTag(JsonObject jsonObject, String fieldName) {
         String tagName = JSONUtils.getString(jsonObject, fieldName);
-        return TagCollectionManager.func_232928_e_().func_232927_d_().get(new ResourceLocation(tagName));
+        return TagCollectionManager.getManager().getEntityTypeTags().get(new ResourceLocation(tagName));
     }
 
     public static ITag<EntityType<?>> getEntityTypeTag(JsonObject jsonObject) {
         return getEntityTypeTag(jsonObject, "tag");
+    }
+
+    public static ITag<Block> getBlockTag(JsonObject jsonObject, String fieldName) {
+        String tagName = JSONUtils.getString(jsonObject, fieldName);
+        return TagCollectionManager.getManager().getBlockTags().get(new ResourceLocation(tagName));
+    }
+
+    public static ITag<Block> getBlockTag(JsonObject jsonObject) {
+        return getBlockTag(jsonObject, "tag");
     }
 }

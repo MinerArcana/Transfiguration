@@ -8,6 +8,7 @@ import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class TagBlockIngredient extends BlockIngredient {
     private final ITag<Block> tag;
@@ -23,7 +24,7 @@ public class TagBlockIngredient extends BlockIngredient {
 
     @Nonnull
     public ResourceLocation getName() {
-        return TagCollectionManager.func_232928_e_().func_232923_a_().func_232975_b_(tag);
+        return Objects.requireNonNull(TagCollectionManager.getManager().getBlockTags().getDirectIdFromTag(tag));
     }
 
     @Override
@@ -37,6 +38,6 @@ public class TagBlockIngredient extends BlockIngredient {
     }
 
     public static TagBlockIngredient create(ResourceLocation resourceLocation) {
-        return new TagBlockIngredient(TagCollectionManager.func_232928_e_().func_232923_a_().getOrCreate(resourceLocation));
+        return new TagBlockIngredient(TagCollectionManager.getManager().getBlockTags().getTagByID(resourceLocation));
     }
 }

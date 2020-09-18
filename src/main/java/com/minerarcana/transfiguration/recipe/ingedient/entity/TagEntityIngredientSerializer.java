@@ -13,7 +13,7 @@ public class TagEntityIngredientSerializer extends EntityIngredientSerializer<Ta
     @Nonnull
     @Override
     public TagEntityIngredient parse(@Nonnull PacketBuffer buffer) {
-        return new TagEntityIngredient(TagCollectionManager.func_232928_e_().func_232927_d_()
+        return new TagEntityIngredient(TagCollectionManager.getManager().getEntityTypeTags()
                 .get(buffer.readResourceLocation()));
     }
 
@@ -25,7 +25,7 @@ public class TagEntityIngredientSerializer extends EntityIngredientSerializer<Ta
 
     @Override
     public void write(@Nonnull PacketBuffer buffer, @Nonnull TagEntityIngredient object) {
-        buffer.writeResourceLocation(Objects.requireNonNull(TagCollectionManager.func_232928_e_().func_232927_d_()
-                .func_232973_a_(object.getTag())));
+        buffer.writeResourceLocation(Objects.requireNonNull(TagCollectionManager.getManager().getEntityTypeTags()
+                .getDirectIdFromTag(object.getTag())));
     }
 }

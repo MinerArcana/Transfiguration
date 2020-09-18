@@ -1,6 +1,7 @@
 modLoader = "javafml"
-loaderVersion = "[32,)"
+loaderVersion = "[33,35)"
 issueTrackerURL = "https://github.com/MinerArcana/Transfiguration/issues"
+license="MIT"
 
 [[mods]]
     modId = "transfiguration"
@@ -13,6 +14,6 @@ issueTrackerURL = "https://github.com/MinerArcana/Transfiguration/issues"
 [[dependencies.transfiguration]]
     modId = "forge"
     mandatory = true
-    versionRange = "[32.0.68,)"
+    versionRange = "[33.0.0,35.0.0)"
     ordering = "NONE"
     side = "BOTH"

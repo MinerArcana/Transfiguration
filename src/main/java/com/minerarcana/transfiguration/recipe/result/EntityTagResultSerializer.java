@@ -13,7 +13,7 @@ public class EntityTagResultSerializer extends ResultSerializer<EntityTagResult>
     @Nonnull
     @Override
     public EntityTagResult parse(@Nonnull PacketBuffer buffer) {
-        return new EntityTagResult(TagCollectionManager.func_232928_e_().func_232927_d_()
+        return new EntityTagResult(TagCollectionManager.getManager().getEntityTypeTags()
                 .get(buffer.readResourceLocation()));
     }
 
@@ -25,7 +25,7 @@ public class EntityTagResultSerializer extends ResultSerializer<EntityTagResult>
 
     @Override
     public void write(@Nonnull PacketBuffer buffer, @Nonnull EntityTagResult object) {
-        buffer.writeResourceLocation(Objects.requireNonNull(TagCollectionManager.func_232928_e_().func_232927_d_()
-                .func_232973_a_(object.getTag())));
+        buffer.writeResourceLocation(Objects.requireNonNull(TagCollectionManager.getManager().getEntityTypeTags()
+                .getDirectIdFromTag(object.getTag())));
     }
 }
