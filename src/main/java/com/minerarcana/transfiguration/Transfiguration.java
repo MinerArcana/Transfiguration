@@ -39,6 +39,7 @@ public class Transfiguration {
             .addDataGenerator(ProviderType.RECIPE, TransfigurationAdditionalData::addRecipes)
             .addDataGenerator(ProviderType.ENTITY_TAGS, TransfigurationAdditionalData::addEntityTypeTags)
             .addDataGenerator(ProviderType.BLOCK_TAGS, TransfigurationAdditionalData::addBlockTags)
+            .addDataGenerator(ProviderType.LANG, TransfigurationAdditionalData::addLang)
     );
 
     @SuppressWarnings("unchecked")
