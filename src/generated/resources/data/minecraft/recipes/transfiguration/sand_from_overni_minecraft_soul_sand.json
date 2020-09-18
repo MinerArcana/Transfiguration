@@ -1,0 +1,12 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:overni",
+  "ingredient": {
+    "type": "transfiguration:block",
+    "block": "minecraft:soul_sand"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:sand"
+  }
+}

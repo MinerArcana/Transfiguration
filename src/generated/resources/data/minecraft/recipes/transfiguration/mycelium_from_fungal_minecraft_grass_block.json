@@ -1,0 +1,12 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:fungal",
+  "ingredient": {
+    "type": "transfiguration:block",
+    "block": "minecraft:grass_block"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:mycelium"
+  }
+}

@@ -10,10 +10,7 @@ import com.minerarcana.transfiguration.recipe.ingedient.block.TagBlockIngredient
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityTypeEntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.TagEntityIngredientSerializer;
-import com.minerarcana.transfiguration.recipe.result.BlockStateResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.EntityResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.EntityTagResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
+import com.minerarcana.transfiguration.recipe.result.*;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -68,6 +65,11 @@ public class TransfigurationRecipes {
             Transfiguration.getRegistrate()
                     .object("entity_tag")
                     .simple(ResultSerializer.class, EntityTagResultSerializer::new);
+
+    public static final RegistryEntry<BlockTagResultSerializer> BLOCK_TAG_RESULT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("block_tag")
+                    .simple(ResultSerializer.class, BlockTagResultSerializer::new);
 
     public static void register(IEventBus modEventBus) {
         SERIALIZERS.register(modEventBus);

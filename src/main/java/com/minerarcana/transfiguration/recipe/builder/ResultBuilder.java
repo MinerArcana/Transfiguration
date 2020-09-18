@@ -15,6 +15,12 @@ public class ResultBuilder {
                 Objects.requireNonNull(block.getRegistryName()).toString()));
     }
 
+    public static FinishedObject<ResultSerializer<?>> blockTag(ITag.INamedTag<Block> tag) {
+        return new FinishedObject<>(TransfigurationRecipes.BLOCK_STATE_RESULT_SERIALIZER.get(),
+                tag::getName, jsonObject -> jsonObject.addProperty("tag",
+                tag.getName().toString()));
+    }
+
     public static FinishedObject<ResultSerializer<?>> entityType(EntityType<?> entityType) {
         return new FinishedObject<>(TransfigurationRecipes.ENTITY_RESULT_SERIALIZER.get(),
                 entityType::getRegistryName, jsonObject -> jsonObject.addProperty("entity",

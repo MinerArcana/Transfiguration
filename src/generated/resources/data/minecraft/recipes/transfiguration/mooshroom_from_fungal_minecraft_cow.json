@@ -1,0 +1,12 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:fungal",
+  "ingredient": {
+    "type": "transfiguration:entity_type",
+    "entity": "minecraft:cow"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:mooshroom"
+  }
+}

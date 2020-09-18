@@ -1,0 +1,12 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:blessed",
+  "ingredient": {
+    "type": "transfiguration:entity_type",
+    "entity": "minecraft:zombie_villager"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:villager"
+  }
+}

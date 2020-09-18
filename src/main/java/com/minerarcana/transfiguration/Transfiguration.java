@@ -37,6 +37,7 @@ public class Transfiguration {
             .itemGroup(TransfiguringItemGroup::new, "Transfiguration")
             .addDataGenerator(ProviderType.RECIPE, TransfigurationAdditionalData::addRecipes)
             .addDataGenerator(ProviderType.ENTITY_TAGS, TransfigurationAdditionalData::addEntityTypeTags)
+            .addDataGenerator(ProviderType.BLOCK_TAGS, TransfigurationAdditionalData::addBlockTags)
     );
 
     @SuppressWarnings("unchecked")

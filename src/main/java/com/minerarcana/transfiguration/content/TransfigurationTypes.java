@@ -48,7 +48,7 @@ public class TransfigurationTypes {
             .transform(ADD_ITEMS)
             .register();
 
-    public static final RegistryEntry<TransfigurationType> Dissolution = Transfiguration.getRegistrate()
+    public static final RegistryEntry<TransfigurationType> DISSOLUTION = Transfiguration.getRegistrate()
             .object("dissolution")
             .entry(TRANSFIGURATION_TYPE)
             .lang("Dissolution")

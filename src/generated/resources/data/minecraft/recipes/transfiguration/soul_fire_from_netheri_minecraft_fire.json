@@ -1,0 +1,12 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:netheri",
+  "ingredient": {
+    "type": "transfiguration:block",
+    "block": "minecraft:fire"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:soul_fire"
+  }
+}
