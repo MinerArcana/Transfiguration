@@ -3,6 +3,7 @@ package com.minerarcana.transfiguration.content;
 import com.minerarcana.transfiguration.recipe.builder.IngredientBuilder;
 import com.minerarcana.transfiguration.recipe.builder.ResultBuilder;
 import com.minerarcana.transfiguration.recipe.builder.TransfigurationRecipeBuilder;
+import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.block.Block;
@@ -12,6 +13,10 @@ import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
 
 public class TransfigurationAdditionalData {
+
+    public static void addLang(RegistrateLangProvider langProvider) {
+        langProvider.add("upgrade.transfiguration.transfiguring.advective", "Transfiguring");
+    }
 
     public static void addEntityTypeTags(RegistrateTagsProvider<EntityType<?>> tagsProvider) {
         tagsProvider.getOrCreateBuilder(TransfigurationEntityTypeTags.OUTPUTS_ACCURSED)

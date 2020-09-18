@@ -6,7 +6,7 @@
     "tag": "transfiguration:inputs/mutandi"
   },
   "result": {
-    "type": "transfiguration:blockstate",
+    "type": "transfiguration:block_tag",
     "tag": "transfiguration:outputs/mutandi"
   }
 }

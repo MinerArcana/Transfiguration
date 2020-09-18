@@ -37,5 +37,6 @@
   "transfiguration_type.transfiguration.mutandi": "Mutandi",
   "transfiguration_type.transfiguration.netheri": "Netheri",
   "transfiguration_type.transfiguration.overni": "Overni",
-  "transfiguration_type.transfiguration.painting": "Painting"
+  "transfiguration_type.transfiguration.painting": "Painting",
+  "upgrade.transfiguration.transfiguring.advective": "Transfiguring"
 }

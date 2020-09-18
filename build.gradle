@@ -36,6 +36,10 @@ repositories {
         name = "Registrate"
         url = "http://maven.tterrag.com/"
     }
+    maven {
+        name = "CC:Tweaked"
+        url = "https://squiddev.cc/maven/"
+    }
 }
 
 test {
@@ -103,6 +107,8 @@ build.dependsOn reobfShadowJar
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    implementation fg.deobf("org.squiddev:cc-tweaked-${minecraft_version}:${cctweaked_version}")
 
     def registrate = "com.tterrag.registrate:Registrate:MC1.16.2-${registrate_version}"
     implementation fg.deobf(registrate)
