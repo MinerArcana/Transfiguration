@@ -1,8 +1,8 @@
 package com.minerarcana.transfiguration.entity;
 
+import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.item.ITransfiguring;
-import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -18,17 +18,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-public class TransfiguringProjectile extends ProjectileItemEntity {
-    public TransfiguringProjectile(EntityType<? extends ProjectileItemEntity> type, World world) {
+public class TransfiguringProjectileEntity extends ProjectileItemEntity {
+    public TransfiguringProjectileEntity(EntityType<? extends ProjectileItemEntity> type, World world) {
         super(type, world);
     }
 
-    public TransfiguringProjectile(World worldIn, LivingEntity throwerIn) {
+    public TransfiguringProjectileEntity(World worldIn, LivingEntity throwerIn) {
         super(TransfigurationEntities.TRANSFIGURING_PROJECTILE.get(), throwerIn, worldIn);
     }
 
-    public TransfiguringProjectile(World worldIn, double x, double y, double z) {
+    public TransfiguringProjectileEntity(World worldIn, double x, double y, double z) {
         super(TransfigurationEntities.TRANSFIGURING_PROJECTILE.get(), x, y, z, worldIn);
     }
 
@@ -44,10 +45,10 @@ public class TransfiguringProjectile extends ProjectileItemEntity {
         if (type != null) {
             BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
             blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
-            TransfigurationContainer<BlockState> container = new TransfigurationContainer<BlockState>(blockstate,
-                    null, world, blockRayTraceResult.getPos());
+            TransfigurationContainer<BlockState> container = TransfigurationContainer.block(world,
+                    blockRayTraceResult.getPos(), blockRayTraceResult.getFace(), this.getCaster());
             world.getRecipeManager().getRecipe(type.getBlockRecipeType(), container, world)
-                    .ifPresent(recipe -> recipe.transfigure(container));
+                    .ifPresent(recipe -> recipe.transfigure(container, 1.0F));
         }
     }
 
@@ -55,10 +56,10 @@ public class TransfiguringProjectile extends ProjectileItemEntity {
     protected void onEntityHit(@Nonnull EntityRayTraceResult entityRayTraceResult) {
         TransfigurationType type = this.getTransfigurationType();
         if (type != null) {
-            TransfigurationContainer<Entity> container = new TransfigurationContainer<>(entityRayTraceResult.getEntity(),
-                    null, world, entityRayTraceResult.getEntity().getPosition());
+            TransfigurationContainer<Entity> container = TransfigurationContainer.entity(entityRayTraceResult.getEntity(),
+                    this.getCaster());
             world.getRecipeManager().getRecipe(type.getEntityRecipeType(), container, world)
-                    .ifPresent(recipe -> recipe.transfigure(container));
+                    .ifPresent(recipe -> recipe.transfigure(container, 1.0));
         }
     }
 
@@ -68,6 +69,11 @@ public class TransfiguringProjectile extends ProjectileItemEntity {
             return ((ITransfiguring) itemStack.getItem()).getType(itemStack);
         }
         return null;
+    }
+
+    @Nullable
+    public LivingEntity getCaster() {
+        return this.func_234616_v_() instanceof LivingEntity ? (LivingEntity) this.func_234616_v_() : null;
     }
 
     @Override

@@ -1,70 +1,40 @@
 package com.minerarcana.transfiguration.recipe.entity;
 
+import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
+import com.minerarcana.transfiguration.recipe.resulthandler.DoOnceResultHandler;
+import com.minerarcana.transfiguration.recipe.resulthandler.ResultHandler;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-public class EntityTransfigurationRecipe implements IRecipe<TransfigurationContainer<Entity>> {
-    private final ResourceLocation recipeId;
-    private final TransfigurationType transfigurationType;
-    private final EntityIngredient ingredient;
-    private final Result result;
-
+public class EntityTransfigurationRecipe extends TransfigurationRecipe<EntityIngredient, Entity> {
     public EntityTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
-                                       EntityIngredient ingredient, Result result) {
-        this.transfigurationType = transfigurationType;
-        this.recipeId = recipeId;
-        this.ingredient = ingredient;
-        this.result = result;
+                                       EntityIngredient ingredient, Result result, int time) {
+        super(recipeId, transfigurationType, ingredient, result, time);
     }
 
     @Override
-    @ParametersAreNonnullByDefault
-    public boolean matches(TransfigurationContainer<Entity> inv, World world) {
-        return ingredient.test(inv.getTargeted());
+    public ActionResultType transfigure(TransfigurationContainer<Entity> transfigurationContainer, double powerModifier) {
+
+        return ActionResultType.SUCCESS;
     }
 
     @Override
-    @Nonnull
-    @ParametersAreNonnullByDefault
-    public ItemStack getCraftingResult(TransfigurationContainer<Entity> inv) {
-        return result.getOutputRepresentation();
+    public ResultHandler createResultHandler() {
+        return new DoOnceResultHandler((transfigurationContainer, power) -> {
+            this.getResult().handle(transfigurationContainer);
+        });
     }
 
-    public ActionResultType transfigure(TransfigurationContainer<Entity> inv) {
-        inv.getTargeted().remove(false);
-        return result.handle(inv);
-    }
-
-    @Override
-    public boolean canFit(int width, int height) {
-        return false;
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack getRecipeOutput() {
-        return result.getOutputRepresentation();
-    }
-
-    @Override
-    @Nonnull
-    public ResourceLocation getId() {
-        return recipeId;
-    }
 
     @Override
     @Nonnull
@@ -75,23 +45,7 @@ public class EntityTransfigurationRecipe implements IRecipe<TransfigurationConta
     @Override
     @Nonnull
     public IRecipeType<?> getType() {
-        return transfigurationType.getEntityRecipeType();
+        return this.getTransfigurationType().getEntityRecipeType();
     }
 
-    @Override
-    public boolean isDynamic() {
-        return true;
-    }
-
-    public TransfigurationType getTransfigurationType() {
-        return transfigurationType;
-    }
-
-    public EntityIngredient getIngredient() {
-        return ingredient;
-    }
-
-    public Result getResult() {
-        return result;
-    }
 }

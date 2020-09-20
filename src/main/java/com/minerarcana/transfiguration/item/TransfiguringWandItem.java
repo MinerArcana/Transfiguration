@@ -1,7 +1,7 @@
 package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
-import com.minerarcana.transfiguration.entity.TransfiguringProjectile;
+import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,6 +23,11 @@ public class TransfiguringWandItem extends TransfiguringItem {
     }
 
     @Override
+    public double getTimeModifier() {
+        return 0.5;
+    }
+
+    @Override
     @Nonnull
     @ParametersAreNonnullByDefault
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity playerEntity, Hand hand) {
@@ -31,7 +36,7 @@ public class TransfiguringWandItem extends TransfiguringItem {
                 SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F /
                         (random.nextFloat() * 0.4F + 0.8F));
         if (!world.isRemote) {
-            TransfiguringProjectile projectile = new TransfiguringProjectile(world, playerEntity);
+            TransfiguringProjectileEntity projectile = new TransfiguringProjectileEntity(world, playerEntity);
             projectile.setItem(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM.get()
                     .withTransfigurationType(this.getType(itemStack)));
             projectile.func_234612_a_(playerEntity, playerEntity.rotationPitch, playerEntity.rotationYaw,

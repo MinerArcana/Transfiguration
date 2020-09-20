@@ -12,6 +12,7 @@ import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -27,7 +28,8 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<IR
     @ParametersAreNonnullByDefault
     public EntityTransfigurationRecipe read(ResourceLocation recipeId, JsonObject json) {
         return new EntityTransfigurationRecipe(recipeId, RegistryJson.getTransfigurationType(json),
-                SerializerJson.getEntityIngredient(json), SerializerJson.getResult(json));
+                SerializerJson.getEntityIngredient(json), SerializerJson.getResult(json),
+                JSONUtils.getInt(json, "ticks", 12));
     }
 
     @Override
@@ -39,7 +41,8 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<IR
         EntityIngredient ingredient = serializer.parse(buffer);
         ResultSerializer<?> resultSerializer = buffer.readRegistryId();
         Result result = resultSerializer.parse(buffer);
-        return new EntityTransfigurationRecipe(recipeId, transfigurationType, ingredient, result);
+        int ticks = buffer.readInt();
+        return new EntityTransfigurationRecipe(recipeId, transfigurationType, ingredient, result, ticks);
     }
 
     @Override
@@ -48,6 +51,7 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<IR
         buffer.writeRegistryId(recipe.getTransfigurationType());
         writeIngredient(buffer, recipe.getIngredient());
         writeResult(buffer, recipe.getResult());
+        buffer.writeInt(recipe.getTicks());
     }
 
     @SuppressWarnings("unchecked")

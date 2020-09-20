@@ -1,6 +1,6 @@
 package com.minerarcana.transfiguration.recipe.result;
 
-import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;

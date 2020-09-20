@@ -10,6 +10,7 @@ import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -25,7 +26,8 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
     @ParametersAreNonnullByDefault
     public BlockTransfigurationRecipe read(ResourceLocation recipeId, JsonObject json) {
         return new BlockTransfigurationRecipe(recipeId, RegistryJson.getTransfigurationType(json),
-                SerializerJson.getBlockIngredient(json), SerializerJson.getResult(json));
+                SerializerJson.getBlockIngredient(json), SerializerJson.getResult(json),
+                JSONUtils.getInt(json, "ticks", 12));
     }
 
     @Override
@@ -37,7 +39,8 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
         BlockIngredient ingredient = serializer.parse(buffer);
         ResultSerializer<?> resultSerializer = buffer.readRegistryId();
         Result result = resultSerializer.parse(buffer);
-        return new BlockTransfigurationRecipe(recipeId, transfigurationType, ingredient, result);
+        int ticks = buffer.readInt();
+        return new BlockTransfigurationRecipe(recipeId, transfigurationType, ingredient, result, ticks);
     }
 
     @Override
@@ -46,16 +49,17 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
         buffer.writeRegistryId(recipe.getTransfigurationType());
         writeIngredient(buffer, recipe.getIngredient());
         writeResult(buffer, recipe.getResult());
+        buffer.writeInt(recipe.getTicks());
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends BlockIngredient> void  writeIngredient(PacketBuffer packetBuffer, T blockIngredient) {
+    private <T extends BlockIngredient> void writeIngredient(PacketBuffer packetBuffer, T blockIngredient) {
         BlockIngredientSerializer<T> serializer = (BlockIngredientSerializer<T>) blockIngredient.getSerializer();
         serializer.write(packetBuffer, blockIngredient);
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Result> void  writeResult(PacketBuffer packetBuffer, T result) {
+    private <T extends Result> void writeResult(PacketBuffer packetBuffer, T result) {
         ResultSerializer<T> serializer = (ResultSerializer<T>) result.getSerializer();
         serializer.write(packetBuffer, result);
     }

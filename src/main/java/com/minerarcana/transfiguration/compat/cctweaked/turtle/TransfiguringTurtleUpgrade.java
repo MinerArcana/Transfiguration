@@ -1,21 +1,19 @@
 package com.minerarcana.transfiguration.compat.cctweaked.turtle;
 
+import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
-import com.minerarcana.transfiguration.entity.TransfiguringProjectile;
+import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
-import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import com.minerarcana.transfiguration.util.ResourceLocationHelper;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dan200.computercraft.api.client.TransformedModel;
 import dan200.computercraft.api.turtle.*;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.projectile.SnowballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.TransformationMatrix;
@@ -88,13 +86,12 @@ public class TransfiguringTurtleUpgrade implements ITurtleUpgrade {
 
     @Nonnull
     private TurtleCommandResult dig(@Nonnull ITurtleAccess turtle, @Nonnull Direction direction) {
-        TransfigurationContainer<BlockState> blockTransfigurationContainer = new TransfigurationContainer<>(
-                turtle.getWorld().getBlockState(turtle.getPosition().offset(direction)), null, turtle.getWorld(),
-                turtle.getPosition().offset(direction));
+        TransfigurationContainer<BlockState> blockTransfigurationContainer = TransfigurationContainer.block(
+                turtle.getWorld(), turtle.getPosition().offset(direction), direction, null);
 
         return turtle.getWorld().getRecipeManager().getRecipe(transfigurationType.get().getBlockRecipeType(),
                 blockTransfigurationContainer, turtle.getWorld())
-                .map(blockTransfigurationRecipe -> blockTransfigurationRecipe.transfigure(blockTransfigurationContainer))
+                .map(blockTransfigurationRecipe -> blockTransfigurationRecipe.transfigure(blockTransfigurationContainer, 1.0))
                 .map(actionResultType -> actionResultType.isSuccessOrConsume() ? TurtleCommandResult.success() :
                         TurtleCommandResult.failure("Failed to Transfigure"))
                 .orElseGet(() -> TurtleCommandResult.failure("Nothing found to Transfigure"));
@@ -103,16 +100,16 @@ public class TransfiguringTurtleUpgrade implements ITurtleUpgrade {
     @Nonnull
     private TurtleCommandResult attack(@Nonnull ITurtleAccess turtle, @Nonnull Direction direction) {
         BlockPos position = turtle.getPosition();
-        double x = position.getX() + 0.7D * (double)direction.getXOffset();
-        double y = position.getY() + 0.7D * (double)direction.getYOffset();
-        double z = position.getZ() + 0.7D * (double)direction.getZOffset();
+        double x = position.getX() + 0.7D * (double) direction.getXOffset();
+        double y = position.getY() + 0.7D * (double) direction.getYOffset();
+        double z = position.getZ() + 0.7D * (double) direction.getZOffset();
         World world = turtle.getWorld();
-        TransfiguringProjectile transfiguringProjectile = new TransfiguringProjectile(world, x, y, z);
-        transfiguringProjectile.setItem(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM.get()
+        TransfiguringProjectileEntity transfiguringProjectileEntity = new TransfiguringProjectileEntity(world, x, y, z);
+        transfiguringProjectileEntity.setItem(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM.get()
                 .withTransfigurationType(transfigurationType.get()));
-        transfiguringProjectile.shoot(direction.getXOffset(), direction.getYOffset() + 0.1F, direction.getZOffset(),
+        transfiguringProjectileEntity.shoot(direction.getXOffset(), direction.getYOffset() + 0.1F, direction.getZOffset(),
                 1.1F, 6.0F);
-        world.addEntity(transfiguringProjectile);
+        world.addEntity(transfiguringProjectileEntity);
         return TurtleCommandResult.success();
     }
 

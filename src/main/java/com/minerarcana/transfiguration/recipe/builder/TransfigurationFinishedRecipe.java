@@ -21,15 +21,17 @@ public class TransfigurationFinishedRecipe<T extends ISerializer<?> & IForgeRegi
     private final TransfigurationType transfigurationType;
     private final IFinishedObject<T> ingredient;
     private final IFinishedObject<ResultSerializer<?>> result;
+    private final int ticks;
 
     public TransfigurationFinishedRecipe(IRecipeSerializer<?> recipeSerializer, ResourceLocation id,
                                          TransfigurationType transfigurationType, IFinishedObject<T> ingredient,
-                                         IFinishedObject<ResultSerializer<?>> result) {
+                                         IFinishedObject<ResultSerializer<?>> result, int ticks) {
         this.recipeSerializer = recipeSerializer;
         this.id = id;
         this.transfigurationType = transfigurationType;
         this.ingredient = ingredient;
         this.result = result;
+        this.ticks = ticks;
     }
 
     @Override
@@ -37,6 +39,7 @@ public class TransfigurationFinishedRecipe<T extends ISerializer<?> & IForgeRegi
         json.addProperty("transfigurationType", Objects.requireNonNull(transfigurationType.getRegistryName()).toString());
         json.add("ingredient", ingredient.getJson());
         json.add("result", result.getJson());
+        json.addProperty("ticks", ticks);
     }
 
     @Override

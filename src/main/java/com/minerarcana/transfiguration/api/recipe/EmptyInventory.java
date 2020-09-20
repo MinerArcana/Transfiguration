@@ -1,4 +1,4 @@
-package com.minerarcana.transfiguration.recipe;
+package com.minerarcana.transfiguration.api.recipe;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;

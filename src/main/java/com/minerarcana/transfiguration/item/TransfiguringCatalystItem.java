@@ -14,6 +14,11 @@ public class TransfiguringCatalystItem extends TransfiguringItem {
     }
 
     @Override
+    public double getTimeModifier() {
+        return 0.75;
+    }
+
+    @Override
     public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
         itemStack.damageItem(1, livingEntity, entity -> entity.sendBreakAnimation(hand));
     }

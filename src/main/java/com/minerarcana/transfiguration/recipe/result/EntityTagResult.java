@@ -1,7 +1,7 @@
 package com.minerarcana.transfiguration.recipe.result;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ITag;

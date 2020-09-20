@@ -20,6 +20,7 @@ public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegis
     private final IRecipeSerializer<?> recipeSerializer;
     private IFinishedObject<T> ingredient;
     private IFinishedObject<ResultSerializer<?>> result;
+    private int ticks = 12;
 
     private TransfigurationRecipeBuilder(TransfigurationType transfigurationType, IRecipeSerializer<?> recipeSerializer) {
         this.transfigurationType = transfigurationType;
@@ -44,6 +45,11 @@ public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegis
         return this;
     }
 
+    public TransfigurationRecipeBuilder<T> withTicks(int ticks) {
+        this.ticks = ticks;
+        return this;
+    }
+
     public void build(Consumer<IFinishedRecipe> recipeConsumer) {
         this.build(recipeConsumer, null);
     }
@@ -57,7 +63,7 @@ public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegis
                     ingredient.getId().toString().replace(":", "_"));
         }
         recipeConsumer.accept(new TransfigurationFinishedRecipe<>(recipeSerializer, id, transfigurationType,
-                ingredient, result));
+                ingredient, result, ticks));
     }
 
     protected void validate(ResourceLocation id) {
