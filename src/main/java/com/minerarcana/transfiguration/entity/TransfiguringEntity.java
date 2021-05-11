@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.HangingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -26,11 +27,10 @@ import org.apache.commons.lang3.Validate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>, U extends NonNullPredicate<V>, V> extends Entity implements IRendersAsItem {
+public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>, U extends NonNullPredicate<V>, V>
+        extends HangingEntity implements IRendersAsItem {
     private static final DataParameter<String> RECIPE_NAME = EntityDataManager.createKey(TransfiguringEntity.class,
             DataSerializers.STRING);
-    private static final DataParameter<Direction> PLACED_ON = EntityDataManager.createKey(TransfiguringEntity.class,
-            DataSerializers.DIRECTION);
 
     private final NonNullLazy<Integer> offset;
 
@@ -43,53 +43,65 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     private ItemStack itemStack;
     private TransfigurationContainer<V> transfigurationContainer;
 
-    public TransfiguringEntity(EntityType<?> entityType, World world) {
+    public TransfiguringEntity(EntityType<? extends HangingEntity> entityType, World world) {
         super(entityType, world);
         this.offset = NonNullLazy.of(() -> this.getEntityWorld().getRandom().nextInt(20));
     }
 
-    public TransfiguringEntity(EntityType<?> entityType, World world, Direction placedOn, T recipe, int modifiedTime,
-                               double powerModifier) {
-        this(entityType, world);
-        this.setPlacedOn(placedOn);
+    public TransfiguringEntity(EntityType<? extends HangingEntity> entityType, World world, BlockPos blockPos,
+                               Direction placedOn, T recipe, int modifiedTime, double powerModifier) {
+        super(entityType, world, blockPos);
+        this.updateFacingWithBoundingBox(placedOn);
         this.startTime = world.getGameTime();
         this.recipe = recipe;
         this.setRecipeName(recipe.getId().toString());
         this.modifiedTime = modifiedTime;
         this.powerModifier = powerModifier;
+        this.offset = NonNullLazy.of(() -> this.getEntityWorld().getRandom().nextInt(20));
     }
 
-    public void setPosition(BlockPos blockPos) {
-        this.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+    @Override
+    protected void updateFacingWithBoundingBox(@Nonnull Direction placedOn) {
+        Validate.notNull(placedOn);
+        this.facingDirection = placedOn;
+        if (placedOn.getAxis().isHorizontal()) {
+            this.rotationPitch = 0.0F;
+            this.rotationYaw = (float) (this.facingDirection.getHorizontalIndex() * 90);
+        } else {
+            this.rotationPitch = (float) (-90 * placedOn.getAxisDirection().getOffset());
+            this.rotationYaw = 0.0F;
+        }
+
+        this.prevRotationPitch = this.rotationPitch;
+        this.prevRotationYaw = this.rotationYaw;
         this.updateBoundingBox();
     }
 
     protected void updateBoundingBox() {
-        if (this.getPlacedOn() != null) {
-            Direction facing = this.getPlacedOn().getOpposite();
-            double xPos = (double) this.getPosition().getX() + 0.5D - (double) facing.getXOffset() * 0.46875D;
-            double yPos = (double) this.getPosition().getY() + 0.5D - (double) facing.getYOffset() * 0.46875D;
-            double zPos = (double) this.getPosition().getZ() + 0.5D - (double) facing.getZOffset() * 0.46875D;
-            this.setRawPosition(xPos, yPos, zPos);
-            double x = 12;
-            double y = 12;
-            double z = 12;
-            Direction.Axis direction$axis = this.getPlacedOn().getAxis();
+        if (this.facingDirection != null) {
+            double d1 = (double) this.hangingPosition.getX() + 0.5D - (double) this.facingDirection.getXOffset() * 0.46875D;
+            double d2 = (double) this.hangingPosition.getY() + 0.5D - (double) this.facingDirection.getYOffset() * 0.46875D;
+            double d3 = (double) this.hangingPosition.getZ() + 0.5D - (double) this.facingDirection.getZOffset() * 0.46875D;
+            this.setRawPosition(d1, d2, d3);
+            double d4 = this.getWidthPixels();
+            double d5 = this.getHeightPixels();
+            double d6 = this.getWidthPixels();
+            Direction.Axis direction$axis = this.facingDirection.getAxis();
             switch (direction$axis) {
                 case X:
-                    x = 1.0D;
+                    d4 = 1.0D;
                     break;
                 case Y:
-                    y = 1.0D;
+                    d5 = 1.0D;
                     break;
                 case Z:
-                    z = 1.0D;
+                    d6 = 1.0D;
             }
 
-            x = x / 32.0D;
-            y = y / 32.0D;
-            z = z / 32.0D;
-            this.setBoundingBox(new AxisAlignedBB(xPos - x, yPos - y, zPos - z, xPos + x, yPos + y, zPos + z));
+            d4 = d4 / 32.0D;
+            d5 = d5 / 32.0D;
+            d6 = d6 / 32.0D;
+            this.setBoundingBox(new AxisAlignedBB(d1 - d4, d2 - d5, d3 - d6, d1 + d4, d2 + d5, d3 + d6));
         }
     }
 
@@ -119,13 +131,13 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
 
     @Override
     protected void registerData() {
+        super.registerData();
         this.getDataManager().register(RECIPE_NAME, "");
-        this.getDataManager().register(PLACED_ON, Direction.DOWN);
     }
 
     @Override
-    protected void readAdditional(@Nonnull CompoundNBT compound) {
-        this.setPlacedOn(Direction.byName(compound.getString("placedOn")));
+    public void readAdditional(@Nonnull CompoundNBT compound) {
+        super.readAdditional(compound);
         this.setRecipeName(compound.getString("recipeName"));
         this.startTime = compound.getLong("startTime");
         this.modifiedTime = compound.getInt("modifiedTime");
@@ -133,8 +145,8 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     }
 
     @Override
-    protected void writeAdditional(@Nonnull CompoundNBT compound) {
-        compound.putString("placedOn", this.getPlacedOn().getString());
+    public void writeAdditional(@Nonnull CompoundNBT compound) {
+        super.writeAdditional(compound);
         compound.putString("recipeName", this.getRecipeName());
         compound.putLong("startTime", this.startTime);
         compound.putInt("modifiedTime", this.modifiedTime);
@@ -145,25 +157,6 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     @Nonnull
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    public void setPlacedOn(Direction direction) {
-        this.getDataManager().set(PLACED_ON, direction);
-        if (direction.getAxis().isHorizontal()) {
-            this.rotationPitch = 0.0F;
-            this.rotationYaw = (float)(direction.getHorizontalIndex() * 90);
-        } else {
-            this.rotationPitch = (float)(-90 * direction.getAxisDirection().getOffset());
-            this.rotationYaw = 0.0F;
-        }
-
-        this.prevRotationPitch = this.rotationPitch;
-        this.prevRotationYaw = this.rotationYaw;
-        this.updateBoundingBox();
-    }
-
-    public Direction getPlacedOn() {
-        return this.getDataManager().get(PLACED_ON);
     }
 
     public void setRecipeName(String recipeName) {
@@ -218,6 +211,39 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
             return ItemStack.EMPTY;
         } else {
             return this.itemStack;
+        }
+    }
+
+    @Override
+    public int getHeightPixels() {
+        return 8;
+    }
+
+    @Override
+    public int getWidthPixels() {
+        return 8;
+    }
+
+    @Override
+    public void playPlaceSound() {
+
+    }
+
+    @Override
+    public void onBroken(@Nullable Entity brokenEntity) {
+
+    }
+
+    public boolean onValidSurface() {
+        if (!this.world.hasNoCollisions(this)) {
+            return false;
+        } else {
+            T recipe = this.getRecipe();
+            if (recipe != null) {
+                return recipe.matches(this.getTransfigurationContainer(), this.getEntityWorld());
+            } else {
+                return false;
+            }
         }
     }
 }

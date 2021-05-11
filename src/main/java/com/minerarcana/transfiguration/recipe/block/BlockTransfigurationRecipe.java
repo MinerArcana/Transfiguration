@@ -26,9 +26,8 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockIngre
     @Override
     public ActionResultType transfigure(TransfigurationContainer<BlockState> transfigurationContainer, double powerModifier) {
         BlockTransfiguringEntity transfiguringEntity = new BlockTransfiguringEntity(transfigurationContainer.getWorld(),
+                transfigurationContainer.getTargetedPos().offset(transfigurationContainer.getOnSide()),
                 transfigurationContainer.getOnSide().getOpposite(), this, this.getTicks(), powerModifier);
-        transfiguringEntity.setPosition(transfigurationContainer.getTargetedPos().offset(
-                transfigurationContainer.getOnSide()));
         transfigurationContainer.getWorld().addEntity(transfiguringEntity);
         return ActionResultType.SUCCESS;
     }

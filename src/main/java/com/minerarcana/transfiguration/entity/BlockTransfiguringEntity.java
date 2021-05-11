@@ -8,25 +8,27 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigurationRecipe, BlockIngredient, BlockState> {
-    public BlockTransfiguringEntity(EntityType<?> entityType, World world) {
+    public BlockTransfiguringEntity(EntityType<? extends TransfiguringEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    public BlockTransfiguringEntity(World world, Direction placedOn, BlockTransfigurationRecipe recipe, int modifiedTime, double powerModifier) {
-        super(TransfigurationEntities.BLOCK_TRANSFIGURING.get(), world, placedOn, recipe, modifiedTime, powerModifier);
+    public BlockTransfiguringEntity(World world, BlockPos blockPos, Direction placedOn, BlockTransfigurationRecipe recipe, int modifiedTime, double powerModifier) {
+        super(TransfigurationEntities.BLOCK_TRANSFIGURING.get(), world, blockPos, placedOn, recipe, modifiedTime,
+                powerModifier);
     }
 
     @Nonnull
     @Override
     public TransfigurationContainer<BlockState> createTransfigurationContainer() {
-        return TransfigurationContainer.block(world, this.getPosition().offset(Direction.DOWN), this.getPlacedOn(),
-                this.getCaster());
+        return TransfigurationContainer.block(world, this.getPosition().offset(facingDirection),
+                this.facingDirection, this.getCaster());
     }
 
     @Nullable
