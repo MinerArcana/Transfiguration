@@ -20,6 +20,7 @@ import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.storage.MapData;
@@ -41,28 +42,22 @@ public class TransfiguringEntityRenderer<T extends TransfiguringEntity<?, ?, ?>>
                        int packedLight) {
         super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
         matrixStack.push();
-        Direction direction = entity.getHorizontalFacing();
-        Vector3d vector3d = this.getRenderOffset(entity, partialTicks);
-        matrixStack.translate(-vector3d.getX(), -vector3d.getY(), -vector3d.getZ());
-        matrixStack.translate((double) direction.getXOffset() * 0.46875D, (double) direction.getYOffset() * 0.46875D, (double) direction.getZOffset() * 0.46875D);
-        matrixStack.rotate(Vector3f.XP.rotationDegrees(entity.rotationPitch));
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(180.0F - entity.rotationYaw));
 
         ItemStack itemstack = entity.getItem();
         if (!itemstack.isEmpty()) {
-            //matrixStack.translate(0.0D, -0.475D, 0D);
-            matrixStack.scale(0.75F, 0.75F, 0.75F);
+            matrixStack.translate(0.0D, -0.475D, 0D);
+            switch (entity.getPlacement()) {
+                case DOWN:
+                    matrixStack.rotate(new Quaternion(90, 0, 0, true));
+                    matrixStack.translate(0.5, 0.5, -0.5);
+                    break;
+                default:
+            }
+            //matrixStack.scale(0.75F, 0.75F, 0.75F);
             this.itemRenderer.renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLight, OverlayTexture.NO_OVERLAY, matrixStack, buffer);
         }
 
         matrixStack.pop();
-    }
-
-    @Override
-    @Nonnull
-    public Vector3d getRenderOffset(T entityIn, float partialTicks) {
-        return new Vector3d((float) entityIn.getHorizontalFacing().getXOffset() * 0.3F, -0.25D,
-                (float) entityIn.getHorizontalFacing().getZOffset() * 0.3F);
     }
 
     @Override

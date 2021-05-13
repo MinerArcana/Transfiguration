@@ -8,29 +8,30 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.HangingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.common.util.NonNullPredicate;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
-import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>, U extends NonNullPredicate<V>, V>
-        extends HangingEntity implements IRendersAsItem {
-    private static final DataParameter<String> RECIPE_NAME = EntityDataManager.createKey(TransfiguringEntity.class,
-            DataSerializers.STRING);
+        extends Entity implements IRendersAsItem, IEntityAdditionalSpawnData {
+    private static final DataParameter<String> RECIPE_NAME = EntityDataManager.createKey(
+            TransfiguringEntity.class,
+            DataSerializers.STRING
+    );
 
     private final NonNullLazy<Integer> offset;
 
@@ -41,17 +42,20 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     private int noRecipeTicks;
     private ResultHandler resultHandler;
     private ItemStack itemStack;
+    private TransfigurationPlacement placement;
     private TransfigurationContainer<V> transfigurationContainer;
+    private UUID caster;
 
-    public TransfiguringEntity(EntityType<? extends HangingEntity> entityType, World world) {
+    public TransfiguringEntity(EntityType<? extends Entity> entityType, World world) {
         super(entityType, world);
         this.offset = NonNullLazy.of(() -> this.getEntityWorld().getRandom().nextInt(20));
     }
 
-    public TransfiguringEntity(EntityType<? extends HangingEntity> entityType, World world, BlockPos blockPos,
-                               Direction placedOn, T recipe, int modifiedTime, double powerModifier) {
-        super(entityType, world, blockPos);
-        this.updateFacingWithBoundingBox(placedOn);
+    public TransfiguringEntity(EntityType<? extends Entity> entityType, World world, BlockPos blockPos,
+                               TransfigurationPlacement placedOn, T recipe, int modifiedTime, double powerModifier) {
+        super(entityType, world);
+        this.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        this.setPlacement(placedOn);
         this.startTime = world.getGameTime();
         this.recipe = recipe;
         this.setRecipeName(recipe.getId().toString());
@@ -60,49 +64,9 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
         this.offset = NonNullLazy.of(() -> this.getEntityWorld().getRandom().nextInt(20));
     }
 
-    @Override
-    protected void updateFacingWithBoundingBox(@Nonnull Direction placedOn) {
-        Validate.notNull(placedOn);
-        this.facingDirection = placedOn;
-        if (placedOn.getAxis().isHorizontal()) {
-            this.rotationPitch = 0.0F;
-            this.rotationYaw = (float) (this.facingDirection.getHorizontalIndex() * 90);
-        } else {
-            this.rotationPitch = (float) (-90 * placedOn.getAxisDirection().getOffset());
-            this.rotationYaw = 0.0F;
-        }
-
-        this.prevRotationPitch = this.rotationPitch;
-        this.prevRotationYaw = this.rotationYaw;
-        this.updateBoundingBox();
-    }
-
-    protected void updateBoundingBox() {
-        if (this.facingDirection != null) {
-            double d1 = (double) this.hangingPosition.getX() + 0.5D - (double) this.facingDirection.getXOffset() * 0.46875D;
-            double d2 = (double) this.hangingPosition.getY() + 0.5D - (double) this.facingDirection.getYOffset() * 0.46875D;
-            double d3 = (double) this.hangingPosition.getZ() + 0.5D - (double) this.facingDirection.getZOffset() * 0.46875D;
-            this.setRawPosition(d1, d2, d3);
-            double d4 = this.getWidthPixels();
-            double d5 = this.getHeightPixels();
-            double d6 = this.getWidthPixels();
-            Direction.Axis direction$axis = this.facingDirection.getAxis();
-            switch (direction$axis) {
-                case X:
-                    d4 = 1.0D;
-                    break;
-                case Y:
-                    d5 = 1.0D;
-                    break;
-                case Z:
-                    d6 = 1.0D;
-            }
-
-            d4 = d4 / 32.0D;
-            d5 = d5 / 32.0D;
-            d6 = d6 / 32.0D;
-            this.setBoundingBox(new AxisAlignedBB(d1 - d4, d2 - d5, d3 - d6, d1 + d4, d2 + d5, d3 + d6));
-        }
+    protected void setPlacement(TransfigurationPlacement placedOn) {
+        this.placement = placedOn;
+        this.setBoundingBox(this.placement.getBoundingBox(this.getPosition()));
     }
 
     @Override
@@ -131,26 +95,25 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
 
     @Override
     protected void registerData() {
-        super.registerData();
         this.getDataManager().register(RECIPE_NAME, "");
     }
 
     @Override
     public void readAdditional(@Nonnull CompoundNBT compound) {
-        super.readAdditional(compound);
         this.setRecipeName(compound.getString("recipeName"));
         this.startTime = compound.getLong("startTime");
         this.modifiedTime = compound.getInt("modifiedTime");
         this.powerModifier = compound.getDouble("powerModifier");
+        this.placement = TransfigurationPlacement.fromString(compound.getString("placement"));
     }
 
     @Override
     public void writeAdditional(@Nonnull CompoundNBT compound) {
-        super.writeAdditional(compound);
         compound.putString("recipeName", this.getRecipeName());
         compound.putLong("startTime", this.startTime);
         compound.putInt("modifiedTime", this.modifiedTime);
         compound.putDouble("powerModifier", this.powerModifier);
+        compound.putString("placement", this.placement.name());
     }
 
     @Override
@@ -215,35 +178,16 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     }
 
     @Override
-    public int getHeightPixels() {
-        return 8;
+    public void writeSpawnData(PacketBuffer packetBuffer) {
+        packetBuffer.writeEnumValue(placement);
     }
 
     @Override
-    public int getWidthPixels() {
-        return 8;
+    public void readSpawnData(PacketBuffer additionalData) {
+        this.setPlacement(additionalData.readEnumValue(TransfigurationPlacement.class));
     }
 
-    @Override
-    public void playPlaceSound() {
-
-    }
-
-    @Override
-    public void onBroken(@Nullable Entity brokenEntity) {
-
-    }
-
-    public boolean onValidSurface() {
-        if (!this.world.hasNoCollisions(this)) {
-            return false;
-        } else {
-            T recipe = this.getRecipe();
-            if (recipe != null) {
-                return recipe.matches(this.getTransfigurationContainer(), this.getEntityWorld());
-            } else {
-                return false;
-            }
-        }
+    public TransfigurationPlacement getPlacement() {
+        return this.placement;
     }
 }

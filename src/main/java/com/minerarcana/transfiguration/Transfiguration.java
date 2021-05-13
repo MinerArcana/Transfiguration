@@ -1,11 +1,13 @@
 package com.minerarcana.transfiguration;
 
 import com.minerarcana.transfiguration.compat.cctweaked.CCTweaked;
-import com.minerarcana.transfiguration.content.*;
+import com.minerarcana.transfiguration.content.TransfigurationAdditionalData;
+import com.minerarcana.transfiguration.content.TransfigurationEntities;
+import com.minerarcana.transfiguration.content.TransfigurationRecipes;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
-import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityTypeEntityIngredient;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import com.tterrag.registrate.Registrate;
@@ -62,7 +64,6 @@ public class Transfiguration {
         TransfigurationEntities.setup();
 
         modEventBus.addListener(this::handleClient);
-
         CCTweaked.setup();
     }
 

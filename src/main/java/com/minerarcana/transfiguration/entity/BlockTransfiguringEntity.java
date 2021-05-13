@@ -20,15 +20,19 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
     }
 
     public BlockTransfiguringEntity(World world, BlockPos blockPos, Direction placedOn, BlockTransfigurationRecipe recipe, int modifiedTime, double powerModifier) {
-        super(TransfigurationEntities.BLOCK_TRANSFIGURING.get(), world, blockPos, placedOn, recipe, modifiedTime,
-                powerModifier);
+        super(TransfigurationEntities.BLOCK_TRANSFIGURING.get(), world, blockPos,
+                TransfigurationPlacement.fromDirection(placedOn), recipe, modifiedTime, powerModifier);
     }
 
     @Nonnull
     @Override
     public TransfigurationContainer<BlockState> createTransfigurationContainer() {
-        return TransfigurationContainer.block(world, this.getPosition().offset(facingDirection),
-                this.facingDirection, this.getCaster());
+        return TransfigurationContainer.block(
+                world,
+                this.getPosition().offset(this.getPlacement().getDirection()),
+                this.getPlacement().getDirection(),
+                this.getCaster()
+        );
     }
 
     @Nullable
