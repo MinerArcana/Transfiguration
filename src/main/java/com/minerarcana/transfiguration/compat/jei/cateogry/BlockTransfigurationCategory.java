@@ -3,15 +3,13 @@ package com.minerarcana.transfiguration.compat.jei.cateogry;
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.compat.jei.TransfigurationJEIPlugin;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
-import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -77,6 +75,10 @@ public class BlockTransfigurationCategory implements IRecipeCategory<BlockTransf
                 TransfigurationJEIPlugin.BLOCK_INGREDIENT_TYPE,
                 blockTransfigurationRecipe.getIngredient().getMatching()
         );
+        iIngredients.setOutput(
+                VanillaTypes.ITEM,
+                blockTransfigurationRecipe.getRecipeOutput()
+        );
     }
 
     @Override
@@ -84,5 +86,10 @@ public class BlockTransfigurationCategory implements IRecipeCategory<BlockTransf
     public void setRecipe(IRecipeLayout iRecipeLayout, BlockTransfigurationRecipe blockTransfigurationRecipe, IIngredients iIngredients) {
         iRecipeLayout.getIngredientsGroup(TransfigurationJEIPlugin.BLOCK_INGREDIENT_TYPE)
                 .init(0, true, 0, 8);
+        iRecipeLayout.getIngredientsGroup(TransfigurationJEIPlugin.BLOCK_INGREDIENT_TYPE)
+                .set(iIngredients);
+
+        iRecipeLayout.getItemStacks().init(1, false, 0, 8);
+        iRecipeLayout.getItemStacks().set(iIngredients);
     }
 }

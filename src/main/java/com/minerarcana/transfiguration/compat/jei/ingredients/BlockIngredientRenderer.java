@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.model.data.EmptyModelData;
@@ -19,17 +20,20 @@ import java.util.List;
 public class BlockIngredientRenderer implements IIngredientRenderer<BlockState> {
     @Override
     @ParametersAreNonnullByDefault
-    public void render(MatrixStack matrixStack, int i, int i1, @Nullable BlockState blockState) {
+    public void render(MatrixStack matrixStack, int xPosition, int yPosition, @Nullable BlockState blockState) {
         if (blockState != null) {
+            matrixStack.push();
+            matrixStack.rotate(new Quaternion(22.5F, 67.5F, 0,true));
             Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(
                     blockState,
                     matrixStack,
                     Minecraft.getInstance().getRenderTypeBuffers()
                             .getBufferSource(),
-                    0,
+                    0xF000F0,
                     OverlayTexture.NO_OVERLAY,
                     EmptyModelData.INSTANCE
             );
+            matrixStack.pop();
         }
     }
 
