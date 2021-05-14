@@ -39,6 +39,10 @@ repositories {
         name = "CC:Tweaked"
         url = "https://squiddev.cc/maven/"
     }
+    maven {
+        name = "JEI"
+        url = "https://dvs1.progwml6.com/files/maven"
+    }
 }
 
 test {
@@ -108,6 +112,9 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     implementation fg.deobf("org.squiddev:cc-tweaked-1.16.3:${cctweaked_version}")
+
+    compileOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}")
 
     def registrate = "com.tterrag.registrate:Registrate:MC${minecraft_version}-${registrate_version}"
     implementation fg.deobf(registrate)

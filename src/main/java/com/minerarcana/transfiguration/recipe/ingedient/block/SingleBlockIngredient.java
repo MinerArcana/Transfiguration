@@ -3,10 +3,9 @@ package com.minerarcana.transfiguration.recipe.ingedient.block;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class SingleBlockIngredient extends BlockIngredient {
     private final Block block;
@@ -28,6 +27,11 @@ public class SingleBlockIngredient extends BlockIngredient {
     @Override
     public BlockIngredientSerializer<? extends BlockIngredient> getSerializer() {
         return TransfigurationRecipes.SINGLE_BLOCK_INGREDIENT_SERIALIZER.get();
+    }
+
+    @Override
+    public List<BlockState> getMatching() {
+        return block.getStateContainer().getValidStates();
     }
 
     public static SingleBlockIngredient create(@Nonnull Block block) {

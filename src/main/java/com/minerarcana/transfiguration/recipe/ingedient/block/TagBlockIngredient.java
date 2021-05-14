@@ -8,7 +8,9 @@ import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class TagBlockIngredient extends BlockIngredient {
     private final ITag<Block> tag;
@@ -31,6 +33,15 @@ public class TagBlockIngredient extends BlockIngredient {
     @Nonnull
     public BlockIngredientSerializer<?> getSerializer() {
         return TransfigurationRecipes.TAG_BLOCK_INGREDIENT_SERIALIZER.get();
+    }
+
+    @Override
+    public List<BlockState> getMatching() {
+        return this.tag.getAllElements()
+                .stream()
+                .map(block -> block.getStateContainer().getValidStates())
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
     }
 
     public static TagBlockIngredient create(String name) {
