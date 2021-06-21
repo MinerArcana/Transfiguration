@@ -8,5 +8,6 @@
   "result": {
     "type": "transfiguration:blockstate",
     "block": "minecraft:coarse_dirt"
-  }
+  },
+  "ticks": 12
 }

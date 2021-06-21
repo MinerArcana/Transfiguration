@@ -121,6 +121,11 @@ public class TransfigurationAdditionalData {
                 .withIngredient(IngredientBuilder.block(Blocks.FIRE))
                 .withResult(ResultBuilder.block(Blocks.SOUL_FIRE))
                 .build(recipeProvider);
+
+        TransfigurationRecipeBuilder.block(TransfigurationTypes.NETHERI.get())
+                .withIngredient(IngredientBuilder.block(Blocks.STONE_BRICKS))
+                .withResult(ResultBuilder.block(Blocks.NETHER_BRICKS))
+                .build(recipeProvider);
         //endregion
 
         //region Overni

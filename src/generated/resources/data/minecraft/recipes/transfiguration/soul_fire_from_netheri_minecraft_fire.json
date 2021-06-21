@@ -8,5 +8,6 @@
   "result": {
     "type": "transfiguration:blockstate",
     "block": "minecraft:soul_fire"
-  }
+  },
+  "ticks": 12
 }

@@ -8,5 +8,6 @@
   "result": {
     "type": "transfiguration:entity",
     "entity": "minecraft:horse"
-  }
+  },
+  "ticks": 12
 }

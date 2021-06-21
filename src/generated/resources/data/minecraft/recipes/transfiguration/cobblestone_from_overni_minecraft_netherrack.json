@@ -8,5 +8,6 @@
   "result": {
     "type": "transfiguration:blockstate",
     "block": "minecraft:cobblestone"
-  }
+  },
+  "ticks": 12
 }

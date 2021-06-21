@@ -36,7 +36,6 @@ public class TransfigurationEntities {
                     .renderer(() -> renderManager -> new TransfiguringEntityRenderer<>(renderManager,
                             Minecraft.getInstance().getItemRenderer()))
                     .properties(properties -> properties.immuneToFire().size(0.5F, 0.1F))
-                    .loot((lootTables, entityType) -> lootTables.registerLootTable(entityType, LootTable.builder()))
                     .register();
 
     public static void setup() {

@@ -8,5 +8,6 @@
   "result": {
     "type": "transfiguration:entity",
     "entity": "minecraft:strider"
-  }
+  },
+  "ticks": 12
 }

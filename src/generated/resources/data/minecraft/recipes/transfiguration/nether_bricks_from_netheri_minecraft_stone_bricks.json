@@ -1,13 +1,13 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:accursed",
+  "transfigurationType": "transfiguration:netheri",
   "ingredient": {
     "type": "transfiguration:block",
-    "block": "minecraft:dirt"
+    "block": "minecraft:stone_bricks"
   },
   "result": {
     "type": "transfiguration:blockstate",
-    "block": "minecraft:coarse_dirt"
+    "block": "minecraft:nether_bricks"
   },
   "ticks": 12
 }

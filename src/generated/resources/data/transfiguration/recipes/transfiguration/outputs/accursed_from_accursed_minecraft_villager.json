@@ -8,5 +8,6 @@
   "result": {
     "type": "transfiguration:entity_tag",
     "tag": "transfiguration:outputs/accursed"
-  }
+  },
+  "ticks": 12
 }

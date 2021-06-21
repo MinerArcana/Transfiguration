@@ -1,4 +1,5 @@
 {
+  "entity.transfiguration.block_transfiguring": "Transfiguration",
   "entity.transfiguration.transfiguring_projectile": "Transfiguring Projectile",
   "item.transfiguration.accursed_catalyst": "%s Catalyst",
   "item.transfiguration.accursed_dust": "%s Dust",

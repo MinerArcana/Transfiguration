@@ -8,5 +8,6 @@
   "result": {
     "type": "transfiguration:entity",
     "entity": "minecraft:hoglin"
-  }
+  },
+  "ticks": 12
 }
