@@ -52,7 +52,6 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
 
     public ItemBuilder<TransfiguringWandItem, TransfigurationTypeBuilder<T, P>> wand() {
         return this.item("wand", TransfiguringWandItem::new)
-                .properties(properties -> properties.maxStackSize(1))
                 .properties(properties -> properties.maxDamage(256))
                 .model((context, provider) -> provider.generated(context, provider.modLoc("item/wand"),
                         provider.modLoc("item/wand_overlay")))

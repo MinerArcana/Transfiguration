@@ -56,4 +56,9 @@ public class TransfiguringWandItem extends TransfiguringItem {
     public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
         itemStack.damageItem(1, livingEntity, entity -> entity.sendBreakAnimation(hand));
     }
+
+    @Override
+    public int getItemEnchantability() {
+        return 22;
+    }
 }
