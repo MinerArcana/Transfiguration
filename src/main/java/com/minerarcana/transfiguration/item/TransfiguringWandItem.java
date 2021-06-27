@@ -6,6 +6,7 @@ import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTier;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -59,6 +60,6 @@ public class TransfiguringWandItem extends TransfiguringItem {
 
     @Override
     public int getItemEnchantability() {
-        return 22;
+        return ItemTier.GOLD.getEnchantability();
     }
 }
