@@ -31,9 +31,13 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class TransfiguringEntityRenderer<T extends TransfiguringEntity<?, ?, ?>> extends EntityRenderer<T> {
     private final ItemRenderer itemRenderer;
 
-    public TransfiguringEntityRenderer(EntityRendererManager rendererManager, ItemRenderer itemRenderer) {
+    public TransfiguringEntityRenderer(EntityRendererManager rendererManager) {
+        this(rendererManager, Minecraft.getInstance().getItemRenderer());
+    }
+
+    public TransfiguringEntityRenderer(EntityRendererManager rendererManager, ItemRenderer renderer) {
         super(rendererManager);
-        this.itemRenderer = itemRenderer;
+        this.itemRenderer = renderer;
     }
 
     @Override
