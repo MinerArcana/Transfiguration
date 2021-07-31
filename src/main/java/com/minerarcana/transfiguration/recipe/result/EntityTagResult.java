@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.recipe.result;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ITag;
@@ -16,16 +17,20 @@ public class EntityTagResult extends Result {
         this.tag = tag;
     }
 
-    @Override
-    @Nonnull
-    public ActionResultType handle(@Nonnull TransfigurationContainer<?> transfigurationContainer) {
+    public void handle(@Nonnull TransfigurationContainer<?> transfigurationContainer, double powerModifier) {
         EntityType<?> entityType = tag.getRandomElement(transfigurationContainer.getWorld().rand);
-        return EntityResult.summon(transfigurationContainer, entityType);
+        EntityResult.summon(transfigurationContainer, entityType);
+    }
+
+    @Nonnull
+    @Override
+    public ResultInstance create() {
+        return new AfterDoneResultInstance(1, this::handle);
     }
 
     @Override
     @Nonnull
-    public ItemStack getOutputRepresentation() {
+    public ItemStack getRepresentation() {
         return ItemStack.EMPTY;
     }
 

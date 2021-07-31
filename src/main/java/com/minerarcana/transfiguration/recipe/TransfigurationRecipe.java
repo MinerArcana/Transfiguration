@@ -1,19 +1,17 @@
 package com.minerarcana.transfiguration.recipe;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.recipe.result.Result;
-import com.minerarcana.transfiguration.recipe.resulthandler.ResultHandler;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.NonNullPredicate;
 
 import javax.annotation.Nonnull;
 
-public abstract class TransfigurationRecipe<T extends NonNullPredicate<U>, U> implements IRecipe<TransfigurationContainer<U>> {
+public abstract class TransfigurationRecipe<T extends NonNullPredicate<U>, U> implements ITransfigurationRecipe<U> {
     private final ResourceLocation recipeId;
     private final TransfigurationType transfigurationType;
     private final T ingredient;
@@ -37,18 +35,18 @@ public abstract class TransfigurationRecipe<T extends NonNullPredicate<U>, U> im
     @Override
     @Nonnull
     public ItemStack getCraftingResult(@Nonnull TransfigurationContainer<U> transfigurationContainer) {
-        return ItemStack.EMPTY;
+        return result.getRepresentation().copy();
     }
 
     @Override
     public boolean canFit(int width, int height) {
-        return true;
+        return false;
     }
 
     @Override
     @Nonnull
     public ItemStack getRecipeOutput() {
-        return result.getOutputRepresentation();
+        return result.getRepresentation();
     }
 
     @Override
@@ -62,9 +60,7 @@ public abstract class TransfigurationRecipe<T extends NonNullPredicate<U>, U> im
         return true;
     }
 
-    public abstract ActionResultType transfigure(TransfigurationContainer<U> transfigurationContainer, double powerModifier);
-
-    public abstract ResultHandler createResultHandler();
+    public abstract boolean transfigure(TransfigurationContainer<U> transfigurationContainer, double powerModifier);
 
     public TransfigurationType getTransfigurationType() {
         return transfigurationType;

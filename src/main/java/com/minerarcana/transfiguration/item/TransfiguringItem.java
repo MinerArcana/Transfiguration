@@ -1,8 +1,8 @@
 package com.minerarcana.transfiguration.item;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.event.TransfigurationEvent;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,7 +27,7 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
     @Nonnull
     public ActionResultType onItemUse(@Nonnull ItemUseContext context) {
         TransfigurationContainer<BlockState> blockTransfigurationContainer = TransfigurationContainer.block(
-                context.getWorld(), context.getPos(), context.getFace(), context.getPlayer());
+                context.getWorld(), context.getPos(), context.getPlayer());
         TransfigurationEvent transfigurationEvent = new TransfigurationEvent(blockTransfigurationContainer,
                 this.getTimeModifier(), this.getPowerModifier());
         MinecraftForge.EVENT_BUS.post(transfigurationEvent);

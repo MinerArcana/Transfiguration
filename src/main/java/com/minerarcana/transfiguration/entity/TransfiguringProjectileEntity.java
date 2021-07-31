@@ -47,21 +47,9 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
     @Override
     protected void func_230299_a_(@Nonnull BlockRayTraceResult blockRayTraceResult) {
         TransfigurationType type = this.getTransfigurationType();
-        if (type != null) {
-            BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
-            blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
-            TransfigurationContainer<BlockState> container = TransfigurationContainer.block(world,
-                    blockRayTraceResult.getPos(), blockRayTraceResult.getFace(), this.getCaster());
-            Optional<ITransfigurationRecipe<BlockState>> recipeOptional = world.getRecipeManager().getRecipe(type.getBlockRecipeType(), container, world);
-            if (!recipeOptional.isPresent()) {
-                Iterator<Supplier<TransfigurationType>> supplierIterator = type.getIncludedTypes().iterator();
-                while (!recipeOptional.isPresent() && supplierIterator.hasNext()) {
-                    recipeOptional = world.getRecipeManager()
-                            .getRecipe(supplierIterator.next().get().getBlockRecipeType(), container, world);
-                }
-            }
-            recipeOptional.ifPresent(recipe -> recipe.transfigure(container, 1.0F));
-        }
+        BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
+        blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
+        BlockTransfigurationRecipe.tryTransfigure(type, blockRayTraceResult, this.getEntityWorld(), this.func_234616_v_());
     }
 
     @Override
@@ -69,7 +57,7 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
         TransfigurationType type = this.getTransfigurationType();
         if (type != null) {
             TransfigurationContainer<Entity> container = TransfigurationContainer.entity(entityRayTraceResult.getEntity(),
-                    this.getCaster());
+                    this.func_234616_v_());
             world.getRecipeManager()
                     .getRecipe(type.getEntityRecipeType(), container, world)
                     .ifPresent(recipe -> recipe.transfigure(container, 1.0));
@@ -82,11 +70,6 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
             return ((ITransfiguring) itemStack.getItem()).getType(itemStack);
         }
         return null;
-    }
-
-    @Nullable
-    public LivingEntity getCaster() {
-        return this.func_234616_v_() instanceof LivingEntity ? (LivingEntity) this.func_234616_v_() : null;
     }
 
     @Override
