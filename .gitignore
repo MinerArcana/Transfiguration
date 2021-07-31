@@ -26,3 +26,6 @@ hs_err_pid*
 /run
 /build
 /.gradle
+
+# Not covered by normal Global gitignore, but not really worthwhile to Forge projects
+.idea/
