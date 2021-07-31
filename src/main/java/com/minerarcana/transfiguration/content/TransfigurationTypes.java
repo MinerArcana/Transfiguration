@@ -2,7 +2,7 @@ package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.registrate.TransfigurationTypeBuilder;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -28,6 +28,7 @@ public class TransfigurationTypes {
             .object("accursed")
             .entry(TRANSFIGURATION_TYPE)
             .lang("Accursed")
+            .includes(TransfigurationTypes.NETHERI)
             .primaryColor(DyeColor.PURPLE.getColorValue())
             .transform(ADD_ITEMS)
             .register();
@@ -36,6 +37,7 @@ public class TransfigurationTypes {
             .object("blessed")
             .entry(TRANSFIGURATION_TYPE)
             .lang("Blessed")
+            .includes(TransfigurationTypes.MUTANDI)
             .primaryColor(DyeColor.YELLOW.getColorValue())
             .transform(ADD_ITEMS)
             .register();

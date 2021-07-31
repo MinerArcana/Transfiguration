@@ -1,8 +1,9 @@
-package com.minerarcana.transfiguration.transfiguring;
+package com.minerarcana.transfiguration.api;
 
-import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
-import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipe;
-import com.minerarcana.transfiguration.util.ResourceLocationHelper;
+import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
+import com.minerarcana.transfiguration.api.util.ResourceLocationHelper;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
@@ -11,19 +12,23 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType> {
     private final int primaryColor;
+    private final List<Supplier<TransfigurationType>> includes;
 
     private ResourceLocation blockRecipeId;
     private ResourceLocation entityRecipeId;
-    private IRecipeType<BlockTransfigurationRecipe> blockRecipeType;
-    private IRecipeType<EntityTransfigurationRecipe> entityRecipeType;
+    private IRecipeType<ITransfigurationRecipe<BlockState>> blockRecipeType;
+    private IRecipeType<ITransfigurationRecipe<Entity>> entityRecipeType;
     private String translationKey;
     private ITextComponent displayName;
 
-    public TransfigurationType(int primaryColor) {
+    public TransfigurationType(int primaryColor, List<Supplier<TransfigurationType>> includes) {
         this.primaryColor = primaryColor;
+        this.includes = includes;
     }
 
     public ResourceLocation getBlockRecipeId() {
@@ -33,7 +38,7 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
         return this.blockRecipeId;
     }
 
-    public IRecipeType<BlockTransfigurationRecipe> getBlockRecipeType() {
+    public IRecipeType<ITransfigurationRecipe<BlockState>> getBlockRecipeType() {
         if (this.blockRecipeType == null) {
             this.blockRecipeType = IRecipeType.register(this.getBlockRecipeId().toString());
         }
@@ -47,7 +52,7 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
         return this.entityRecipeId;
     }
 
-    public IRecipeType<EntityTransfigurationRecipe> getEntityRecipeType() {
+    public IRecipeType<ITransfigurationRecipe<Entity>> getEntityRecipeType() {
         if (this.entityRecipeType == null) {
             this.entityRecipeType = IRecipeType.register(this.getEntityRecipeId().toString());
         }
@@ -72,5 +77,9 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
             this.displayName = new TranslationTextComponent(this.getTranslationKey());
         }
         return this.displayName;
+    }
+
+    public List<Supplier<TransfigurationType>> getIncludedTypes() {
+        return includes;
     }
 }

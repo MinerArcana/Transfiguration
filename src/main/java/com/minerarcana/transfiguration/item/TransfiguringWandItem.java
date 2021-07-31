@@ -2,7 +2,7 @@ package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

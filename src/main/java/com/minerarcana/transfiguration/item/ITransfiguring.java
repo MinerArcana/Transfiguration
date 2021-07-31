@@ -1,6 +1,6 @@
 package com.minerarcana.transfiguration.item;
 
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;

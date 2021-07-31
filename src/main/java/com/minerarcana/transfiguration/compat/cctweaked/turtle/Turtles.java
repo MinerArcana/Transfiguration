@@ -1,7 +1,7 @@
 package com.minerarcana.transfiguration.compat.cctweaked.turtle;
 
 import com.minerarcana.transfiguration.content.TransfigurationTypes;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dan200.computercraft.api.ComputerCraftAPI;
 import net.minecraft.item.Item;

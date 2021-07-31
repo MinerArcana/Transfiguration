@@ -2,7 +2,7 @@ package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.api.event.TransfigurationEvent;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,9 +32,10 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
                 this.getTimeModifier(), this.getPowerModifier());
         MinecraftForge.EVENT_BUS.post(transfigurationEvent);
         ActionResultType resultType = context.getWorld().getRecipeManager().getRecipe(
-                this.getType(context.getItem()).getBlockRecipeType(), blockTransfigurationContainer, context.getWorld())
+                        this.getType(context.getItem()).getBlockRecipeType(), blockTransfigurationContainer, context.getWorld())
                 .map(blockTransfigurationRecipe -> blockTransfigurationRecipe.transfigure(blockTransfigurationContainer,
                         transfigurationEvent.getCurrentPowerModifier()))
+                .map(success -> success ? ActionResultType.func_233537_a_(context.getWorld().isRemote()) : ActionResultType.FAIL)
                 .orElse(ActionResultType.PASS);
         if (resultType.isSuccessOrConsume()) {
             if (context.getPlayer() != null && !context.getPlayer().isCreative()) {

@@ -4,8 +4,8 @@ import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
-import com.minerarcana.transfiguration.util.ResourceLocationHelper;
+import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.api.util.ResourceLocationHelper;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dan200.computercraft.api.client.TransformedModel;
 import dan200.computercraft.api.turtle.*;
@@ -89,11 +89,11 @@ public class TransfiguringTurtleUpgrade implements ITurtleUpgrade {
         TransfigurationContainer<BlockState> blockTransfigurationContainer = TransfigurationContainer.block(
                 turtle.getWorld(), turtle.getPosition().offset(direction), direction, null);
 
-        return turtle.getWorld().getRecipeManager().getRecipe(transfigurationType.get().getBlockRecipeType(),
-                blockTransfigurationContainer, turtle.getWorld())
+        return turtle.getWorld()
+                .getRecipeManager()
+                .getRecipe(transfigurationType.get().getBlockRecipeType(), blockTransfigurationContainer, turtle.getWorld())
                 .map(blockTransfigurationRecipe -> blockTransfigurationRecipe.transfigure(blockTransfigurationContainer, 1.0))
-                .map(actionResultType -> actionResultType.isSuccessOrConsume() ? TurtleCommandResult.success() :
-                        TurtleCommandResult.failure("Failed to Transfigure"))
+                .map(success -> success ? TurtleCommandResult.success() : TurtleCommandResult.failure("Failed to Transfigure"))
                 .orElseGet(() -> TurtleCommandResult.failure("Nothing found to Transfigure"));
     }
 
