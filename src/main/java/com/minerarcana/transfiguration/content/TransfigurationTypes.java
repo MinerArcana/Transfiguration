@@ -28,6 +28,7 @@ public class TransfigurationTypes {
             .object("accursed")
             .entry(TRANSFIGURATION_TYPE)
             .lang("Accursed")
+            .includes(TransfigurationTypes.NETHERI)
             .primaryColor(DyeColor.PURPLE.getColorValue())
             .transform(ADD_ITEMS)
             .register();
@@ -36,6 +37,7 @@ public class TransfigurationTypes {
             .object("blessed")
             .entry(TRANSFIGURATION_TYPE)
             .lang("Blessed")
+            .includes(TransfigurationTypes.MUTANDI)
             .primaryColor(DyeColor.YELLOW.getColorValue())
             .transform(ADD_ITEMS)
             .register();

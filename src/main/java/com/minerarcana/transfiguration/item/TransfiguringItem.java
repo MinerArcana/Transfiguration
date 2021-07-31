@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.api.event.TransfigurationEvent;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;

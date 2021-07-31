@@ -1,5 +1,7 @@
 package com.minerarcana.transfiguration.registrate;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.minerarcana.transfiguration.item.TransfiguringCatalystItem;
 import com.minerarcana.transfiguration.item.TransfiguringDustItem;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
@@ -12,21 +14,32 @@ import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import net.minecraft.item.Item;
 
 import javax.annotation.Nonnull;
-import java.util.function.IntFunction;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extends AbstractBuilder<TransfigurationType, T, P, TransfigurationTypeBuilder<T, P>> {
-    private final IntFunction<T> creator;
+    private final BiFunction<Integer, List<Supplier<TransfigurationType>>, T> creator;
     private int primaryColor = -1;
+    private List<Supplier<TransfigurationType>> includes;
 
     public TransfigurationTypeBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback,
-                                      Class<? super TransfigurationType> registryType, IntFunction<T> creator) {
+                                      Class<? super TransfigurationType> registryType,
+                                      BiFunction<Integer, List<Supplier<TransfigurationType>>, T> creator) {
         super(owner, parent, name, callback, registryType);
         this.creator = creator;
+        this.includes = Lists.newArrayList();
     }
 
     public TransfigurationTypeBuilder<T, P> primaryColor(int primaryColor) {
         this.primaryColor = primaryColor;
+        return this;
+    }
+
+    @SafeVarargs
+    public final TransfigurationTypeBuilder<T, P> includes(Supplier<TransfigurationType>... includes) {
+        this.includes.addAll(Arrays.asList(includes));
         return this;
     }
 
@@ -73,7 +86,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     @Override
     @Nonnull
     protected T createEntry() {
-        return creator.apply(primaryColor);
+        return creator.apply(primaryColor, ImmutableList.copyOf(includes));
     }
 
     public static <P> TransfigurationTypeBuilder<TransfigurationType, P> create(AbstractRegistrate<?> owner, P parent,

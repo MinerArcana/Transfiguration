@@ -11,9 +11,12 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType> {
     private final int primaryColor;
+    private final List<Supplier<TransfigurationType>> includes;
 
     private ResourceLocation blockRecipeId;
     private ResourceLocation entityRecipeId;
@@ -22,8 +25,9 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
     private String translationKey;
     private ITextComponent displayName;
 
-    public TransfigurationType(int primaryColor) {
+    public TransfigurationType(int primaryColor, List<Supplier<TransfigurationType>> includes) {
         this.primaryColor = primaryColor;
+        this.includes = includes;
     }
 
     public ResourceLocation getBlockRecipeId() {
@@ -72,5 +76,9 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
             this.displayName = new TranslationTextComponent(this.getTranslationKey());
         }
         return this.displayName;
+    }
+
+    public List<Supplier<TransfigurationType>> getIncludedTypes() {
+        return includes;
     }
 }
