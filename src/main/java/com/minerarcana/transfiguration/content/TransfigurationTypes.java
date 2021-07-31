@@ -2,7 +2,7 @@ package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.registrate.TransfigurationTypeBuilder;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.entry.RegistryEntry;

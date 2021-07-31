@@ -9,7 +9,7 @@ import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.Minecraft;

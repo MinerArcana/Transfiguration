@@ -5,7 +5,7 @@ import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSer
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;

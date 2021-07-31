@@ -1,15 +1,13 @@
 package com.minerarcana.transfiguration.recipe.entity;
 
 import com.google.gson.JsonObject;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;

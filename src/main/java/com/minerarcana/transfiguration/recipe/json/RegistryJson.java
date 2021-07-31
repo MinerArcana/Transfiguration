@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.minerarcana.transfiguration.Transfiguration;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;

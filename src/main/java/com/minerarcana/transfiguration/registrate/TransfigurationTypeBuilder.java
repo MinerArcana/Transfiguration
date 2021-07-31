@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import com.minerarcana.transfiguration.item.TransfiguringCatalystItem;
 import com.minerarcana.transfiguration.item.TransfiguringDustItem;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;

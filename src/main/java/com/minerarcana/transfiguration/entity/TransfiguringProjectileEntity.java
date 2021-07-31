@@ -1,12 +1,11 @@
 package com.minerarcana.transfiguration.entity;
 
+import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.item.ITransfiguring;
-import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -53,8 +52,7 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
             blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
             TransfigurationContainer<BlockState> container = TransfigurationContainer.block(world,
                     blockRayTraceResult.getPos(), blockRayTraceResult.getFace(), this.getCaster());
-            Optional<BlockTransfigurationRecipe> recipeOptional = world.getRecipeManager()
-                    .getRecipe(type.getBlockRecipeType(), container, world);
+            Optional<ITransfigurationRecipe<BlockState>> recipeOptional = world.getRecipeManager().getRecipe(type.getBlockRecipeType(), container, world);
             if (!recipeOptional.isPresent()) {
                 Iterator<Supplier<TransfigurationType>> supplierIterator = type.getIncludedTypes().iterator();
                 while (!recipeOptional.isPresent() && supplierIterator.hasNext()) {
@@ -72,7 +70,8 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
         if (type != null) {
             TransfigurationContainer<Entity> container = TransfigurationContainer.entity(entityRayTraceResult.getEntity(),
                     this.getCaster());
-            world.getRecipeManager().getRecipe(type.getEntityRecipeType(), container, world)
+            world.getRecipeManager()
+                    .getRecipe(type.getEntityRecipeType(), container, world)
                     .ifPresent(recipe -> recipe.transfigure(container, 1.0));
         }
     }

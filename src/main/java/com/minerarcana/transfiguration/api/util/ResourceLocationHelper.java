@@ -1,4 +1,4 @@
-package com.minerarcana.transfiguration.util;
+package com.minerarcana.transfiguration.api.util;
 
 import net.minecraft.util.ResourceLocation;
 
