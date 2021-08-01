@@ -1,8 +1,8 @@
 package com.minerarcana.transfiguration.item;
 
-import com.minerarcana.transfiguration.api.event.TransfigurationEvent;
-import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,7 +10,6 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
@@ -27,28 +26,16 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
     @Nonnull
     public ActionResultType onItemUse(@Nonnull ItemUseContext context) {
         TransfigurationContainer<BlockState> blockTransfigurationContainer = TransfigurationContainer.block(
-                context.getWorld(), context.getPos(), context.getFace(), context.getPlayer());
-        TransfigurationEvent transfigurationEvent = new TransfigurationEvent(blockTransfigurationContainer,
-                this.getTimeModifier(), this.getPowerModifier());
-        MinecraftForge.EVENT_BUS.post(transfigurationEvent);
-        ActionResultType resultType = context.getWorld().getRecipeManager().getRecipe(
-                        this.getType(context.getItem()).getBlockRecipeType(), blockTransfigurationContainer, context.getWorld())
-                .map(blockTransfigurationRecipe -> blockTransfigurationRecipe.transfigure(blockTransfigurationContainer,
-                        transfigurationEvent.getCurrentPowerModifier()))
-                .map(success -> success ? ActionResultType.func_233537_a_(context.getWorld().isRemote()) : ActionResultType.FAIL)
-                .orElse(ActionResultType.PASS);
-        if (resultType.isSuccessOrConsume()) {
+                context.getWorld(), context.getPos(), context.getPlayer());
+        ItemStack held = context.getItem();
+        boolean transfigured = BlockTransfigurationRecipe.tryTransfigure(this.type.get(), blockTransfigurationContainer,
+                this.getPowerModifier(held), this.getTimeModifier(held));
+        if (transfigured) {
             if (context.getPlayer() != null && !context.getPlayer().isCreative()) {
                 this.afterTransfiguration(context.getItem(), context.getPlayer(), context.getHand());
             }
         }
-        return resultType;
-    }
-
-    public abstract double getTimeModifier();
-
-    public double getPowerModifier() {
-        return 1.0D;
+        return transfigured ? ActionResultType.func_233537_a_(context.getWorld().isRemote()) : ActionResultType.FAIL;
     }
 
     @Override

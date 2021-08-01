@@ -5,8 +5,8 @@ import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -19,9 +19,8 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
         super(entityType, world);
     }
 
-    public BlockTransfiguringEntity(World world, BlockPos blockPos, Direction placedOn, BlockTransfigurationRecipe recipe, int modifiedTime, double powerModifier) {
-        super(TransfigurationEntities.BLOCK_TRANSFIGURING.get(), world, blockPos,
-                TransfigurationPlacement.fromDirection(placedOn), recipe, modifiedTime, powerModifier);
+    public BlockTransfiguringEntity(World world, BlockPos blockPos, BlockTransfigurationRecipe recipe, int modifiedTime, double powerModifier) {
+        super(TransfigurationEntities.BLOCK_TRANSFIGURING.get(), world, blockPos, recipe, modifiedTime, powerModifier);
     }
 
     @Nonnull
@@ -29,8 +28,7 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
     public TransfigurationContainer<BlockState> createTransfigurationContainer() {
         return TransfigurationContainer.block(
                 world,
-                this.getPosition().offset(this.getPlacement().getDirection()),
-                this.getPlacement().getDirection(),
+                this.getPosition(),
                 this.getCaster()
         );
     }
@@ -44,5 +42,10 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
                 .filter(BlockTransfigurationRecipe.class::isInstance)
                 .map(BlockTransfigurationRecipe.class::cast)
                 .orElse(null);
+    }
+
+    @Override
+    public void removeInput() {
+        this.getEntityWorld().setBlockState(this.getPosition(), Blocks.AIR.getDefaultState());
     }
 }

@@ -25,6 +25,16 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
         return itemStack;
     }
 
+    public ItemStack withTypeAndStats(TransfigurationType type, double powerModifier, double timeModifier) {
+        CompoundNBT tag = new CompoundNBT();
+        tag.putString("type", Objects.requireNonNull(type.getRegistryName()).toString());
+        tag.putDouble("power", powerModifier);
+        tag.putDouble("time", timeModifier);
+        ItemStack itemStack = new ItemStack(this);
+        itemStack.setTag(tag);
+        return itemStack;
+    }
+
     public static TransfigurationType getTransfigurationType(ItemStack itemStack) {
         if (itemStack.getTag() != null) {
             String typeName = itemStack.getTag().getString("type");
@@ -47,6 +57,16 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
     @Override
     public TransfigurationType getType(ItemStack itemStack) {
         return getTransfigurationType(itemStack);
+    }
+
+    @Override
+    public double getPowerModifier(ItemStack itemStack) {
+        return itemStack.getTag() != null ? itemStack.getTag().getDouble("power") : 1.0F;
+    }
+
+    @Override
+    public double getTimeModifier(ItemStack itemStack) {
+        return itemStack.getTag() != null ? itemStack.getTag().getDouble("time") : 1.0F;
     }
 
     @Override

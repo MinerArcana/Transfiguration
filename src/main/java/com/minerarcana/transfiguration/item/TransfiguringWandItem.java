@@ -1,8 +1,8 @@
 package com.minerarcana.transfiguration.item;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ public class TransfiguringWandItem extends TransfiguringItem {
     }
 
     @Override
-    public double getTimeModifier() {
+    public double getTimeModifier(ItemStack itemStack) {
         return 0.5;
     }
 

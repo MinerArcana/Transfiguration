@@ -1,11 +1,10 @@
 package com.minerarcana.transfiguration.entity;
 
-import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.item.ITransfiguring;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -20,10 +19,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class TransfiguringProjectileEntity extends ProjectileItemEntity {
     public TransfiguringProjectileEntity(EntityType<? extends ProjectileItemEntity> type, World world) {
@@ -47,21 +42,16 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
     @Override
     protected void func_230299_a_(@Nonnull BlockRayTraceResult blockRayTraceResult) {
         TransfigurationType type = this.getTransfigurationType();
-        if (type != null) {
-            BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
-            blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
-            TransfigurationContainer<BlockState> container = TransfigurationContainer.block(world,
-                    blockRayTraceResult.getPos(), blockRayTraceResult.getFace(), this.getCaster());
-            Optional<ITransfigurationRecipe<BlockState>> recipeOptional = world.getRecipeManager().getRecipe(type.getBlockRecipeType(), container, world);
-            if (!recipeOptional.isPresent()) {
-                Iterator<Supplier<TransfigurationType>> supplierIterator = type.getIncludedTypes().iterator();
-                while (!recipeOptional.isPresent() && supplierIterator.hasNext()) {
-                    recipeOptional = world.getRecipeManager()
-                            .getRecipe(supplierIterator.next().get().getBlockRecipeType(), container, world);
-                }
-            }
-            recipeOptional.ifPresent(recipe -> recipe.transfigure(container, 1.0F));
-        }
+        BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
+        blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
+        BlockTransfigurationRecipe.tryTransfigure(
+                type,
+                blockRayTraceResult,
+                this.getEntityWorld(),
+                this.func_234616_v_(),
+                this.getPowerModifier(),
+                this.getTimeModifier()
+        );
     }
 
     @Override
@@ -69,10 +59,10 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
         TransfigurationType type = this.getTransfigurationType();
         if (type != null) {
             TransfigurationContainer<Entity> container = TransfigurationContainer.entity(entityRayTraceResult.getEntity(),
-                    this.getCaster());
+                    this.func_234616_v_());
             world.getRecipeManager()
                     .getRecipe(type.getEntityRecipeType(), container, world)
-                    .ifPresent(recipe -> recipe.transfigure(container, 1.0));
+                    .ifPresent(recipe -> recipe.transfigure(container, this.getPowerModifier(), this.getTimeModifier()));
         }
     }
 
@@ -84,9 +74,20 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
         return null;
     }
 
-    @Nullable
-    public LivingEntity getCaster() {
-        return this.func_234616_v_() instanceof LivingEntity ? (LivingEntity) this.func_234616_v_() : null;
+    private double getPowerModifier() {
+        ItemStack itemStack = this.getItem();
+        if (itemStack.getItem() instanceof ITransfiguring) {
+            return ((ITransfiguring) itemStack.getItem()).getPowerModifier(itemStack);
+        }
+        return 1.0F;
+    }
+
+    private double getTimeModifier() {
+        ItemStack itemStack = this.getItem();
+        if (itemStack.getItem() instanceof ITransfiguring) {
+            return ((ITransfiguring) itemStack.getItem()).getTimeModifier(itemStack);
+        }
+        return 1.0F;
     }
 
     @Override

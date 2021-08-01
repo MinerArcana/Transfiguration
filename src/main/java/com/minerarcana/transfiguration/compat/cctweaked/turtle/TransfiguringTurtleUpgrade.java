@@ -1,11 +1,12 @@
 package com.minerarcana.transfiguration.compat.cctweaked.turtle;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.api.util.ResourceLocationHelper;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
-import com.minerarcana.transfiguration.api.TransfigurationType;
-import com.minerarcana.transfiguration.api.util.ResourceLocationHelper;
+import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dan200.computercraft.api.client.TransformedModel;
 import dan200.computercraft.api.turtle.*;
@@ -87,14 +88,10 @@ public class TransfiguringTurtleUpgrade implements ITurtleUpgrade {
     @Nonnull
     private TurtleCommandResult dig(@Nonnull ITurtleAccess turtle, @Nonnull Direction direction) {
         TransfigurationContainer<BlockState> blockTransfigurationContainer = TransfigurationContainer.block(
-                turtle.getWorld(), turtle.getPosition().offset(direction), direction, null);
+                turtle.getWorld(), turtle.getPosition().offset(direction), null);
 
-        return turtle.getWorld()
-                .getRecipeManager()
-                .getRecipe(transfigurationType.get().getBlockRecipeType(), blockTransfigurationContainer, turtle.getWorld())
-                .map(blockTransfigurationRecipe -> blockTransfigurationRecipe.transfigure(blockTransfigurationContainer, 1.0))
-                .map(success -> success ? TurtleCommandResult.success() : TurtleCommandResult.failure("Failed to Transfigure"))
-                .orElseGet(() -> TurtleCommandResult.failure("Nothing found to Transfigure"));
+        return BlockTransfigurationRecipe.tryTransfigure(this.transfigurationType.get(), blockTransfigurationContainer, 1.0, 1.0) ?
+                TurtleCommandResult.success() : TurtleCommandResult.failure();
     }
 
     @Nonnull

@@ -1,5 +1,6 @@
 {
   "entity.transfiguration.block_transfiguring": "Transfiguration",
+  "entity.transfiguration.transfiguring_area_effect": "Transfiguring",
   "entity.transfiguration.transfiguring_projectile": "Transfiguring Projectile",
   "item.transfiguration.accursed_catalyst": "%s Catalyst",
   "item.transfiguration.accursed_dust": "%s Dust",
@@ -25,9 +26,6 @@
   "item.transfiguration.overni_catalyst": "%s Catalyst",
   "item.transfiguration.overni_dust": "%s Dust",
   "item.transfiguration.overni_wand": "%s Wand",
-  "item.transfiguration.painting_catalyst": "%s Catalyst",
-  "item.transfiguration.painting_dust": "%s Dust",
-  "item.transfiguration.painting_wand": "%s Wand",
   "item.transfiguration.transfiguring_projectile": "Transfiguring Projectile",
   "itemGroup.transfiguration": "Transfiguration",
   "transfiguration_type.transfiguration.accursed": "Accursed",
@@ -38,6 +36,5 @@
   "transfiguration_type.transfiguration.mutandi": "Mutandi",
   "transfiguration_type.transfiguration.netheri": "Netheri",
   "transfiguration_type.transfiguration.overni": "Overni",
-  "transfiguration_type.transfiguration.painting": "Painting",
   "upgrade.transfiguration.transfiguring.advective": "Transfiguring"
 }
