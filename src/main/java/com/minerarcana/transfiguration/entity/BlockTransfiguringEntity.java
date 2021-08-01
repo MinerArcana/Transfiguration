@@ -5,6 +5,7 @@ import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -41,5 +42,10 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
                 .filter(BlockTransfigurationRecipe.class::isInstance)
                 .map(BlockTransfigurationRecipe.class::cast)
                 .orElse(null);
+    }
+
+    @Override
+    public void removeInput() {
+        this.getEntityWorld().setBlockState(this.getPosition(), Blocks.AIR.getDefaultState());
     }
 }

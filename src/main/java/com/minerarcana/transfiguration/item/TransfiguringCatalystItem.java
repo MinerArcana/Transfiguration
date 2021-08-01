@@ -15,7 +15,7 @@ public class TransfiguringCatalystItem extends TransfiguringItem {
     }
 
     @Override
-    public double getTimeModifier() {
+    public double getTimeModifier(ItemStack itemStack) {
         return 0.75;
     }
 

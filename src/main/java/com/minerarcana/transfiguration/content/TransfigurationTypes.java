@@ -24,12 +24,28 @@ public class TransfigurationTypes {
                             .wand()
                             .build();
 
+    public static final RegistryEntry<TransfigurationType> NETHERI = Transfiguration.getRegistrate()
+            .object("netheri")
+            .entry(TRANSFIGURATION_TYPE)
+            .lang("Netheri")
+            .primaryColor(DyeColor.RED.getColorValue())
+            .transform(ADD_ITEMS)
+            .register();
+
     public static final RegistryEntry<TransfigurationType> ACCURSED = Transfiguration.getRegistrate()
             .object("accursed")
             .entry(TRANSFIGURATION_TYPE)
             .lang("Accursed")
-            .includes(TransfigurationTypes.NETHERI)
+            .includes(NETHERI)
             .primaryColor(DyeColor.PURPLE.getColorValue())
+            .transform(ADD_ITEMS)
+            .register();
+
+    public static final RegistryEntry<TransfigurationType> MUTANDI = Transfiguration.getRegistrate()
+            .object("mutandi")
+            .entry(TRANSFIGURATION_TYPE)
+            .lang("Mutandi")
+            .primaryColor(DyeColor.GREEN.getColorValue())
             .transform(ADD_ITEMS)
             .register();
 
@@ -37,7 +53,7 @@ public class TransfigurationTypes {
             .object("blessed")
             .entry(TRANSFIGURATION_TYPE)
             .lang("Blessed")
-            .includes(TransfigurationTypes.MUTANDI)
+            .includes(MUTANDI)
             .primaryColor(DyeColor.YELLOW.getColorValue())
             .transform(ADD_ITEMS)
             .register();
@@ -66,35 +82,11 @@ public class TransfigurationTypes {
             .transform(ADD_ITEMS)
             .register();
 
-    public static final RegistryEntry<TransfigurationType> MUTANDI = Transfiguration.getRegistrate()
-            .object("mutandi")
-            .entry(TRANSFIGURATION_TYPE)
-            .lang("Mutandi")
-            .primaryColor(DyeColor.GREEN.getColorValue())
-            .transform(ADD_ITEMS)
-            .register();
-
-    public static final RegistryEntry<TransfigurationType> NETHERI = Transfiguration.getRegistrate()
-            .object("netheri")
-            .entry(TRANSFIGURATION_TYPE)
-            .lang("Netheri")
-            .primaryColor(DyeColor.RED.getColorValue())
-            .transform(ADD_ITEMS)
-            .register();
-
     public static final RegistryEntry<TransfigurationType> OVERNI = Transfiguration.getRegistrate()
             .object("overni")
             .entry(TRANSFIGURATION_TYPE)
             .lang("Overni")
             .primaryColor(DyeColor.LIME.getColorValue())
-            .transform(ADD_ITEMS)
-            .register();
-
-    public static final RegistryEntry<TransfigurationType> PAINTING = Transfiguration.getRegistrate()
-            .object("painting")
-            .entry(TRANSFIGURATION_TYPE)
-            .lang("Painting")
-            .primaryColor(DyeColor.PURPLE.getColorValue())
             .transform(ADD_ITEMS)
             .register();
 

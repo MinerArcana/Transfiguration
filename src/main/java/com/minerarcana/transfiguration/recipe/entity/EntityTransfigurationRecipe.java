@@ -3,6 +3,8 @@ package com.minerarcana.transfiguration.recipe.entity;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
+import com.minerarcana.transfiguration.entity.EntityTransfiguringEntity;
+import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
@@ -20,8 +22,15 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<EntityIng
     }
 
     @Override
-    public boolean transfigure(TransfigurationContainer<Entity> transfigurationContainer, double powerModifier) {
-        return true;
+    public TransfiguringEntity<?, EntityIngredient, Entity> createTransfiguringEntity(
+            TransfigurationContainer<Entity> transfigurationContainer, int time, double powerModifier) {
+        return new EntityTransfiguringEntity(
+                transfigurationContainer.getWorld(),
+                transfigurationContainer.getTargeted(),
+                this,
+                time,
+                powerModifier
+        );
     }
 
     @Override

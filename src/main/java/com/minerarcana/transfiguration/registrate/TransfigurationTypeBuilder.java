@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extends AbstractBuilder<TransfigurationType, T, P, TransfigurationTypeBuilder<T, P>> {
     private final BiFunction<Integer, List<Supplier<TransfigurationType>>, T> creator;
     private int primaryColor = -1;
-    private List<Supplier<TransfigurationType>> includes;
+    private final List<Supplier<TransfigurationType>> includes;
 
     public TransfigurationTypeBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback,
                                       Class<? super TransfigurationType> registryType,

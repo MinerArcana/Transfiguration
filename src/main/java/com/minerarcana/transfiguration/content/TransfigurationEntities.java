@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.entity.BlockTransfiguringEntity;
+import com.minerarcana.transfiguration.entity.EntityTransfiguringEntity;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.entity.TransformationAreaEffectEntity;
 import com.minerarcana.transfiguration.item.TransfiguringProjectileItem;
@@ -49,9 +50,21 @@ public class TransfigurationEntities {
                     .lang("Transfiguration")
                     .renderer(() -> TransfiguringEntityRenderer::new)
                     .properties(properties -> properties.immuneToFire()
-                            .size(0.5F, 0.1F)
+                            .size(1.0F, 1.0F)
                     )
                     .register();
+
+    public static final RegistryEntry<EntityType<EntityTransfiguringEntity>> ENTITY_TRANSFIGURING =
+            Transfiguration.getRegistrate()
+                    .object("block_transfiguring")
+                    .<EntityTransfiguringEntity>entity(EntityTransfiguringEntity::new, EntityClassification.MISC)
+                    .lang("Transfiguration")
+                    .renderer(() -> TransfiguringEntityRenderer::new)
+                    .properties(properties -> properties.immuneToFire()
+                            .size(1.0F, 1.0F)
+                    )
+                    .register();
+
 
     public static void setup() {
 

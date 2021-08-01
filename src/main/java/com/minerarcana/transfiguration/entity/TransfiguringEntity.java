@@ -14,8 +14,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.common.util.NonNullPredicate;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -30,8 +30,6 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
             DataSerializers.STRING
     );
 
-    private final NonNullLazy<Integer> offset;
-
     private T recipe;
     private long startTime;
     private int modifiedTime;
@@ -40,10 +38,11 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     private ResultInstance resultInstance;
     private ItemStack itemStack;
     private UUID caster;
+    private boolean removedInputs;
 
     public TransfiguringEntity(EntityType<? extends Entity> entityType, World world) {
         super(entityType, world);
-        this.offset = NonNullLazy.of(() -> this.getEntityWorld().getRandom().nextInt(20));
+        this.removedInputs = false;
     }
 
     public TransfiguringEntity(EntityType<? extends Entity> entityType, World world, BlockPos blockPos, T recipe,
@@ -55,7 +54,7 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
         this.setRecipeName(recipe.getId().toString());
         this.modifiedTime = modifiedTime;
         this.powerModifier = powerModifier;
-        this.offset = NonNullLazy.of(() -> this.getEntityWorld().getRandom().nextInt(20));
+        this.removedInputs = false;
     }
 
     @Override
@@ -70,7 +69,24 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                 }
             } else {
                 int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
-                if (this.getResultInstance(recipe).tick(this.createTransfigurationContainer(), powerModifier, remainingTicks)) {
+                if (remainingTicks <= 0 && !this.removedInputs) {
+                    this.removedInputs = true;
+                    this.removeInput();
+                    this.getEntityWorld().createExplosion(
+                            null,
+                            this.getPosX() + 0.5,
+                            this.getPosY() + 0.5,
+                            this.getPosZ() + 0.5,
+                            1.9F,
+                            Explosion.Mode.NONE
+                    );
+                }
+                TransfigurationContainer<V> transfigurationContainer = this.createTransfigurationContainer();
+                if (transfigurationContainer != null) {
+                    if (this.getResultInstance(recipe).tick(transfigurationContainer, powerModifier, remainingTicks)) {
+                        this.remove();
+                    }
+                } else {
                     this.remove();
                 }
             }
@@ -125,11 +141,13 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
         return this.resultInstance;
     }
 
-    @Nonnull
+    @Nullable
     public abstract TransfigurationContainer<V> createTransfigurationContainer();
 
     @Nullable
     public abstract T getRecipe();
+
+    public abstract void removeInput();
 
     @Override
     @Nonnull
@@ -137,8 +155,8 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
         if (this.itemStack == null && this.getRecipe() != null) {
             this.itemStack = TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM
                     .map(transfiguringProjectileItem -> transfiguringProjectileItem.withTransfigurationType(
-                            this.getRecipe().getTransfigurationType())
-                    )
+                            this.getRecipe().getTransfigurationType()
+                    ))
                     .orElse(null);
         }
         if (this.itemStack == null) {

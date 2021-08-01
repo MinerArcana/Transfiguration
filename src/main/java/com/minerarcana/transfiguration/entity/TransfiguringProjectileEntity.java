@@ -1,11 +1,10 @@
 package com.minerarcana.transfiguration.entity;
 
-import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.item.ITransfiguring;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -20,10 +19,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class TransfiguringProjectileEntity extends ProjectileItemEntity {
     public TransfiguringProjectileEntity(EntityType<? extends ProjectileItemEntity> type, World world) {
@@ -49,7 +44,14 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
         TransfigurationType type = this.getTransfigurationType();
         BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
         blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
-        BlockTransfigurationRecipe.tryTransfigure(type, blockRayTraceResult, this.getEntityWorld(), this.func_234616_v_());
+        BlockTransfigurationRecipe.tryTransfigure(
+                type,
+                blockRayTraceResult,
+                this.getEntityWorld(),
+                this.func_234616_v_(),
+                this.getPowerModifier(),
+                this.getTimeModifier()
+        );
     }
 
     @Override
@@ -60,7 +62,7 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
                     this.func_234616_v_());
             world.getRecipeManager()
                     .getRecipe(type.getEntityRecipeType(), container, world)
-                    .ifPresent(recipe -> recipe.transfigure(container, 1.0));
+                    .ifPresent(recipe -> recipe.transfigure(container, this.getPowerModifier(), this.getTimeModifier()));
         }
     }
 
@@ -70,6 +72,22 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
             return ((ITransfiguring) itemStack.getItem()).getType(itemStack);
         }
         return null;
+    }
+
+    private double getPowerModifier() {
+        ItemStack itemStack = this.getItem();
+        if (itemStack.getItem() instanceof ITransfiguring) {
+            return ((ITransfiguring) itemStack.getItem()).getPowerModifier(itemStack);
+        }
+        return 1.0F;
+    }
+
+    private double getTimeModifier() {
+        ItemStack itemStack = this.getItem();
+        if (itemStack.getItem() instanceof ITransfiguring) {
+            return ((ITransfiguring) itemStack.getItem()).getTimeModifier(itemStack);
+        }
+        return 1.0F;
     }
 
     @Override

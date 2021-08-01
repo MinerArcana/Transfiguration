@@ -14,11 +14,6 @@ public class TransfiguringDustItem extends TransfiguringItem {
     }
 
     @Override
-    public double getTimeModifier() {
-        return 1.0D;
-    }
-
-    @Override
     public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
         itemStack.shrink(1);
     }

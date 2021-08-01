@@ -3,6 +3,7 @@ package com.minerarcana.transfiguration.recipe;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -60,7 +61,16 @@ public abstract class TransfigurationRecipe<T extends NonNullPredicate<U>, U> im
         return true;
     }
 
-    public abstract boolean transfigure(TransfigurationContainer<U> transfigurationContainer, double powerModifier);
+    public boolean transfigure(TransfigurationContainer<U> transfigurationContainer, double powerModifier, double timeModifier) {
+        int time = (int) Math.ceil(timeModifier * this.getTicks());
+        return transfigurationContainer.getWorld().isRemote() || transfigurationContainer.getWorld().addEntity(
+                this.createTransfiguringEntity(transfigurationContainer, time, powerModifier)
+        );
+    }
+
+    public abstract TransfiguringEntity<?, T, U> createTransfiguringEntity(
+            TransfigurationContainer<U> transfigurationContainer, int time, double powerModifier
+    );
 
     public TransfigurationType getTransfigurationType() {
         return transfigurationType;

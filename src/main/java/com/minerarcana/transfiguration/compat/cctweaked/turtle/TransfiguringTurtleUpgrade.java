@@ -90,7 +90,7 @@ public class TransfiguringTurtleUpgrade implements ITurtleUpgrade {
         TransfigurationContainer<BlockState> blockTransfigurationContainer = TransfigurationContainer.block(
                 turtle.getWorld(), turtle.getPosition().offset(direction), null);
 
-        return BlockTransfigurationRecipe.tryTransfigure(this.transfigurationType.get(), blockTransfigurationContainer) ?
+        return BlockTransfigurationRecipe.tryTransfigure(this.transfigurationType.get(), blockTransfigurationContainer, 1.0, 1.0) ?
                 TurtleCommandResult.success() : TurtleCommandResult.failure();
     }
 

@@ -1,10 +1,12 @@
 package com.minerarcana.transfiguration.recipe.block;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.api.event.TransfigurationEvent;
 import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.entity.BlockTransfiguringEntity;
+import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
@@ -15,6 +17,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,11 +32,14 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockIngre
     }
 
     @Override
-    public boolean transfigure(TransfigurationContainer<BlockState> transfigurationContainer, double powerModifier) {
-        BlockTransfiguringEntity transfiguringEntity = new BlockTransfiguringEntity(transfigurationContainer.getWorld(),
-                transfigurationContainer.getTargetedPos(), this, this.getTicks(), powerModifier);
-        transfigurationContainer.getWorld().addEntity(transfiguringEntity);
-        return true;
+    public TransfiguringEntity<?, BlockIngredient, BlockState> createTransfiguringEntity(TransfigurationContainer<BlockState> transfigurationContainer, int time, double powerModifier) {
+        return new BlockTransfiguringEntity(
+                transfigurationContainer.getWorld(),
+                transfigurationContainer.getTargetedPos(),
+                this,
+                time,
+                powerModifier
+        );
     }
 
     @Override
@@ -50,27 +56,35 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockIngre
 
     @SuppressWarnings("UnusedReturnValue")
     public static boolean tryTransfigure(TransfigurationType type, BlockRayTraceResult blockRayTraceResult, World world,
-                                         @Nullable Entity entity) {
+                                         @Nullable Entity entity, double powerModifier, double timeModifier) {
         return tryTransfigure(type, TransfigurationContainer.block(
                 world,
                 blockRayTraceResult.getPos(),
                 entity
-        ));
+        ), powerModifier, timeModifier);
     }
 
-    public static boolean tryTransfigure(TransfigurationType type, TransfigurationContainer<BlockState> container) {
+    public static boolean tryTransfigure(TransfigurationType type, TransfigurationContainer<BlockState> container,
+                                         double powerModifier, double timeModifier) {
         if (type != null) {
             World world = container.getWorld();
             Optional<ITransfigurationRecipe<BlockState>> recipeOptional = world.getRecipeManager()
                     .getRecipe(type.getBlockRecipeType(), container, world);
+            TransfigurationEvent transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
+            MinecraftForge.EVENT_BUS.post(transfigurationEvent);
             if (!recipeOptional.isPresent()) {
                 Iterator<Supplier<TransfigurationType>> supplierIterator = type.getIncludedTypes().iterator();
                 while (!recipeOptional.isPresent() && supplierIterator.hasNext()) {
+                    TransfigurationType nextType = supplierIterator.next().get();
+                    transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
+                    MinecraftForge.EVENT_BUS.post(transfigurationEvent);
                     recipeOptional = world.getRecipeManager()
-                            .getRecipe(supplierIterator.next().get().getBlockRecipeType(), container, world);
+                            .getRecipe(nextType.getBlockRecipeType(), container, world);
                 }
             }
-            return recipeOptional.map(recipe -> recipe.transfigure(container, 1.0F))
+            double finalPowerModifier = transfigurationEvent.getCurrentPowerModifier();
+            double finalTimeModifier = transfigurationEvent.getCurrentTimeModifier();
+            return recipeOptional.map(recipe -> recipe.transfigure(container, finalPowerModifier, finalTimeModifier))
                     .orElse(false);
         }
 
