@@ -1,11 +1,11 @@
 package com.minerarcana.transfiguration.recipe.builder;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
@@ -58,9 +58,9 @@ public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegis
         this.validate(id);
         if (id == null) {
             ResourceLocation resultId = this.result.getId();
-            id = new ResourceLocation(resultId.getNamespace(), "transfiguration/" + resultId.getPath() + "_from_" +
-                    Objects.requireNonNull(transfigurationType.getRegistryName()).getPath() + "_" +
-                    ingredient.getId().toString().replace(":", "_"));
+            id = new ResourceLocation(resultId.getNamespace(), "transfiguration/" + resultId.getPath().replace("/", "_")
+                    + "_from_" + Objects.requireNonNull(transfigurationType.getRegistryName()).getPath().replace("/", "_")
+                    + "_" + ingredient.getId().toString().replace(":", "_").replace("/", "_"));
         }
         recipeConsumer.accept(new TransfigurationFinishedRecipe<>(recipeSerializer, id, transfigurationType,
                 ingredient, result, ticks));
