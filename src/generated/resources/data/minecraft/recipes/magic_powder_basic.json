@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:dusts/redstone"
+    },
+    {
+      "tag": "minecraft:corals"
+    },
+    {
+      "tag": "forge:gems/lapis"
+    }
+  ],
+  "result": {
+    "item": "transfiguration:magic_powder"
+  }
+}

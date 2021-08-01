@@ -1,15 +1,12 @@
 package com.minerarcana.transfiguration;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.compat.cctweaked.CCTweaked;
-import com.minerarcana.transfiguration.content.TransfigurationAdditionalData;
-import com.minerarcana.transfiguration.content.TransfigurationEntities;
-import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.content.TransfigurationTypes;
+import com.minerarcana.transfiguration.content.*;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.Minecraft;
@@ -42,6 +39,7 @@ public class Transfiguration {
             .addDataGenerator(ProviderType.ENTITY_TAGS, TransfigurationAdditionalData::addEntityTypeTags)
             .addDataGenerator(ProviderType.BLOCK_TAGS, TransfigurationAdditionalData::addBlockTags)
             .addDataGenerator(ProviderType.LANG, TransfigurationAdditionalData::addLang)
+            .addDataGenerator(ProviderType.ITEM_TAGS, TransfigurationAdditionalData::addItemTags)
     );
 
     @SuppressWarnings("unchecked")
@@ -62,6 +60,7 @@ public class Transfiguration {
         TransfigurationRecipes.register(modEventBus);
         TransfigurationTypes.setup();
         TransfigurationEntities.setup();
+        TransfigurationItems.setup();
 
         modEventBus.addListener(this::handleClient);
         CCTweaked.setup();
