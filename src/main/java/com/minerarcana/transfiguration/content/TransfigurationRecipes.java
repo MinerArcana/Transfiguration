@@ -2,6 +2,8 @@ package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipeSerializer;
+import com.minerarcana.transfiguration.recipe.dust.DustRecipe;
+import com.minerarcana.transfiguration.recipe.dust.DustRecipeSerializer;
 import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipeSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.block.SingleBlockIngredientSerializer;
@@ -13,6 +15,7 @@ import com.minerarcana.transfiguration.recipe.ingedient.entity.TagEntityIngredie
 import com.minerarcana.transfiguration.recipe.result.*;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -70,6 +73,13 @@ public class TransfigurationRecipes {
             Transfiguration.getRegistrate()
                     .object("block_tag")
                     .simple(ResultSerializer.class, BlockTagResultSerializer::new);
+
+    public static final RegistryEntry<IRecipeSerializer<DustRecipe>> DUST_RECIPE_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("dust")
+                    .simple(IRecipeSerializer.class, DustRecipeSerializer::new);
+
+    public static final IRecipeType<DustRecipe> DUST_RECIPE_TYPE = IRecipeType.register(Transfiguration.rl("dust").toString());
 
     public static void register(IEventBus modEventBus) {
         SERIALIZERS.register(modEventBus);

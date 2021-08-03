@@ -8,9 +8,9 @@ import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.data.TagsProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
 
@@ -43,11 +43,20 @@ public class TransfigurationAdditionalData {
     }
 
     public static void addItemTags(RegistrateTagsProvider<Item> tagsProvider) {
-        TagsProvider.Builder<Item> coralBuilder = tagsProvider.getOrCreateBuilder(TransfigurationItemTags.CORALS);
-        BlockTags.CORALS.getAllElements()
-                .stream()
-                .map(Block::asItem)
-                .forEach(coralBuilder::add);
+        tagsProvider.getOrCreateBuilder(TransfigurationItemTags.CORALS)
+                .add(
+                        Items.TUBE_CORAL,
+                        Items.BRAIN_CORAL,
+                        Items.BUBBLE_CORAL,
+                        Items.FIRE_CORAL,
+                        Items.HORN_CORAL,
+                        Items.TUBE_CORAL_FAN,
+                        Items.BRAIN_CORAL_FAN,
+                        Items.BUBBLE_CORAL_FAN,
+                        Items.FIRE_CORAL_FAN,
+                        Items.HORN_CORAL_FAN
+                );
+
     }
 
     public static void addRecipes(RegistrateRecipeProvider recipeProvider) {

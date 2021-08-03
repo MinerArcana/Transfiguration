@@ -5,5 +5,5 @@ import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.tags.ItemTags;
 
 public class TransfigurationItemTags {
-    public static final INamedTag<Item> CORALS = ItemTags.makeWrapperTag("minecraft:corals");
+    public static final INamedTag<Item> CORALS = ItemTags.makeWrapperTag("forge:corals");
 }
