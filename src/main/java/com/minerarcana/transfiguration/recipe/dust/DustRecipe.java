@@ -3,43 +3,49 @@ package com.minerarcana.transfiguration.recipe.dust;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
+import java.util.function.Predicate;
 
 public class DustRecipe implements IRecipe<DustRecipeInventory> {
     private final ResourceLocation id;
     private final TransfigurationType type;
-    private final Ingredient ingredient;
     private final BlockIngredient blockState;
-    private final ITag<Fluid> fluidState;
+    private final ITag<Fluid> fluid;
+    private final Predicate<FluidState> fluidPredicate;
     private final ItemStack output;
 
-    public DustRecipe(ResourceLocation id, TransfigurationType type, Ingredient ingredient, BlockIngredient location,
-                      ITag<Fluid> fluidState, ItemStack output) {
+    public DustRecipe(ResourceLocation id, TransfigurationType type, BlockIngredient location,
+                      ITag<Fluid> fluid, ItemStack output) {
         this.id = id;
         this.type = type;
-        this.ingredient = ingredient;
         this.blockState = location;
-        this.fluidState = fluidState;
+        this.fluid = fluid;
+        this.fluidPredicate = fluidState -> {
+            if (this.fluid == null) {
+                return fluidState.isEmpty();
+            } else {
+                return fluidState.isTagged(this.fluid);
+            }
+        };
         this.output = output;
     }
 
     @Override
     @ParametersAreNonnullByDefault
     public boolean matches(DustRecipeInventory dustRecipeInventory, World world) {
-        return false;
+        return fluidPredicate.test(dustRecipeInventory.getInputFluidState()) &&
+                blockState.test(dustRecipeInventory.getInputBlockState());
     }
 
     @Override
@@ -47,18 +53,6 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
     @ParametersAreNonnullByDefault
     public ItemStack getCraftingResult(DustRecipeInventory inv) {
         return output.copy();
-    }
-
-    public void handleItemEntities(List<ItemEntity> itemEntities) {
-        for (ItemEntity itemEntity : itemEntities) {
-            if (ingredient.test(itemEntity.getItem())) {
-                itemEntity.getItem().shrink(1);
-                if (itemEntity.getItem().isEmpty()) {
-                    itemEntity.remove();
-                }
-                break;
-            }
-        }
     }
 
     @Override
@@ -108,10 +102,6 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
     }
 
     public ITag<Fluid> getFluid() {
-        return fluidState;
-    }
-
-    public Ingredient getIngredient() {
-        return ingredient;
+        return fluid;
     }
 }

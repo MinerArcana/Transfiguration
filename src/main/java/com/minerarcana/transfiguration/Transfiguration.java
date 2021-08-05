@@ -57,6 +57,7 @@ public class Transfiguration {
         resultSerializers = RegistryManager.ACTIVE.getRegistry(ResultSerializer.class);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        TransfigurationBlocks.setup();
         TransfigurationRecipes.register(modEventBus);
         TransfigurationTypes.setup();
         TransfigurationEntities.setup();

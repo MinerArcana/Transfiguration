@@ -2,11 +2,12 @@ package com.minerarcana.transfiguration.recipe.dust;
 
 import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.block.SingleBlockIngredient;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
+import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ITag;
@@ -34,8 +35,7 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?
         return new DustRecipe(
                 recipeId,
                 RegistryJson.getTransfigurationType(json),
-                Ingredient.deserialize(json.get("ingredient")),
-                SerializerJson.getBlockIngredient(json, "blockState"),
+                json.has("block") ? SerializerJson.getBlockIngredient(json, "block") : SingleBlockIngredient.create(Blocks.AIR),
                 fluidTag,
                 CraftingHelper.getItemStack(json.getAsJsonObject("output"), true)
         );
@@ -48,7 +48,6 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?
         return new DustRecipe(
                 recipeId,
                 buffer.readRegistryId(),
-                Ingredient.read(buffer),
                 BlockIngredient.fromBuffer(buffer),
                 buffer.readBoolean() ? FluidTags.getCollection().getTagByID(buffer.readResourceLocation()) : null,
                 buffer.readItemStack()
@@ -59,7 +58,6 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?
     @ParametersAreNonnullByDefault
     public void write(PacketBuffer buffer, DustRecipe recipe) {
         buffer.writeRegistryId(recipe.getTransfigurationType());
-        recipe.getIngredient().write(buffer);
         BlockIngredient.toBuffer(recipe.getBlockState(), buffer);
         buffer.writeBoolean(recipe.getFluid() != null);
         if (recipe.getFluid() != null) {

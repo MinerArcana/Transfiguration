@@ -37,11 +37,6 @@ public class TransfigurationItems {
             })
             .register();
 
-    public static final ItemEntry<Item> CATALYST_SUBSTRATE = Transfiguration.getRegistrate()
-            .object("catalyst_substrate")
-            .item(Item::new)
-            .register();
-
     public static void setup() {
 
     }

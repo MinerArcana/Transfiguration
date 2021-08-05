@@ -1,6 +1,7 @@
 package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
+import com.minerarcana.transfiguration.recipe.dust.DustRecipeBuilder;
 import com.minerarcana.transfiguration.registrate.TransfigurationTypeBuilder;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.tterrag.registrate.AbstractRegistrate;
@@ -8,7 +9,10 @@ import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.DyeColor;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.FluidTags;
 
 public class TransfigurationTypes {
     private static final NonNullBiFunction<String, BuilderCallback, TransfigurationTypeBuilder<TransfigurationType,
@@ -29,7 +33,17 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Netheri")
             .primaryColor(DyeColor.RED.getColorValue())
-            .transform(ADD_ITEMS)
+            .dust()
+            .build()
+            .catalyst()
+            .recipe((context, provider) -> DustRecipeBuilder.create(TransfigurationTypes.NETHERI.get())
+                    .withFluid(FluidTags.WATER)
+                    .withOutput(context.get().getDefaultInstance())
+                    .build(provider)
+            )
+            .build()
+            .wand()
+            .build()
             .register();
 
     public static final RegistryEntry<TransfigurationType> ACCURSED = Transfiguration.getRegistrate()
