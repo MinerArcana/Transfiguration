@@ -6,11 +6,9 @@ import com.minerarcana.transfiguration.recipe.ingedient.block.SingleBlockIngredi
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
 import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ITag;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -25,18 +23,11 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?
     @Nonnull
     @ParametersAreNonnullByDefault
     public DustRecipe read(ResourceLocation recipeId, JsonObject json) {
-        ITag<Fluid> fluidTag = null;
-        if (json.has("fluid")) {
-            ResourceLocation fluidTagName = ResourceLocation.tryCreate(JSONUtils.getString(json, "fluid"));
-            if (fluidTagName != null) {
-                fluidTag = FluidTags.getCollection().get(fluidTagName);
-            }
-        }
         return new DustRecipe(
                 recipeId,
                 RegistryJson.getTransfigurationType(json),
                 json.has("block") ? SerializerJson.getBlockIngredient(json, "block") : SingleBlockIngredient.create(Blocks.AIR),
-                fluidTag,
+                json.has("fluid") ? ResourceLocation.tryCreate(JSONUtils.getString(json, "fluid")) : null,
                 CraftingHelper.getItemStack(json.getAsJsonObject("output"), true)
         );
     }
@@ -49,7 +40,7 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?
                 recipeId,
                 buffer.readRegistryId(),
                 BlockIngredient.fromBuffer(buffer),
-                buffer.readBoolean() ? FluidTags.getCollection().getTagByID(buffer.readResourceLocation()) : null,
+                buffer.readBoolean() ? buffer.readResourceLocation() : null,
                 buffer.readItemStack()
         );
     }
