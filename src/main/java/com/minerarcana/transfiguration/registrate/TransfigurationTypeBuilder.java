@@ -2,16 +2,28 @@ package com.minerarcana.transfiguration.registrate;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.item.TransfiguringCatalystItem;
 import com.minerarcana.transfiguration.item.TransfiguringDustItem;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
-import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.recipe.dust.DustRecipeBuilder;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateRecipeProvider;
+import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
+import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -60,7 +72,12 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                 .properties(properties -> properties.maxDamage(256))
                 .model((context, provider) -> provider.generated(context, provider.modLoc("item/catalyst")))
                 .color(TransfigurationColors.transfiguringTypeColors(0))
-                .lang("%s Catalyst");
+                .lang("%s Catalyst")
+                .recipe((context, provider) -> DustRecipeBuilder.create(TransfigurationTypes.NETHERI.get())
+                        .withFluid(FluidTags.WATER)
+                        .withOutput(context.get().getDefaultInstance())
+                        .build(provider)
+                );
     }
 
     public ItemBuilder<TransfiguringWandItem, TransfigurationTypeBuilder<T, P>> wand() {
@@ -69,7 +86,24 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                 .model((context, provider) -> provider.generated(context, provider.modLoc("item/wand"),
                         provider.modLoc("item/wand_overlay")))
                 .color(TransfigurationColors.transfiguringTypeColors(1))
-                .lang("%s Wand");
+                .lang("%s Wand")
+                .recipe((context, provider) -> {
+                    ResourceLocation catalystName = new ResourceLocation(this.getOwner().getModid(), this.getName() + "_catalyst");
+                    Item catalyst = ForgeRegistries.ITEMS.getValue(catalystName);
+                    if (catalyst == null) {
+                        throw new IllegalStateException("Failed to Find Catalyst for name: " + catalystName);
+                    } else {
+                        ShapedRecipeBuilder.shapedRecipe(context.get())
+                                .patternLine("C")
+                                .patternLine("I")
+                                .patternLine("R")
+                                .key('C', catalyst)
+                                .key('I', Tags.Items.INGOTS)
+                                .key('R', Items.END_ROD)
+                                .addCriterion("has_item", RegistrateRecipeProvider.hasItem(catalyst))
+                                .build(provider);
+                    }
+                });
     }
 
     public <I extends Item> ItemBuilder<I, TransfigurationTypeBuilder<T, P>> item(
@@ -81,6 +115,10 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
             String append, NonNullBiFunction<Supplier<TransfigurationType>, Item.Properties, I> factory) {
         return this.getOwner().item(this, this.getName() + "_" + append,
                 properties -> factory.apply(this::getEntry, properties));
+    }
+
+    public TransfigurationTypeBuilder<T, P> recipe(NonNullBiConsumer<DataGenContext<TransfigurationType, T>, RegistrateRecipeProvider> cons) {
+        return setData(ProviderType.RECIPE, cons);
     }
 
     @Override
