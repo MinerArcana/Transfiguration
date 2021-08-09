@@ -12,7 +12,6 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nonnull;
@@ -20,9 +19,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public class CatalystSubstrateBlock extends Block implements IWaterLoggable {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    private static final VoxelShape SHAPE = VoxelShapes.create(
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(
             6, 0, 6,
-            12, 8, 12
+            10, 8, 10
     );
 
     public CatalystSubstrateBlock(Properties properties) {
@@ -48,6 +47,14 @@ public class CatalystSubstrateBlock extends Block implements IWaterLoggable {
     @SuppressWarnings("deprecation")
     @ParametersAreNonnullByDefault
     public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
+        return SHAPE;
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    @ParametersAreNonnullByDefault
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return SHAPE;
     }
 

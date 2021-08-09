@@ -1,4 +1,5 @@
 {
+  "parent": "block/block",
   "textures": {
     "side": "minecraft:block/diamond_block",
     "end": "minecraft:block/diamond_block",
