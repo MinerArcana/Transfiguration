@@ -39,6 +39,10 @@ repositories {
         name = "CC:Tweaked"
         url = "https://squiddev.cc/maven/"
     }
+    maven {
+        name = "JEI"
+        url = "https://dvs1.progwml6.com/files/maven"
+    }
 }
 
 test {
@@ -112,6 +116,9 @@ dependencies {
     def registrate = "com.tterrag.registrate:Registrate:MC${minecraft_version}-${registrate_version}"
     implementation fg.deobf(registrate)
     shade registrate
+
+    compileOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}")
 }
 
 task srcJar(type: Jar) {
