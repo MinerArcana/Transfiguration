@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:mutandi_dust"
+    },
+    {
+      "tag": "forge:rods/blaze"
+    },
+    {
+      "item": "minecraft:nether_wart_block"
+    }
+  ],
+  "result": {
+    "item": "transfiguration:netheri_dust",
+    "count": 24
+  }
+}

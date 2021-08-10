@@ -34,14 +34,14 @@ import java.util.function.Supplier;
 public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extends AbstractBuilder<TransfigurationType, T, P, TransfigurationTypeBuilder<T, P>> {
     private final BiFunction<Integer, List<Supplier<TransfigurationType>>, T> creator;
     private int primaryColor = -1;
-    private final List<Supplier<TransfigurationType>> includes;
+    private final List<Supplier<TransfigurationType>> fallback;
 
     public TransfigurationTypeBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback,
                                       Class<? super TransfigurationType> registryType,
                                       BiFunction<Integer, List<Supplier<TransfigurationType>>, T> creator) {
         super(owner, parent, name, callback, registryType);
         this.creator = creator;
-        this.includes = Lists.newArrayList();
+        this.fallback = Lists.newArrayList();
     }
 
     public TransfigurationTypeBuilder<T, P> primaryColor(int primaryColor) {
@@ -50,8 +50,8 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     }
 
     @SafeVarargs
-    public final TransfigurationTypeBuilder<T, P> includes(Supplier<TransfigurationType>... includes) {
-        this.includes.addAll(Arrays.asList(includes));
+    public final TransfigurationTypeBuilder<T, P> fallback(Supplier<TransfigurationType>... includes) {
+        this.fallback.addAll(Arrays.asList(includes));
         return this;
     }
 
@@ -80,6 +80,10 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                 );
     }
 
+    public TransfigurationTypeBuilder<T, P> defaultCatalyst() {
+        return catalyst().build();
+    }
+
     public ItemBuilder<TransfiguringWandItem, TransfigurationTypeBuilder<T, P>> wand() {
         return this.item("wand", TransfiguringWandItem::new)
                 .properties(properties -> properties.maxDamage(256))
@@ -106,6 +110,10 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                 });
     }
 
+    public TransfigurationTypeBuilder<T, P> defaultWand() {
+        return wand().build();
+    }
+
     public <I extends Item> ItemBuilder<I, TransfigurationTypeBuilder<T, P>> item(
             NonNullBiFunction<Supplier<TransfigurationType>, Item.Properties, I> factory) {
         return this.getOwner().item(this, properties -> factory.apply(this::getEntry, properties));
@@ -124,7 +132,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     @Override
     @Nonnull
     protected T createEntry() {
-        return creator.apply(primaryColor, ImmutableList.copyOf(includes));
+        return creator.apply(primaryColor, ImmutableList.copyOf(fallback));
     }
 
     public static <P> TransfigurationTypeBuilder<TransfigurationType, P> create(AbstractRegistrate<?> owner, P parent,

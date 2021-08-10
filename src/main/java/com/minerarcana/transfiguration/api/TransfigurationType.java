@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType> {
     private final int primaryColor;
-    private final List<Supplier<TransfigurationType>> includes;
+    private final List<Supplier<TransfigurationType>> fallbacks;
 
     private ResourceLocation blockRecipeId;
     private ResourceLocation entityRecipeId;
@@ -28,7 +28,7 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
 
     public TransfigurationType(int primaryColor, List<Supplier<TransfigurationType>> includes) {
         this.primaryColor = primaryColor;
-        this.includes = includes;
+        this.fallbacks = includes;
     }
 
     public ResourceLocation getBlockRecipeId() {
@@ -79,7 +79,7 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
         return this.displayName;
     }
 
-    public List<Supplier<TransfigurationType>> getIncludedTypes() {
-        return includes;
+    public List<Supplier<TransfigurationType>> getFallbacks() {
+        return fallbacks;
     }
 }

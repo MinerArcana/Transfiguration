@@ -73,7 +73,7 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockIngre
             TransfigurationEvent transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
             MinecraftForge.EVENT_BUS.post(transfigurationEvent);
             if (!recipeOptional.isPresent()) {
-                Iterator<Supplier<TransfigurationType>> supplierIterator = type.getIncludedTypes().iterator();
+                Iterator<Supplier<TransfigurationType>> supplierIterator = type.getFallbacks().iterator();
                 while (!recipeOptional.isPresent() && supplierIterator.hasNext()) {
                     TransfigurationType nextType = supplierIterator.next().get();
                     transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
