@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:magic_powder_otherworldly"
+      "transfiguration:magic_powder_basic"
     ]
   },
   "criteria": {
@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ender_pearls"
+            "tag": "forge:dusts/redstone"
           }
         ]
       }
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:magic_powder_otherworldly"
+        "recipe": "transfiguration:magic_powder_basic"
       }
     }
   },

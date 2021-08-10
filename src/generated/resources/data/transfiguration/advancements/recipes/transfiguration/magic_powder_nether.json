@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:magic_powder_nether"
+      "transfiguration:magic_powder_nether"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:magic_powder_nether"
+        "recipe": "transfiguration:magic_powder_nether"
       }
     }
   },
