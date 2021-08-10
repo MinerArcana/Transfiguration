@@ -1,13 +1,13 @@
 package com.minerarcana.transfiguration.recipe.entity;
 
 import com.google.gson.JsonObject;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
@@ -47,19 +47,21 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<IR
     @ParametersAreNonnullByDefault
     public void write(PacketBuffer buffer, EntityTransfigurationRecipe recipe) {
         buffer.writeRegistryId(recipe.getTransfigurationType());
+        buffer.writeRegistryId(recipe.getIngredient().getSerializer());
         writeIngredient(buffer, recipe.getIngredient());
+        buffer.writeRegistryId(recipe.getResult().getSerializer());
         writeResult(buffer, recipe.getResult());
         buffer.writeInt(recipe.getTicks());
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends EntityIngredient> void  writeIngredient(PacketBuffer packetBuffer, T blockIngredient) {
-        EntityIngredientSerializer<T> serializer = (EntityIngredientSerializer<T>) blockIngredient.getSerializer();
-        serializer.write(packetBuffer, blockIngredient);
+    private <T extends EntityIngredient> void writeIngredient(PacketBuffer packetBuffer, T entityIngredient) {
+        EntityIngredientSerializer<T> serializer = (EntityIngredientSerializer<T>) entityIngredient.getSerializer();
+        serializer.write(packetBuffer, entityIngredient);
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Result> void  writeResult(PacketBuffer packetBuffer, T result) {
+    private <T extends Result> void writeResult(PacketBuffer packetBuffer, T result) {
         ResultSerializer<T> serializer = (ResultSerializer<T>) result.getSerializer();
         serializer.write(packetBuffer, result);
     }

@@ -10,11 +10,13 @@ public abstract class BlockIngredient implements NonNullPredicate<BlockState>,
 
     public static BlockIngredient fromBuffer(PacketBuffer packetBuffer) {
         BlockIngredientSerializer<?> serializer = packetBuffer.readRegistryId();
-        return  serializer.parse(packetBuffer);
+        return serializer.parse(packetBuffer);
     }
 
-    public static void toBuffer(BlockIngredient blockIngredient, PacketBuffer packetBuffer) {
-        BlockIngredientSerializer<?> blockIngredientSerializer = blockIngredient.getSerializer();
+    @SuppressWarnings("unchecked")
+    public static <T extends BlockIngredient> void toBuffer(T blockIngredient, PacketBuffer packetBuffer) {
+        BlockIngredientSerializer<T> blockIngredientSerializer = (BlockIngredientSerializer<T>) blockIngredient.getSerializer();
         packetBuffer.writeRegistryId(blockIngredientSerializer);
+        blockIngredientSerializer.write(packetBuffer, blockIngredient);
     }
 }

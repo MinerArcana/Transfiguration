@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>, U extends NonNullPredicate<V>, V>
-        extends Entity implements IRendersAsItem {
+        extends Entity {
     private static final DataParameter<String> RECIPE_NAME = EntityDataManager.createKey(
             TransfiguringEntity.class,
             DataSerializers.STRING
@@ -148,21 +148,4 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     public abstract T getRecipe();
 
     public abstract void removeInput();
-
-    @Override
-    @Nonnull
-    public ItemStack getItem() {
-        if (this.itemStack == null && this.getRecipe() != null) {
-            this.itemStack = TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM
-                    .map(transfiguringProjectileItem -> transfiguringProjectileItem.withTransfigurationType(
-                            this.getRecipe().getTransfigurationType()
-                    ))
-                    .orElse(null);
-        }
-        if (this.itemStack == null) {
-            return ItemStack.EMPTY;
-        } else {
-            return this.itemStack;
-        }
-    }
 }

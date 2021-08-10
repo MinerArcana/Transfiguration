@@ -22,6 +22,6 @@ public class SingleBlockIngredientSerializer extends BlockIngredientSerializer<S
 
     @Override
     public void write(@Nonnull PacketBuffer buffer, @Nonnull SingleBlockIngredient object) {
-
+        buffer.writeRegistryId(object.getBlock());
     }
 }

@@ -9,15 +9,10 @@ import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientS
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -63,7 +58,6 @@ public class Transfiguration {
         TransfigurationEntities.setup();
         TransfigurationItems.setup();
 
-        modEventBus.addListener(this::handleClient);
         CCTweaked.setup();
     }
 
@@ -73,13 +67,6 @@ public class Transfiguration {
 
     public static ResourceLocation rl(String path) {
         return new ResourceLocation(ID, path);
-    }
-
-    public void handleClient(FMLClientSetupEvent clientSetupEvent) {
-        EntityRendererManager rendererManager = Minecraft.getInstance().getRenderManager();
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        rendererManager.register(TransfigurationEntities.TRANSFIGURING_PROJECTILE.get(),
-                new SpriteRenderer<>(rendererManager, itemRenderer));
     }
 
     private static <T extends IForgeRegistryEntry<T>> void makeRegistry(String name, Class<T> type) {

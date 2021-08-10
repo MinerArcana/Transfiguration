@@ -1,13 +1,13 @@
 package com.minerarcana.transfiguration.recipe.block;
 
 import com.google.gson.JsonObject;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
@@ -47,7 +47,9 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
     @ParametersAreNonnullByDefault
     public void write(PacketBuffer buffer, BlockTransfigurationRecipe recipe) {
         buffer.writeRegistryId(recipe.getTransfigurationType());
+        buffer.writeRegistryId(recipe.getIngredient().getSerializer());
         writeIngredient(buffer, recipe.getIngredient());
+        buffer.writeRegistryId(recipe.getResult().getSerializer());
         writeResult(buffer, recipe.getResult());
         buffer.writeInt(recipe.getTicks());
     }

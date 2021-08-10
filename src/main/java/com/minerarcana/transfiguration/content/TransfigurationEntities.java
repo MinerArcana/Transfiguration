@@ -7,6 +7,7 @@ import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.entity.TransformationAreaEffectEntity;
 import com.minerarcana.transfiguration.item.TransfiguringProjectileItem;
 import com.minerarcana.transfiguration.renderer.TransfiguringEntityRenderer;
+import com.minerarcana.transfiguration.renderer.TransfiguringProjectileRenderer;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.client.renderer.entity.AreaEffectCloudRenderer;
 import net.minecraft.entity.AreaEffectCloudEntity;
@@ -20,6 +21,7 @@ public class TransfigurationEntities {
                     .object("transfiguring_projectile")
                     .<TransfiguringProjectileEntity>entity(TransfiguringProjectileEntity::new, EntityClassification.MISC)
                     .lang("Transfiguring Projectile")
+                    .renderer(() -> TransfiguringProjectileRenderer::new)
                     .register();
 
     public static final RegistryEntry<TransfiguringProjectileItem> TRANSFIGURING_PROJECTILE_ITEM =

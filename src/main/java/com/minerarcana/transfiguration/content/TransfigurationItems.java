@@ -19,21 +19,21 @@ public class TransfigurationItems {
                         .addIngredient(TransfigurationItemTags.CORALS)
                         .addIngredient(Tags.Items.GEMS_LAPIS)
                         .addCriterion("has_item", RegistrateRecipeProvider.hasItem(Tags.Items.DUSTS_REDSTONE))
-                        .build(provider, "magic_powder_basic");
+                        .build(provider, Transfiguration.rl("magic_powder_basic"));
 
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 4)
                         .addIngredient(Items.CRIMSON_ROOTS)
                         .addIngredient(Items.WARPED_ROOTS)
                         .addIngredient(Tags.Items.DUSTS_GLOWSTONE)
                         .addCriterion("has_item", RegistrateRecipeProvider.hasItem(Tags.Items.DUSTS_REDSTONE))
-                        .build(provider, "magic_powder_nether");
+                        .build(provider, Transfiguration.rl("magic_powder_nether"));
 
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 16)
                         .addIngredient(Tags.Items.GEMS_PRISMARINE)
                         .addIngredient(Tags.Items.ENDER_PEARLS)
                         .addIngredient(Tags.Items.CROPS_NETHER_WART)
                         .addCriterion("has_item", RegistrateRecipeProvider.hasItem(Tags.Items.ENDER_PEARLS))
-                        .build(provider, "magic_powder_otherworldly");
+                        .build(provider, Transfiguration.rl("magic_powder_otherworldly"));
             })
             .register();
 
