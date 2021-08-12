@@ -14,6 +14,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegistryEntry<T>> {
     private final TransfigurationType transfigurationType;
@@ -31,8 +32,16 @@ public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegis
         return new TransfigurationRecipeBuilder<>(transfigurationType, TransfigurationRecipes.BLOCK_TRANSFIGURATION.get());
     }
 
+    public static TransfigurationRecipeBuilder<BlockIngredientSerializer<?>> block(Supplier<? extends TransfigurationType> transfigurationType) {
+        return block(transfigurationType.get());
+    }
+
     public static TransfigurationRecipeBuilder<EntityIngredientSerializer<?>> entity(TransfigurationType transfigurationType) {
         return new TransfigurationRecipeBuilder<>(transfigurationType, TransfigurationRecipes.ENTITY_TRANSFIGURATION.get());
+    }
+
+    public static TransfigurationRecipeBuilder<EntityIngredientSerializer<?>> entity(Supplier<? extends TransfigurationType> transfigurationType) {
+        return entity(transfigurationType.get());
     }
 
     public TransfigurationRecipeBuilder<T> withIngredient(IFinishedObject<T> ingredient) {

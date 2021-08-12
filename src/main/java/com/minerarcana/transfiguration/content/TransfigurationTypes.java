@@ -58,6 +58,7 @@ public class TransfigurationTypes {
             .lang("Accursed")
             .fallback(NETHERI)
             .primaryColor(DyeColor.PURPLE.getColorValue())
+            .recipe(TransfigurationRecipeData::accursedRecipes)
             .dust()
             .recipe((context, provider) -> {
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)
@@ -115,6 +116,7 @@ public class TransfigurationTypes {
             .lang("Blessed")
             .fallback(MUTANDI)
             .primaryColor(DyeColor.YELLOW.getColorValue())
+            .recipe(TransfigurationRecipeData::blessedRecipes)
             .dust()
             .recipe((context, provider) -> {
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)
@@ -159,6 +161,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Destabilizing")
             .primaryColor(DyeColor.WHITE.getColorValue())
+            .recipe(TransfigurationRecipeData::destabilizingRecipes)
             .dust()
             .recipe((context, provider) -> {
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)

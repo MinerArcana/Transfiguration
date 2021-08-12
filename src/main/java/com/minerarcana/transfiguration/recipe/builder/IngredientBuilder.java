@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.recipe.builder;
 
+import com.google.gson.JsonArray;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
@@ -19,6 +20,31 @@ public class IngredientBuilder {
         return new FinishedObject<>(TransfigurationRecipes.SINGLE_BLOCK_INGREDIENT_SERIALIZER.get(),
                 block::getRegistryName, jsonObject -> jsonObject.addProperty("block", Objects.requireNonNull(
                 block.getRegistryName()).toString()));
+    }
+
+    @SafeVarargs
+    public static FinishedObject<BlockIngredientSerializer<?>> notBlock(FinishedObject<BlockIngredientSerializer<?>>... finishedObjects) {
+        return new FinishedObject<>(
+                TransfigurationRecipes.NOT_BLOCK_INGREDIENT_SERIALIZER.get(),
+                finishedObjects[0]::getId,
+                jsonObject -> {
+                    JsonArray jsonElements = new JsonArray();
+                    for (FinishedObject<BlockIngredientSerializer<?>> finishedObject : finishedObjects) {
+                        jsonElements.add(finishedObject.getJson());
+                    }
+                    jsonObject.add("ingredient", jsonElements);
+                }
+        );
+    }
+
+    public static FinishedObject<BlockIngredientSerializer<?>> trueBlock() {
+        return new FinishedObject<>(
+                TransfigurationRecipes.TRUE_BLOCK_INGREDIENT_SERIALIZER.get(),
+                TransfigurationRecipes.TRUE_BLOCK_INGREDIENT_SERIALIZER::getId,
+                jsonObject -> {
+
+                }
+        );
     }
 
     public static FinishedObject<EntityIngredientSerializer<?>> entityType(EntityType<?> entityType) {

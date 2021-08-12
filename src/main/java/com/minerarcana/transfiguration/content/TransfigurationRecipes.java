@@ -5,10 +5,7 @@ import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipeSe
 import com.minerarcana.transfiguration.recipe.dust.DustRecipe;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipeSerializer;
 import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipeSerializer;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
-import com.minerarcana.transfiguration.recipe.ingedient.block.SingleBlockIngredientSerializer;
-import com.minerarcana.transfiguration.recipe.ingedient.block.TagBlockIngredient;
-import com.minerarcana.transfiguration.recipe.ingedient.block.TagBlockIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.block.*;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityTypeEntityIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.entity.TagEntityIngredientSerializer;
@@ -44,6 +41,16 @@ public class TransfigurationRecipes {
                     .object("block")
                     .simple(BlockIngredientSerializer.class, SingleBlockIngredientSerializer::new);
 
+    public static final RegistryEntry<NotBlockIngredientSerializer> NOT_BLOCK_INGREDIENT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("not")
+                    .simple(BlockIngredientSerializer.class, NotBlockIngredientSerializer::new);
+
+    public static final RegistryEntry<BlankIngredientSerializer<TrueIngredient>> TRUE_BLOCK_INGREDIENT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("true")
+                    .simple(BlockIngredientSerializer.class, () -> new BlankIngredientSerializer<>(TrueIngredient::new));
+
     public static final RegistryEntry<EntityTypeEntityIngredientSerializer> ENTITY_TYPE_ENTITY_INGREDIENT_SERIALIZER =
             Transfiguration.getRegistrate()
                     .object("entity_type")
@@ -73,6 +80,21 @@ public class TransfigurationRecipes {
             Transfiguration.getRegistrate()
                     .object("block_tag")
                     .simple(ResultSerializer.class, BlockTagResultSerializer::new);
+
+    public static final RegistryEntry<ItemResultSerializer> ITEM_RESULT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("item")
+                    .simple(ResultSerializer.class, ItemResultSerializer::new);
+
+    public static final RegistryEntry<ChanceResultSerializer> CHANCE_RESULT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("chance")
+                    .simple(ResultSerializer.class, ChanceResultSerializer::new);
+
+    public static final RegistryEntry<BlankResultSerializer<FallingBlockResult>> FALLING_RESULT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("falling_block")
+                    .simple(ResultSerializer.class, () -> new BlankResultSerializer<>(FallingBlockResult::new));
 
     public static final RegistryEntry<IRecipeSerializer<DustRecipe>> DUST_RECIPE_SERIALIZER =
             Transfiguration.getRegistrate()

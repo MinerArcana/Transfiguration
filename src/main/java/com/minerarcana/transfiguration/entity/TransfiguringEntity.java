@@ -69,6 +69,8 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                 }
             } else {
                 int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
+                TransfigurationContainer<V> transfigurationContainer = this.createTransfigurationContainer();
+
                 if (remainingTicks <= 0 && !this.removedInputs) {
                     this.removedInputs = true;
                     this.removeInput();
@@ -81,7 +83,7 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                             Explosion.Mode.NONE
                     );
                 }
-                TransfigurationContainer<V> transfigurationContainer = this.createTransfigurationContainer();
+
                 if (transfigurationContainer != null) {
                     if (this.getResultInstance(recipe).tick(transfigurationContainer, powerModifier, remainingTicks)) {
                         this.remove();

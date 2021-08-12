@@ -1,0 +1,11 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:destabilizing",
+  "ingredient": {
+    "type": "transfiguration:true"
+  },
+  "result": {
+    "type": "transfiguration:falling_block"
+  },
+  "ticks": 12
+}

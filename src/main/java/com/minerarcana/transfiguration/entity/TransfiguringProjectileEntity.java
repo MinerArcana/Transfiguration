@@ -52,6 +52,7 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
                 this.getPowerModifier(),
                 this.getTimeModifier()
         );
+        this.remove();
     }
 
     @Override

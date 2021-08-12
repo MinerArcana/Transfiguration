@@ -22,8 +22,13 @@ public class TransfigurationAdditionalData {
 
     public static void addEntityTypeTags(RegistrateTagsProvider<EntityType<?>> tagsProvider) {
         tagsProvider.getOrCreateBuilder(TransfigurationEntityTypeTags.OUTPUTS_ACCURSED)
-                .add(EntityType.WITCH, EntityType.ZOMBIE, EntityType.PILLAGER, EntityType.VINDICATOR,
-                        EntityType.ILLUSIONER);
+                .add(
+                        EntityType.WITCH,
+                        EntityType.ZOMBIE,
+                        EntityType.PILLAGER,
+                        EntityType.VINDICATOR,
+                        EntityType.ILLUSIONER
+                );
     }
 
     public static void addBlockTags(RegistrateTagsProvider<Block> tagsProvider) {
@@ -60,34 +65,6 @@ public class TransfigurationAdditionalData {
     }
 
     public static void addRecipes(RegistrateRecipeProvider recipeProvider) {
-        //region Accursed
-        TransfigurationRecipeBuilder.block(TransfigurationTypes.ACCURSED.get())
-                .withIngredient(IngredientBuilder.block(Blocks.DIRT))
-                .withResult(ResultBuilder.block(Blocks.COARSE_DIRT))
-                .build(recipeProvider);
-
-        TransfigurationRecipeBuilder.block(TransfigurationTypes.ACCURSED.get())
-                .withIngredient(IngredientBuilder.block(Blocks.GRASS_BLOCK))
-                .withResult(ResultBuilder.block(Blocks.COARSE_DIRT))
-                .build(recipeProvider);
-
-        TransfigurationRecipeBuilder.entity(TransfigurationTypes.ACCURSED.get())
-                .withIngredient(IngredientBuilder.entityType(EntityType.VILLAGER))
-                .withResult(ResultBuilder.entityTypeTag(TransfigurationEntityTypeTags.OUTPUTS_ACCURSED))
-                .build(recipeProvider);
-        //endregion
-
-        //region Blessed
-        TransfigurationRecipeBuilder.entity(TransfigurationTypes.BLESSED.get())
-                .withIngredient(IngredientBuilder.entityType(EntityType.ZOMBIE_VILLAGER))
-                .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
-                .build(recipeProvider);
-
-        TransfigurationRecipeBuilder.block(TransfigurationTypes.BLESSED.get())
-                .withIngredient(IngredientBuilder.block(Blocks.STONE))
-                .withResult(ResultBuilder.blockTag(Tags.Blocks.ORES))
-                .build(recipeProvider);
-        //endregion
 
         //region Dissolution
         TransfigurationRecipeBuilder.block(TransfigurationTypes.DISSOLUTION.get())
