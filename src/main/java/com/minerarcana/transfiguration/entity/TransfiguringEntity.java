@@ -1,12 +1,10 @@
 package com.minerarcana.transfiguration.entity;
 
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
-import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.result.ResultInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -38,11 +36,11 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     private ResultInstance resultInstance;
     private ItemStack itemStack;
     private UUID caster;
-    private boolean removedInputs;
+    private boolean hasTriggered;
 
     public TransfiguringEntity(EntityType<? extends Entity> entityType, World world) {
         super(entityType, world);
-        this.removedInputs = false;
+        this.hasTriggered = false;
     }
 
     public TransfiguringEntity(EntityType<? extends Entity> entityType, World world, BlockPos blockPos, T recipe,
@@ -54,7 +52,7 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
         this.setRecipeName(recipe.getId().toString());
         this.modifiedTime = modifiedTime;
         this.powerModifier = powerModifier;
-        this.removedInputs = false;
+        this.hasTriggered = false;
     }
 
     @Override
@@ -70,22 +68,8 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
             } else {
                 int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
                 TransfigurationContainer<V> transfigurationContainer = this.createTransfigurationContainer();
-
-                if (remainingTicks <= 0 && !this.removedInputs) {
-                    this.removedInputs = true;
-                    this.removeInput();
-                    this.getEntityWorld().createExplosion(
-                            null,
-                            this.getPosX() + 0.5,
-                            this.getPosY() + 0.5,
-                            this.getPosZ() + 0.5,
-                            1.9F,
-                            Explosion.Mode.NONE
-                    );
-                }
-
                 if (transfigurationContainer != null) {
-                    if (this.getResultInstance(recipe).tick(transfigurationContainer, powerModifier, remainingTicks)) {
+                    if (this.getResultInstance(recipe).tick(transfigurationContainer, powerModifier, remainingTicks, this::trigger)) {
                         this.remove();
                     }
                 } else {
@@ -93,6 +77,27 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                 }
             }
         }
+    }
+
+    private boolean trigger(boolean removeInput) {
+        int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
+        if (remainingTicks <= 0 && !this.hasTriggered) {
+            if (removeInput) {
+                this.removeInput();
+            }
+
+            this.getEntityWorld().createExplosion(
+                    null,
+                    this.getPosX() + 0.5,
+                    this.getPosY() + 0.5,
+                    this.getPosZ() + 0.5,
+                    1.9F,
+                    Explosion.Mode.NONE
+            );
+            this.hasTriggered = true;
+            return true;
+        }
+        return false;
     }
 
     @Override

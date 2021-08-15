@@ -16,7 +16,7 @@ public class FallingBlockResult extends Result {
     @Nonnull
     @Override
     public ResultInstance create() {
-        return new AfterDoneResultInstance(this::handle);
+        return new AfterDoneResultInstance(0, false, this::handle);
     }
 
     private void handle(TransfigurationContainer<?> container, double powerModifier) {

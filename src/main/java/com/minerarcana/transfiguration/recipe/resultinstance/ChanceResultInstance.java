@@ -13,7 +13,11 @@ public class ChanceResultInstance extends ResultInstance {
     }
 
     @Override
-    public boolean tick(TransfigurationContainer<?> container, double powerModifier, int remainingTicks) {
-        return success ? resultInstance.tick(container, powerModifier, remainingTicks) : remainingTicks > 0;
+    public boolean tick(TransfigurationContainer<?> container, double powerModifier, int remainingTicks, ITrigger trigger) {
+        if (success) {
+            return resultInstance.tick(container, powerModifier, remainingTicks, trigger);
+        } else {
+            return !trigger.trigger(true);
+        }
     }
 }
