@@ -1,13 +1,13 @@
 {
   "type": "transfiguration:entity_transfiguration",
-  "transfigurationType": "transfiguration:netheri",
+  "transfigurationType": "transfiguration:overni",
   "ingredient": {
     "type": "transfiguration:entity_type",
-    "entity": "minecraft:hoglin"
+    "entity": "minecraft:strider"
   },
   "result": {
     "type": "transfiguration:entity",
-    "entity": "minecraft:pig"
+    "entity": "minecraft:horse"
   },
   "ticks": 12
 }

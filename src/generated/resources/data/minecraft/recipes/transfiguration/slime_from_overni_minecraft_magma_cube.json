@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:overni",
+  "ingredient": {
+    "type": "transfiguration:entity_type",
+    "entity": "minecraft:magma_cube"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:slime"
+  },
+  "ticks": 12
+}

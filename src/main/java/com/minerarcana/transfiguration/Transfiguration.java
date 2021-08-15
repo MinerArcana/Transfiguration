@@ -30,7 +30,6 @@ public class Transfiguration {
 
     private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID)
             .itemGroup(TransfiguringItemGroup::new, "Transfiguration")
-            .addDataGenerator(ProviderType.RECIPE, TransfigurationAdditionalData::addRecipes)
             .addDataGenerator(ProviderType.ENTITY_TAGS, TransfigurationAdditionalData::addEntityTypeTags)
             .addDataGenerator(ProviderType.BLOCK_TAGS, TransfigurationAdditionalData::addBlockTags)
             .addDataGenerator(ProviderType.LANG, TransfigurationAdditionalData::addLang)

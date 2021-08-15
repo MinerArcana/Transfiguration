@@ -29,6 +29,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Netheri")
             .primaryColor(DyeColor.RED.getColorValue())
+            .recipe(TransfigurationRecipeData::netheriRecipes)
             .dust()
             .recipe((context, provider) -> {
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)
@@ -190,6 +191,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Dissolution")
             .primaryColor(DyeColor.BLUE.getColorValue())
+            .recipe(TransfigurationRecipeData::dissolutionRecipes)
             .dust()
             .recipe((context, provider) -> ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)
                     .addIngredient(TransfigurationItems.MAGIC_POWDER.get(), 7)
@@ -207,6 +209,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Fungal")
             .primaryColor(DyeColor.BROWN.getColorValue())
+            .recipe(TransfigurationRecipeData::fungalRecipes)
             .dust()
             .recipe((context, provider) -> ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)
                     .addIngredient(TransfigurationItems.MAGIC_POWDER.get(), 6)
@@ -225,6 +228,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Overni")
             .primaryColor(DyeColor.LIME.getColorValue())
+            .recipe(TransfigurationRecipeData::overniRecipes)
             .dust()
             .recipe((context, provider) -> {
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)

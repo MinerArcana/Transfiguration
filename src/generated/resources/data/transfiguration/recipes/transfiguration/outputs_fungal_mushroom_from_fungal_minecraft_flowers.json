@@ -1,13 +1,13 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:mutandi",
+  "transfigurationType": "transfiguration:fungal",
   "ingredient": {
     "type": "transfiguration:tag",
-    "tag": "transfiguration:inputs/mutandi"
+    "tag": "minecraft:flowers"
   },
   "result": {
     "type": "transfiguration:block_tag",
-    "tag": "transfiguration:outputs/mutandi"
+    "tag": "transfiguration:outputs/fungal/mushroom"
   },
   "ticks": 12
 }

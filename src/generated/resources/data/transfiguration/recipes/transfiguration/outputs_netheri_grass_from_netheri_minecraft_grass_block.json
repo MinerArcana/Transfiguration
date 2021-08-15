@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:netheri",
+  "ingredient": {
+    "type": "transfiguration:block",
+    "block": "minecraft:grass_block"
+  },
+  "result": {
+    "type": "transfiguration:block_tag",
+    "tag": "transfiguration:outputs/netheri/grass"
+  },
+  "ticks": 12
+}

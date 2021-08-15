@@ -1,6 +1,7 @@
 package com.minerarcana.transfiguration.recipe.block;
 
 import com.google.gson.JsonObject;
+import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
