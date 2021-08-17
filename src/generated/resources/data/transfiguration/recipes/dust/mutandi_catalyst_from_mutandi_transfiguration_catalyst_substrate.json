@@ -1,13 +1,13 @@
 {
   "type": "transfiguration:dust",
-  "transfigurationType": "transfiguration:netheri",
+  "transfigurationType": "transfiguration:mutandi",
   "block": {
     "type": "transfiguration:block",
     "block": "transfiguration:catalyst_substrate"
   },
   "fluid": "minecraft:water",
   "output": {
-    "item": "transfiguration:overni_catalyst",
+    "item": "transfiguration:mutandi_catalyst",
     "nbt": "{Damage:0}"
   }
 }

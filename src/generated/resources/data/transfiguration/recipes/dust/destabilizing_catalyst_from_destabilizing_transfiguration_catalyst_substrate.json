@@ -1,13 +1,13 @@
 {
   "type": "transfiguration:dust",
-  "transfigurationType": "transfiguration:netheri",
+  "transfigurationType": "transfiguration:destabilizing",
   "block": {
     "type": "transfiguration:block",
     "block": "transfiguration:catalyst_substrate"
   },
   "fluid": "minecraft:water",
   "output": {
-    "item": "transfiguration:blessed_catalyst",
+    "item": "transfiguration:destabilizing_catalyst",
     "nbt": "{Damage:0}"
   }
 }

@@ -3,7 +3,6 @@ package com.minerarcana.transfiguration.registrate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.minerarcana.transfiguration.api.TransfigurationType;
-import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.item.TransfiguringCatalystItem;
 import com.minerarcana.transfiguration.item.TransfiguringDustItem;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
@@ -73,7 +72,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                 .model((context, provider) -> provider.generated(context, provider.modLoc("item/catalyst")))
                 .color(TransfigurationColors.transfiguringTypeColors(0))
                 .lang("%s Catalyst")
-                .recipe((context, provider) -> DustRecipeBuilder.create(TransfigurationTypes.NETHERI.get())
+                .recipe((context, provider) -> DustRecipeBuilder.create(this.getEntry())
                         .withFluid(FluidTags.WATER)
                         .withOutput(context.get().getDefaultInstance())
                         .build(provider)
