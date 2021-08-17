@@ -1,4 +1,4 @@
-package com.minerarcana.transfiguration.mixin;
+package com.minerarcana.transfiguration.entity;
 
 public interface IAged {
     int getActualAge();

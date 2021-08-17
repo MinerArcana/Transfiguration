@@ -1,9 +1,15 @@
 package com.minerarcana.transfiguration.item;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.content.TransfigurationAttributes;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -47,5 +53,23 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
     @Override
     public TransfigurationType getType(ItemStack itemStack) {
         return type.get();
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+        return slot == EquipmentSlotType.MAINHAND ? ImmutableMultimap.of(
+                TransfigurationAttributes.POWER_MODIFIER.get(), new AttributeModifier(
+                        TransfigurationAttributes.POWER_UUID,
+                        "Item Modifier",
+                        this.getPowerModifier(stack),
+                        AttributeModifier.Operation.ADDITION
+                ),
+                TransfigurationAttributes.TIME_MODIFIER.get(), new AttributeModifier(
+                        TransfigurationAttributes.TIME_UUID,
+                        "Item Modifier",
+                        this.getTimeModifier(stack),
+                        AttributeModifier.Operation.ADDITION
+                )
+        ) : super.getAttributeModifiers(slot, stack);
     }
 }
