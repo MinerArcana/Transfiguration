@@ -88,6 +88,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Mutandi")
             .primaryColor(DyeColor.GREEN.getColorValue())
+            .recipe(TransfigurationRecipeData::mutandiRecipes)
             .dust()
             .recipe((context, provider) -> {
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)

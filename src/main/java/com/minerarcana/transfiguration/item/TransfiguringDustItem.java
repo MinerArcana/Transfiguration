@@ -2,7 +2,7 @@ package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.mixin.IAged;
+import com.minerarcana.transfiguration.entity.IAged;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipe;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipeInventory;
 import net.minecraft.block.BlockState;
@@ -62,8 +62,6 @@ public class TransfiguringDustItem extends TransfiguringItem {
                 entity.remove();
                 return true;
             }
-
-
         }
         return false;
     }
