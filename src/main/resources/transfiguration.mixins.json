@@ -4,7 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "transfiguration.refmap.json",
   "mixins": [
-    "ItemEntityAccessor"
+    "ItemEntityAged"
   ],
   "client": [
 
