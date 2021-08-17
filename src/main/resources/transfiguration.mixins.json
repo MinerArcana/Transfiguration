@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.minerarcana.transfiguration.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "transfiguration.refmap.json",
+  "mixins": [
+    "ItemEntityAccessor"
+  ],
+  "client": [
+
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

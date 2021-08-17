@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
+import com.minerarcana.transfiguration.mixin.ItemEntityAccessor;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipe;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipeInventory;
 import net.minecraft.block.BlockState;
@@ -33,7 +34,7 @@ public class TransfiguringDustItem extends TransfiguringItem {
         if (!entity.getPersistentData().contains("PreventRemoteMovement")) {
             entity.getPersistentData().putBoolean("PreventRemoteMovement", true);
         }
-        if (entity.getAge() + 1 >= 300) {
+        if (entity.getAge() + 1 >= entity.lifespan) {
             World world = entity.getEntityWorld();
             BlockState blockState = world.getBlockState(entity.getPosition());
             FluidState fluidState = world.getFluidState(entity.getPosition());

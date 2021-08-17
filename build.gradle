@@ -5,9 +5,14 @@ buildscript {
             name = "forge"
             url = "https://maven.minecraftforge.net"
         }
+        maven {
+            name = "mixin"
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
     }
     dependencies {
         classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "4.1.+", changing: true
+        classpath group: "org.spongepowered", name: "mixingradle", version: "0.7-SNAPSHOT"
     }
 }
 
@@ -16,6 +21,7 @@ plugins {
 }
 
 apply plugin: "net.minecraftforge.gradle"
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: "maven"
 apply plugin: "java"
 apply plugin: "idea"
@@ -57,16 +63,22 @@ minecraft {
 
     runs {
         client {
+            arg "-mixin.config=transfiguration.mixins.json"
+
             workingDirectory project.file("run")
             source sourceSets.main
         }
 
         server {
+            arg "-mixin.config=transfiguration.mixins.json"
+
             workingDirectory project.file("run")
             source sourceSets.main
         }
 
         data {
+            arg "-mixin.config=transfiguration.mixins.json"
+
             workingDirectory project.file("run")
             environment 'target', 'fmluserdevdata'
             properties 'fml.earlyprogresswindow': 'false'
@@ -119,6 +131,8 @@ dependencies {
 
     compileOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
 }
 
 task srcJar(type: Jar) {
@@ -190,5 +204,9 @@ gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xmaxerrs" << "10000"
     }
+}
+
+mixin {
+    add sourceSets.main, "transfiguration.refmap.json"
 }
 
