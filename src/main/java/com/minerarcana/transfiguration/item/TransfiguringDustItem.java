@@ -12,6 +12,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -36,8 +37,14 @@ public class TransfiguringDustItem extends TransfiguringItem {
         }
         if (entity instanceof IAged && ((IAged) entity).getActualAge() + 1 >= entity.lifespan) {
             World world = entity.getEntityWorld();
-            BlockState blockState = world.getBlockState(entity.getPosition());
-            FluidState fluidState = world.getFluidState(entity.getPosition());
+            BlockPos blockPos = entity.getPosition();
+            BlockState blockState = world.getBlockState(blockPos);
+            FluidState fluidState = world.getFluidState(blockPos);
+            if (blockState.isIn(Blocks.AIR) && fluidState.isEmpty()) {
+                blockPos = blockPos.down();
+                blockState = world.getBlockState(blockPos);
+                fluidState = world.getFluidState(blockPos);
+            }
             DustRecipeInventory dustRecipeInventory = new DustRecipeInventory(
                     blockState,
                     fluidState,

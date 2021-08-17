@@ -56,6 +56,7 @@ public class Transfiguration {
         TransfigurationTypes.setup();
         TransfigurationEntities.setup();
         TransfigurationItems.setup();
+        TransfigurationAttributes.setup(modEventBus);
 
         CCTweaked.setup();
     }
