@@ -157,9 +157,9 @@ public class TransfigurationRecipeData {
                 .withResult(ResultBuilder.entityType(EntityType.MAGMA_CUBE))
                 .build(provider);
 
-        TransfigurationRecipeBuilder.entity(context)
-                .withIngredient(IngredientBuilder.entityType(EntityType.SKELETON))
-                .withResult(ResultBuilder.entityType(EntityType.WITHER_SKELETON))
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.STONE))
+                .withResult(ResultBuilder.block(Blocks.BASALT))
                 .build(provider);
     }
 
@@ -225,9 +225,9 @@ public class TransfigurationRecipeData {
                 .withResult(ResultBuilder.entityType(EntityType.SLIME))
                 .build(provider);
 
-        TransfigurationRecipeBuilder.entity(context)
-                .withIngredient(IngredientBuilder.entityType(EntityType.WITHER_SKELETON))
-                .withResult(ResultBuilder.entityType(EntityType.SKELETON))
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.BASALT))
+                .withResult(ResultBuilder.block(Blocks.STONE))
                 .build(provider);
     }
 }
