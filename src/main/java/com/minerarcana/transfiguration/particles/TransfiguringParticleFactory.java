@@ -20,7 +20,12 @@ public class TransfiguringParticleFactory implements IParticleFactory<Transfigur
     @ParametersAreNonnullByDefault
     public Particle makeParticle(TransfiguringParticleData type, ClientWorld world, double x, double y, double z,
                                  double xSpeed, double ySpeed, double zSpeed) {
-        TransfiguringParticle particle = new TransfiguringParticle(world, x, y, z, xSpeed, ySpeed, zSpeed);
+        TransfiguringParticle particle = new TransfiguringParticle(
+                world,
+                x, y, z,
+                xSpeed, ySpeed, zSpeed,
+                type.getTransfigurationType()
+        );
         particle.selectSpriteRandomly(sprite);
         return particle;
     }
