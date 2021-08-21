@@ -72,9 +72,9 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                     if (world instanceof ServerWorld) {
                         ((ServerWorld) world).spawnParticle(
                                 new TransfiguringParticleData(recipe.getTransfigurationType()),
-                                this.getPosX() + 0.5,
-                                this.getPosY() + 0.5,
-                                this.getPosZ() + 0.5,
+                                this.getPosX() + 0.5 + (world.rand.nextInt(3) - 1),
+                                this.getPosY() + 0.5 + (world.rand.nextInt(3) - 1),
+                                this.getPosZ() + 0.5 + (world.rand.nextInt(3) - 1),
                                 1,
                                 0.0D,
                                 0.0D,

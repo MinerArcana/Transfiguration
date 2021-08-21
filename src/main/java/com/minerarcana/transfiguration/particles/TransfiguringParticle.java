@@ -22,6 +22,15 @@ public class TransfiguringParticle extends SpriteTexturedParticle {
         );
     }
 
+    public void tick() {
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
+        if (this.age++ >= this.maxAge) {
+            this.setExpired();
+        }
+    }
+
     @Override
     @Nonnull
     public IParticleRenderType getRenderType() {
