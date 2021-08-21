@@ -9,5 +9,5 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:grass_block"
   },
-  "ticks": 12
+  "ticks": 240
 }

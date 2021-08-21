@@ -21,7 +21,7 @@ public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegis
     private final IRecipeSerializer<?> recipeSerializer;
     private IFinishedObject<T> ingredient;
     private IFinishedObject<ResultSerializer<?>> result;
-    private int ticks = 12;
+    private int ticks = 12 * 20;
 
     private TransfigurationRecipeBuilder(TransfigurationType transfigurationType, IRecipeSerializer<?> recipeSerializer) {
         this.transfigurationType = transfigurationType;

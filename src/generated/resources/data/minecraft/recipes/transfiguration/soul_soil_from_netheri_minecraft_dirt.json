@@ -9,5 +9,5 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:soul_soil"
   },
-  "ticks": 12
+  "ticks": 240
 }

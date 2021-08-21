@@ -9,5 +9,5 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:campfire"
   },
-  "ticks": 12
+  "ticks": 240
 }

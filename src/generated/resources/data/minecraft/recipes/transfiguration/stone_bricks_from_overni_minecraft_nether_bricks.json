@@ -9,5 +9,5 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:stone_bricks"
   },
-  "ticks": 12
+  "ticks": 240
 }

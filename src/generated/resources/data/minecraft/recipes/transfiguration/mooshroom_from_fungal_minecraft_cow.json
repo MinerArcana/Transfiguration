@@ -9,5 +9,5 @@
     "type": "transfiguration:entity",
     "entity": "minecraft:mooshroom"
   },
-  "ticks": 12
+  "ticks": 240
 }

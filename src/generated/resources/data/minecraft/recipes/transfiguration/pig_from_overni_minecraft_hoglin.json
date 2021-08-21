@@ -9,5 +9,5 @@
     "type": "transfiguration:entity",
     "entity": "minecraft:pig"
   },
-  "ticks": 12
+  "ticks": 240
 }
