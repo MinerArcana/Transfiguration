@@ -61,12 +61,12 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
 
     @Override
     public double getPowerModifier(ItemStack itemStack) {
-        return itemStack.getTag() != null ? itemStack.getTag().getDouble("power") : 1.0F;
+        return itemStack.getTag() != null && itemStack.getTag().contains("power")? itemStack.getTag().getDouble("power") : 1.0F;
     }
 
     @Override
     public double getTimeModifier(ItemStack itemStack) {
-        return itemStack.getTag() != null ? itemStack.getTag().getDouble("time") : 1.0F;
+        return itemStack.getTag() != null && itemStack.getTag().contains("time") ? itemStack.getTag().getDouble("time") : 1.0F;
     }
 
     @Override
