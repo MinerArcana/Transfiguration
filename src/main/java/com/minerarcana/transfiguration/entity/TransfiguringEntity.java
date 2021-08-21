@@ -1,11 +1,11 @@
 package com.minerarcana.transfiguration.entity;
 
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.particles.TransfiguringParticleData;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.result.ResultInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -14,12 +14,12 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.NonNullPredicate;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.UUID;
 
 public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>, U extends NonNullPredicate<V>, V>
         extends Entity {
@@ -34,8 +34,6 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     private double powerModifier;
     private int noRecipeTicks;
     private ResultInstance resultInstance;
-    private ItemStack itemStack;
-    private UUID caster;
     private boolean hasTriggered;
 
     public TransfiguringEntity(EntityType<? extends Entity> entityType, World world) {
@@ -59,6 +57,7 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     public void tick() {
         super.tick();
         if (!this.getEntityWorld().isRemote()) {
+
             if (recipe == null) {
                 recipe = this.getRecipe();
                 noRecipeTicks++;
@@ -69,6 +68,20 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                 int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
                 TransfigurationContainer<V> transfigurationContainer = this.createTransfigurationContainer();
                 if (transfigurationContainer != null) {
+                    World world = this.getEntityWorld();
+                    if (world instanceof ServerWorld) {
+                        ((ServerWorld) world).spawnParticle(
+                                new TransfiguringParticleData(recipe.getTransfigurationType()),
+                                this.getPosX() + 0.5,
+                                this.getPosY() + 0.5,
+                                this.getPosZ() + 0.5,
+                                1,
+                                0.0D,
+                                0.0D,
+                                0.0D,
+                                0.15F
+                        );
+                    }
                     if (this.getResultInstance(recipe).tick(transfigurationContainer, powerModifier, remainingTicks, this::trigger)) {
                         this.remove();
                     }
