@@ -1,22 +1,24 @@
 package com.minerarcana.transfiguration.particles;
 
 import com.minerarcana.transfiguration.Transfiguration;
+import com.minerarcana.transfiguration.util.Codecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.particles.ParticleType;
-import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 public class TransfiguringParticleType extends ParticleType<TransfiguringParticleData> {
+
     public static final Codec<TransfiguringParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.fieldOf("transfigurationType")
-                    .xmap(
-                            string -> Transfiguration.transfigurationTypes.getValue(new ResourceLocation(string)),
-                            transfigurationType -> Objects.requireNonNull(transfigurationType.getRegistryName()).toString()
-                    )
-                    .forGetter(TransfiguringParticleData::getTransfigurationType)
+            Codecs.forRegistry("transfigurationType", Transfiguration.transfigurationTypes)
+                    .forGetter(TransfiguringParticleData::getTransfigurationType),
+            Codecs.VECTOR.fieldOf("direction")
+                    .forGetter(TransfiguringParticleData::getEndPosition),
+            Codec.INT.fieldOf("delay")
+                    .forGetter(TransfiguringParticleData::getDelay),
+            Codec.INT.fieldOf("maxAge")
+                    .forGetter(TransfiguringParticleData::getMaxAge)
     ).apply(instance, TransfiguringParticleData::create));
 
     public TransfiguringParticleType() {

@@ -4,6 +4,7 @@ import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.particles.TransfiguringParticleData;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.result.ResultInstance;
+import com.minerarcana.transfiguration.util.Vectors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
@@ -11,8 +12,10 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.NonNullPredicate;
@@ -70,11 +73,13 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                 if (transfigurationContainer != null) {
                     World world = this.getEntityWorld();
                     if (world instanceof ServerWorld) {
+                        Vector3d startPos = Vectors.withRandomOffset(this.getPosition(), world.getRandom(), 3);
+                        Vector3d endPos = Vectors.centered(this.getPosition());
                         ((ServerWorld) world).spawnParticle(
-                                new TransfiguringParticleData(recipe.getTransfigurationType()),
-                                this.getPosX() + 0.5 + (world.rand.nextInt(3) - 1),
-                                this.getPosY() + 0.5 + (world.rand.nextInt(3) - 1),
-                                this.getPosZ() + 0.5 + (world.rand.nextInt(3) - 1),
+                                new TransfiguringParticleData(recipe.getTransfigurationType(), endPos, 10, remainingTicks),
+                                startPos.x,
+                                startPos.y,
+                                startPos.z,
                                 1,
                                 0.0D,
                                 0.0D,
@@ -99,13 +104,13 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                 this.removeInput();
             }
 
-            this.getEntityWorld().createExplosion(
+            this.getEntityWorld().playSound(
                     null,
-                    this.getPosX() + 0.5,
-                    this.getPosY() + 0.5,
-                    this.getPosZ() + 0.5,
-                    1.9F,
-                    Explosion.Mode.NONE
+                    this.getPosition(),
+                    SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL,
+                    SoundCategory.PLAYERS,
+                    1,
+                    1
             );
             this.hasTriggered = true;
             return true;
