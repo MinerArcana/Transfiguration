@@ -47,7 +47,7 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     public TransfiguringEntity(EntityType<? extends Entity> entityType, World world, BlockPos blockPos, T recipe,
                                int modifiedTime, double powerModifier) {
         super(entityType, world);
-        this.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        this.setPosition(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
         this.startTime = world.getGameTime();
         this.recipe = recipe;
         this.setRecipeName(recipe.getId().toString());

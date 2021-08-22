@@ -26,6 +26,7 @@ public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfi
 
     public EntityTransfiguringEntity(EntityType<? extends Entity> entityType, World world) {
         super(entityType, world);
+        this.entityWeakReference = new WeakReference<>(null);
     }
 
     public EntityTransfiguringEntity(World world, Entity entity, EntityTransfigurationRecipe recipe, int modifiedTime,
@@ -52,6 +53,15 @@ public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfi
                 entity.getPosition(),
                 Entity::remove
         );
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        Entity entity = this.getInput();
+        if (entity != null && !this.getPassengers().contains(entity)) {
+            entity.startRiding(this, true);
+        }
     }
 
     @Nullable
@@ -103,5 +113,9 @@ public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfi
             }
         }
         return null;
+    }
+
+    public double getMountedYOffset() {
+        return -0.5D;
     }
 }
