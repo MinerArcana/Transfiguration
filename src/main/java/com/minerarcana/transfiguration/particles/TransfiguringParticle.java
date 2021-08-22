@@ -41,18 +41,14 @@ public class TransfiguringParticle extends SpriteTexturedParticle {
             Vector3d currentPos = new Vector3d(this.posX, this.posY, this.posZ);
             Vector3d direction = endPosition.subtract(currentPos).normalize();
 
-            this.motionX = direction.x / 2;
-            this.motionY = direction.y / 2;
-            this.motionZ = direction.z / 2;
+            this.motionX = direction.x / 8;
+            this.motionY = direction.y / 8;
+            this.motionZ = direction.z / 8;
             this.move(motionX, motionY, motionZ);
-            if (Math.abs((this.prevPosX - this.posX) + (this.prevPosY - this.posY) + (this.prevPosZ - this.posZ)) < 0.09) {
+            if (Math.abs((this.prevPosX - this.posX) + (this.prevPosY - this.posY) + (this.prevPosZ - this.posZ)) < 0.02) {
                 this.setExpired();
             }
         }
-    }
-
-    public double getMotionMag() {
-        return motionX * motionX + motionY * motionY + motionZ * motionZ;
     }
 
     @Override
