@@ -1,11 +1,9 @@
 package com.minerarcana.transfiguration.particles;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
-import com.minerarcana.transfiguration.util.Vectors;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 import javax.annotation.Nonnull;
@@ -40,19 +38,16 @@ public class TransfiguringParticle extends SpriteTexturedParticle {
         } else if (this.delay > 0) {
             this.delay--;
         } else {
-            double motionMag = MathHelper.clamp(Math.sqrt(this.getMotionMag()) + 0.1, -0.3, 0.3);
-            Vector3d direction = Vectors.getVector(
-                    new Vector3d(
-                            this.posX,
-                            this.posY,
-                            this.posZ
-                    ),
-                    endPosition
-            ).mul(motionMag, motionMag, motionMag);
-            this.motionX = direction.x;
-            this.motionY = 0;
-            this.motionZ = direction.z;
+            Vector3d currentPos = new Vector3d(this.posX, this.posY, this.posZ);
+            Vector3d direction = endPosition.subtract(currentPos).normalize();
+
+            this.motionX = direction.x / 2;
+            this.motionY = direction.y / 2;
+            this.motionZ = direction.z / 2;
             this.move(motionX, motionY, motionZ);
+            if (Math.abs((this.prevPosX - this.posX) + (this.prevPosY - this.posY) + (this.prevPosZ - this.posZ)) < 0.09) {
+                this.setExpired();
+            }
         }
     }
 

@@ -22,18 +22,4 @@ public class Vectors {
                 vector.getZ() + 0.5
         );
     }
-
-    public static Vector3d getVector(Vector3d currentPos, Vector3d endPos) {
-        double dX = currentPos.x - endPos.x;
-        double dY = currentPos.y - endPos.y;
-        double dZ = currentPos.x - endPos.z;
-
-        double lineYaw = Math.toDegrees(Math.atan2(dZ, dX));
-        lineYaw %= 360;
-        return new Vector3d(
-                Math.sin(Math.toRadians(lineYaw)),
-                0,
-                Math.cos(Math.toRadians(lineYaw))
-        );
-    }
 }
