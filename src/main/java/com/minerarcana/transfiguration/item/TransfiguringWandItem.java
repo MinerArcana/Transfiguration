@@ -39,7 +39,13 @@ public class TransfiguringWandItem extends TransfiguringItem {
         if (!world.isRemote) {
             TransfiguringProjectileEntity projectile = new TransfiguringProjectileEntity(world, playerEntity);
             projectile.setItem(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM.get()
-                    .withTransfigurationType(this.getType(itemStack)));
+                    .withTypeAndStats(
+                            this.getType(itemStack),
+                            this.getPowerModifier(itemStack),
+                            this.getTimeModifier(itemStack)
+                    )
+            );
+            projectile.setShooter(playerEntity);
             projectile.func_234612_a_(playerEntity, playerEntity.rotationPitch, playerEntity.rotationYaw,
                     0.0F, 1.5F, 1.0F);
             world.addEntity(projectile);

@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.entity;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.content.TransfigurationAttributes;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.item.ITransfiguring;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
@@ -59,8 +60,10 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
     protected void onEntityHit(@Nonnull EntityRayTraceResult entityRayTraceResult) {
         TransfigurationType type = this.getTransfigurationType();
         if (type != null) {
-            TransfigurationContainer<Entity> container = TransfigurationContainer.entity(entityRayTraceResult.getEntity(),
-                    this.func_234616_v_());
+            TransfigurationContainer<Entity> container = TransfigurationContainer.entity(
+                    entityRayTraceResult.getEntity(),
+                    this.func_234616_v_()
+            );
             world.getRecipeManager()
                     .getRecipe(type.getEntityRecipeType(), container, world)
                     .ifPresent(recipe -> recipe.transfigure(container, this.getPowerModifier(), this.getTimeModifier()));
@@ -77,6 +80,13 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
 
     private double getPowerModifier() {
         ItemStack itemStack = this.getItem();
+        Entity entity = this.func_234616_v_();
+        if (entity instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            if (livingEntity.getAttributeManager().hasAttributeInstance(TransfigurationAttributes.POWER_MODIFIER.get())) {
+                return livingEntity.getAttributeValue(TransfigurationAttributes.POWER_MODIFIER.get());
+            }
+        }
         if (itemStack.getItem() instanceof ITransfiguring) {
             return ((ITransfiguring) itemStack.getItem()).getPowerModifier(itemStack);
         }
@@ -85,10 +95,17 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
 
     private double getTimeModifier() {
         ItemStack itemStack = this.getItem();
+        Entity entity = this.func_234616_v_();
+        if (entity instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            if (livingEntity.getAttributeManager().hasAttributeInstance(TransfigurationAttributes.TIME_MODIFIER.get())) {
+                return livingEntity.getAttributeValue(TransfigurationAttributes.TIME_MODIFIER.get());
+            }
+        }
         if (itemStack.getItem() instanceof ITransfiguring) {
             return ((ITransfiguring) itemStack.getItem()).getTimeModifier(itemStack);
         }
-        return 1.0F;
+        return 1F;
     }
 
     @Override
