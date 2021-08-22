@@ -76,7 +76,12 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                         Vector3d startPos = Vectors.withRandomOffset(this.getPosition(), world.getRandom(), 3);
                         Vector3d endPos = Vectors.centered(this.getPosition());
                         ((ServerWorld) world).spawnParticle(
-                                new TransfiguringParticleData(recipe.getTransfigurationType(), endPos, 10, remainingTicks),
+                                new TransfiguringParticleData(
+                                        recipe.getTransfigurationType(),
+                                        endPos,
+                                        10,
+                                        Math.min(remainingTicks, 60)
+                                ),
                                 startPos.x,
                                 startPos.y,
                                 startPos.z,
