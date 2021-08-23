@@ -62,14 +62,13 @@ public abstract class TransfigurationRecipe<T extends NonNullPredicate<U>, U> im
     }
 
     public boolean transfigure(TransfigurationContainer<U> transfigurationContainer, double powerModifier, double timeModifier) {
-        int time = (int) Math.ceil(timeModifier * this.getTicks());
         return transfigurationContainer.getWorld().isRemote() || transfigurationContainer.getWorld().addEntity(
-                this.createTransfiguringEntity(transfigurationContainer, time, powerModifier)
+                this.createTransfiguringEntity(transfigurationContainer, timeModifier, powerModifier)
         );
     }
 
     public abstract TransfiguringEntity<?, T, U> createTransfiguringEntity(
-            TransfigurationContainer<U> transfigurationContainer, int time, double powerModifier
+            TransfigurationContainer<U> transfigurationContainer, double timeModifier, double powerModifier
     );
 
     public TransfigurationType getTransfigurationType() {

@@ -34,10 +34,12 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     private T recipe;
     private long startTime;
     private int modifiedTime;
+    private double timeModifier;
     private double powerModifier;
     private int noRecipeTicks;
     private ResultInstance resultInstance;
     private boolean hasTriggered;
+    private boolean hasSpread;
 
     public TransfiguringEntity(EntityType<? extends Entity> entityType, World world) {
         super(entityType, world);
@@ -45,13 +47,14 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     }
 
     public TransfiguringEntity(EntityType<? extends Entity> entityType, World world, BlockPos blockPos, T recipe,
-                               int modifiedTime, double powerModifier) {
+                               double timeModifier, double powerModifier) {
         super(entityType, world);
         this.setPosition(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
         this.startTime = world.getGameTime();
         this.recipe = recipe;
         this.setRecipeName(recipe.getId().toString());
-        this.modifiedTime = modifiedTime;
+        this.modifiedTime = (int) Math.ceil(recipe.getTicks() / timeModifier);
+        this.timeModifier = timeModifier;
         this.powerModifier = powerModifier;
         this.hasTriggered = false;
     }
@@ -60,7 +63,6 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     public void tick() {
         super.tick();
         if (!this.getEntityWorld().isRemote()) {
-
             if (recipe == null) {
                 recipe = this.getRecipe();
                 noRecipeTicks++;
@@ -69,6 +71,9 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                 }
             } else {
                 int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
+                if (!hasSpread && remainingTicks < this.modifiedTime / 2) {
+                    this.hasSpread = this.spread();
+                }
                 TransfigurationContainer<V> transfigurationContainer = this.createTransfigurationContainer();
                 if (transfigurationContainer != null) {
                     World world = this.getEntityWorld();
@@ -101,6 +106,8 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
             }
         }
     }
+
+    protected abstract boolean spread();
 
     private boolean trigger(boolean removeInput) {
         int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
@@ -178,4 +185,12 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
     public abstract T getRecipe();
 
     public abstract void removeInput();
+
+    protected double getTimeModifier() {
+        return timeModifier;
+    }
+
+    protected double getPowerModifier() {
+        return powerModifier;
+    }
 }

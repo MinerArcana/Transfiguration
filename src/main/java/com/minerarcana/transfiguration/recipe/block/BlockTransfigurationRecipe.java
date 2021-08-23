@@ -32,12 +32,12 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockIngre
     }
 
     @Override
-    public TransfiguringEntity<?, BlockIngredient, BlockState> createTransfiguringEntity(TransfigurationContainer<BlockState> transfigurationContainer, int time, double powerModifier) {
+    public TransfiguringEntity<?, BlockIngredient, BlockState> createTransfiguringEntity(TransfigurationContainer<BlockState> transfigurationContainer, double timeModifier, double powerModifier) {
         return new BlockTransfiguringEntity(
                 transfigurationContainer.getWorld(),
                 transfigurationContainer.getTargetedPos(),
                 this,
-                time,
+                timeModifier,
                 powerModifier
         );
     }

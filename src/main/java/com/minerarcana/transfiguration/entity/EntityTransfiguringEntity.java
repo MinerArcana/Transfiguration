@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.entity;
 
+import com.minerarcana.transfiguration.api.TransfiguringKeyword;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipe;
@@ -20,7 +21,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfigurationRecipe, EntityIngredient, Entity> {
-    public static final DataParameter<Optional<UUID>> INPUT_UUID = EntityDataManager.createKey(EntityTransfiguringEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    public static final DataParameter<Optional<UUID>> INPUT_UUID = EntityDataManager.createKey(
+            EntityTransfiguringEntity.class,
+            DataSerializers.OPTIONAL_UNIQUE_ID
+    );
 
     private WeakReference<Entity> entityWeakReference;
 
@@ -29,9 +33,9 @@ public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfi
         this.entityWeakReference = new WeakReference<>(null);
     }
 
-    public EntityTransfiguringEntity(World world, Entity entity, EntityTransfigurationRecipe recipe, int modifiedTime,
+    public EntityTransfiguringEntity(World world, Entity entity, EntityTransfigurationRecipe recipe, double timeModifier,
                                      double powerModifier) {
-        super(TransfigurationEntities.ENTITY_TRANSFIGURING.get(), world, entity.getPosition(), recipe, modifiedTime, powerModifier);
+        super(TransfigurationEntities.ENTITY_TRANSFIGURING.get(), world, entity.getPosition(), recipe, timeModifier, powerModifier);
         this.entityWeakReference = new WeakReference<>(entity);
         this.getDataManager().set(INPUT_UUID, Optional.of(entity.getUniqueID()));
     }
@@ -61,6 +65,27 @@ public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfi
         Entity entity = this.getInput();
         if (entity != null && !this.getPassengers().contains(entity)) {
             entity.startRiding(this, true);
+        }
+    }
+
+    @Override
+    protected boolean spread() {
+        EntityTransfigurationRecipe recipe = this.getRecipe();
+        if (recipe != null) {
+            if (recipe.getTransfigurationType().hasKeyword(TransfiguringKeyword.CONTAGIOUS) && this.getTimeModifier() >= 1) {
+                this.getEntityWorld().addEntity(new TransfiguringAreaEffectEntity(
+                        world,
+                        recipe,
+                        this.getTimeModifier() / 2,
+                        Math.ceil(this.getPowerModifier() / 2),
+                        this.getPosX(),
+                        this.getPosY(),
+                        this.getPosZ()
+                ));
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 

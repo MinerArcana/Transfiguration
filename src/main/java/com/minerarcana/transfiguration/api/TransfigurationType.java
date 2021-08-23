@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 
 public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType> {
     private final int primaryColor;
+    private final List<TransfiguringKeyword> keywords;
     private final List<Supplier<TransfigurationType>> fallbacks;
 
     private ResourceLocation blockRecipeId;
@@ -26,8 +27,9 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
     private String translationKey;
     private ITextComponent displayName;
 
-    public TransfigurationType(int primaryColor, List<Supplier<TransfigurationType>> includes) {
+    public TransfigurationType(int primaryColor, List<TransfiguringKeyword> keywords, List<Supplier<TransfigurationType>> includes) {
         this.primaryColor = primaryColor;
+        this.keywords = keywords;
         this.fallbacks = includes;
     }
 
@@ -81,5 +83,9 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
 
     public List<Supplier<TransfigurationType>> getFallbacks() {
         return fallbacks;
+    }
+
+    public boolean hasKeyword(TransfiguringKeyword keyword) {
+        return keywords.contains(keyword);
     }
 }

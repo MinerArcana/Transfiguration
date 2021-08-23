@@ -4,7 +4,7 @@ import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.entity.BlockTransfiguringEntity;
 import com.minerarcana.transfiguration.entity.EntityTransfiguringEntity;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
-import com.minerarcana.transfiguration.entity.TransformationAreaEffectEntity;
+import com.minerarcana.transfiguration.entity.TransfiguringAreaEffectEntity;
 import com.minerarcana.transfiguration.item.TransfiguringProjectileItem;
 import com.minerarcana.transfiguration.renderer.TransfiguringEntityRenderer;
 import com.minerarcana.transfiguration.renderer.TransfiguringProjectileRenderer;
@@ -35,7 +35,7 @@ public class TransfigurationEntities {
     public static final RegistryEntry<EntityType<AreaEffectCloudEntity>> TRANSFIGURING_AREA_EFFECT =
             Transfiguration.getRegistrate()
                     .object("transfiguring_area_effect")
-                    .<AreaEffectCloudEntity>entity(TransformationAreaEffectEntity::new, EntityClassification.MISC)
+                    .<AreaEffectCloudEntity>entity(TransfiguringAreaEffectEntity::new, EntityClassification.MISC)
                     .properties(properties -> properties.immuneToFire()
                             .size(6.0F, 0.5F)
                             .trackingRange(10)

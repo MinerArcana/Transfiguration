@@ -23,12 +23,12 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<EntityIng
 
     @Override
     public TransfiguringEntity<?, EntityIngredient, Entity> createTransfiguringEntity(
-            TransfigurationContainer<Entity> transfigurationContainer, int time, double powerModifier) {
+            TransfigurationContainer<Entity> transfigurationContainer, double timeModifier, double powerModifier) {
         return new EntityTransfiguringEntity(
                 transfigurationContainer.getWorld(),
                 transfigurationContainer.getTargeted(),
                 this,
-                time,
+                timeModifier,
                 powerModifier
         );
     }

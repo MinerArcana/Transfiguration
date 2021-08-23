@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfiguringKeyword;
 import com.minerarcana.transfiguration.api.util.ResourceLocationHelper;
 import com.minerarcana.transfiguration.registrate.TransfigurationTypeBuilder;
 import com.tterrag.registrate.AbstractRegistrate;
@@ -29,6 +30,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Netheri")
             .primaryColor(DyeColor.RED.getColorValue())
+            .keyword(TransfiguringKeyword.CONTAGIOUS)
             .recipe(TransfigurationRecipeData::netheriRecipes)
             .dust()
             .recipe((context, provider) -> {
@@ -59,6 +61,7 @@ public class TransfigurationTypes {
             .lang("Accursed")
             .fallback(NETHERI)
             .primaryColor(DyeColor.PURPLE.getColorValue())
+            .keyword(TransfiguringKeyword.SPREADING)
             .recipe(TransfigurationRecipeData::accursedRecipes)
             .dust()
             .recipe((context, provider) -> {
@@ -117,6 +120,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Blessed")
             .fallback(MUTANDI)
+            .keyword(TransfiguringKeyword.SPREADING)
             .primaryColor(DyeColor.YELLOW.getColorValue())
             .recipe(TransfigurationRecipeData::blessedRecipes)
             .dust()
@@ -210,6 +214,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Fungal")
             .primaryColor(DyeColor.BROWN.getColorValue())
+            .keyword(TransfiguringKeyword.CONTAGIOUS, TransfiguringKeyword.SPREADING)
             .recipe(TransfigurationRecipeData::fungalRecipes)
             .dust()
             .recipe((context, provider) -> ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)
@@ -229,6 +234,7 @@ public class TransfigurationTypes {
             .entry(TRANSFIGURATION_TYPE)
             .lang("Overni")
             .primaryColor(DyeColor.LIME.getColorValue())
+            .keyword(TransfiguringKeyword.CONTAGIOUS)
             .recipe(TransfigurationRecipeData::overniRecipes)
             .dust()
             .recipe((context, provider) -> {

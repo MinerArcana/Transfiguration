@@ -19,8 +19,13 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
         super(entityType, world);
     }
 
-    public BlockTransfiguringEntity(World world, BlockPos blockPos, BlockTransfigurationRecipe recipe, int modifiedTime, double powerModifier) {
-        super(TransfigurationEntities.BLOCK_TRANSFIGURING.get(), world, blockPos, recipe, modifiedTime, powerModifier);
+    public BlockTransfiguringEntity(World world, BlockPos blockPos, BlockTransfigurationRecipe recipe, double timeModifier, double powerModifier) {
+        super(TransfigurationEntities.BLOCK_TRANSFIGURING.get(), world, blockPos, recipe, timeModifier, powerModifier);
+    }
+
+    @Override
+    protected boolean spread() {
+        return true;
     }
 
     @Nonnull
