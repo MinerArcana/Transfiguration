@@ -25,7 +25,7 @@ public class FallingBlockResult extends Result {
             World world = container.getWorld();
             BlockPos blockPos = container.getTargetedPos();
             BlockState blockState = (BlockState) object;
-            if (blockState.getPushReaction() == PushReaction.NORMAL && world.getTileEntity(blockPos) == null) {
+            if (blockState.getPushReaction() != PushReaction.BLOCK && world.getTileEntity(blockPos) == null) {
                 world.addEntity(new FallingBlockEntity(
                         world,
                         blockPos.getX() + 0.5,
