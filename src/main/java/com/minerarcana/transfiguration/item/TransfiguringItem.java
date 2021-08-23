@@ -9,6 +9,7 @@ import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class TransfiguringItem extends Item implements ITransfiguring {
@@ -32,10 +34,19 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
     @Nonnull
     public ActionResultType onItemUse(@Nonnull ItemUseContext context) {
         TransfigurationContainer<BlockState> blockTransfigurationContainer = TransfigurationContainer.block(
-                context.getWorld(), context.getPos(), context.getPlayer());
+                context.getWorld(),
+                context.getPos(),
+                context.getPlayer()
+        );
         ItemStack held = context.getItem();
-        boolean transfigured = BlockTransfigurationRecipe.tryTransfigure(this.type.get(), blockTransfigurationContainer,
-                this.getPowerModifier(held), this.getTimeModifier(held));
+        Optional<PlayerEntity> player = Optional.ofNullable(context.getPlayer());
+        boolean transfigured = BlockTransfigurationRecipe.tryTransfigure(this.type.get(),
+                blockTransfigurationContainer,
+                player.map(value -> value.getAttributeValue(TransfigurationAttributes.POWER_MODIFIER.get()))
+                        .orElseGet(() -> this.getPowerModifier(held)),
+                player.map(value -> value.getAttributeValue(TransfigurationAttributes.TIME_MODIFIER.get()))
+                        .orElseGet(() -> this.getTimeModifier(held))
+        );
         if (transfigured) {
             if (context.getPlayer() != null && !context.getPlayer().isCreative()) {
                 this.afterTransfiguration(context.getItem(), context.getPlayer(), context.getHand());
