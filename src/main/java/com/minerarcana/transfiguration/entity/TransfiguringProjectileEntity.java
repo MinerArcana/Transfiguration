@@ -1,11 +1,11 @@
 package com.minerarcana.transfiguration.entity;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
-import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationAttributes;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.item.ITransfiguring;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
+import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -59,15 +59,13 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
     @Override
     protected void onEntityHit(@Nonnull EntityRayTraceResult entityRayTraceResult) {
         TransfigurationType type = this.getTransfigurationType();
-        if (type != null) {
-            TransfigurationContainer<Entity> container = TransfigurationContainer.entity(
-                    entityRayTraceResult.getEntity(),
-                    this.func_234616_v_()
-            );
-            world.getRecipeManager()
-                    .getRecipe(type.getEntityRecipeType(), container, world)
-                    .ifPresent(recipe -> recipe.transfigure(container, this.getPowerModifier(), this.getTimeModifier()));
-        }
+        EntityTransfigurationRecipe.tryTransfigure(
+                type,
+                entityRayTraceResult.getEntity(),
+                this.func_234616_v_(),
+                this.getPowerModifier(),
+                this.getTimeModifier()
+        );
     }
 
     private TransfigurationType getTransfigurationType() {
