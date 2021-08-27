@@ -16,7 +16,7 @@ public class TransfigurationAttributes {
             .object("power")
             .simple(Attribute.class, () -> new RangedAttribute(
                     "transfiguration.power",
-                    1.0D,
+                    0.0D,
                     0.0D,
                     Double.MAX_VALUE
             ).setShouldWatch(true));
@@ -26,7 +26,7 @@ public class TransfigurationAttributes {
             .object("time")
             .simple(Attribute.class, () -> new RangedAttribute(
                     "transfiguration.time",
-                    1.0D,
+                    0.0D,
                     0.0D,
                     Double.MAX_VALUE
             ).setShouldWatch(true));
