@@ -9,13 +9,7 @@ pipeline {
                 sh 'chmod +x gradlew'
                 sh './gradlew clean'
             }
-        }
-        stage('Setup') {
-            steps {
-                echo 'Setting up Workspace'
-                sh './gradlew setupciworkspace'
-            }
-        }
+        }}
         stage('Build and Deploy') {
             steps {
                 echo 'Building and Deploying to Maven'
