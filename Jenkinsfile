@@ -9,7 +9,7 @@ pipeline {
                 sh 'chmod +x gradlew'
                 sh './gradlew clean'
             }
-        }}
+        }
         stage('Build and Deploy') {
             steps {
                 echo 'Building and Deploying to Maven'
