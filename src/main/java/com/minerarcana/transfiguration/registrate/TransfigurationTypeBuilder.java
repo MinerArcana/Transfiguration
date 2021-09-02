@@ -8,7 +8,7 @@ import com.minerarcana.transfiguration.item.TransfiguringCatalystItem;
 import com.minerarcana.transfiguration.item.TransfiguringDustItem;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipeBuilder;
-import com.mojang.datafixers.util.Function3;
+import com.mojang.datafixers.util.Function4;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -32,14 +32,15 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extends AbstractBuilder<TransfigurationType, T, P, TransfigurationTypeBuilder<T, P>> {
-    private final Function3<Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>, T> creator;
+    private final Function4<Integer, Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>, T> creator;
     private int primaryColor = -1;
+    private int secondaryColor = -1;
     private final List<TransfiguringKeyword> keywords;
     private final List<Supplier<TransfigurationType>> fallback;
 
     public TransfigurationTypeBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback,
                                       Class<? super TransfigurationType> registryType,
-                                      Function3<Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>, T> creator) {
+                                      Function4<Integer, Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>, T> creator) {
         super(owner, parent, name, callback, registryType);
         this.creator = creator;
         this.keywords = Lists.newArrayList();
@@ -48,6 +49,11 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
 
     public TransfigurationTypeBuilder<T, P> primaryColor(int primaryColor) {
         this.primaryColor = primaryColor;
+        return this;
+    }
+
+    public TransfigurationTypeBuilder<T, P> secondaryColor(int secondaryColor) {
+        this.secondaryColor = secondaryColor;
         return this;
     }
 
@@ -139,7 +145,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     @Override
     @Nonnull
     protected T createEntry() {
-        return creator.apply(primaryColor, ImmutableList.copyOf(keywords), ImmutableList.copyOf(fallback));
+        return creator.apply(primaryColor, secondaryColor, ImmutableList.copyOf(keywords), ImmutableList.copyOf(fallback));
     }
 
     public static <P> TransfigurationTypeBuilder<TransfigurationType, P> create(AbstractRegistrate<?> owner, P parent,
