@@ -62,6 +62,96 @@ public class TransfigurationRecipeData {
                 .withIngredient(IngredientBuilder.block(Blocks.STONE))
                 .withResult(ResultBuilder.blockTag(TransfigurationBlockTags.OUTPUTS_DISSOLUTION))
                 .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.SANDSTONE))
+                .withResult(ResultBuilder.block(Blocks.SAND))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.WHITE_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.WHITE_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.ORANGE_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.ORANGE_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.MAGENTA_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.MAGENTA_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.LIGHT_BLUE_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.LIGHT_BLUE_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.YELLOW_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.YELLOW_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.LIME_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.LIME_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.PINK_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.PINK_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.GRAY_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.GRAY_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.LIGHT_GRAY_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.LIGHT_GRAY_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.CYAN_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.CYAN_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.PURPLE_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.PURPLE_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.BLUE_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.BLUE_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.BROWN_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.BROWN_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.GREEN_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.GREEN_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.RED_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.RED_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.BLACK_CONCRETE))
+                .withResult(ResultBuilder.block(Blocks.BLACK_CONCRETE_POWDER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.block(context)
+                .withIngredient(IngredientBuilder.block(Blocks.TERRACOTTA))
+                .withResult(ResultBuilder.block(Blocks.CLAY))
+                .build(provider);
     }
 
     public static void fungalRecipes(DataGenContext<TransfigurationType, TransfigurationType> context,

@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:dissolution",
+  "ingredient": {
+    "type": "transfiguration:block",
+    "block": "minecraft:cyan_concrete"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:cyan_concrete_powder"
+  },
+  "ticks": 240
+}
