@@ -4,7 +4,6 @@ import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
-import com.minerarcana.transfiguration.recipe.ingedient.block.SingleBlockIngredient;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -42,10 +41,11 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
 
         for (Direction d : spreadDirectionsList.subList(0,  numSpread)) {
             BlockPos pos = this.getPosition().add(d.getDirectionVec());
-            if (((SingleBlockIngredient) this.getRecipe().getIngredient()).getBlock().equals(this.getEntityWorld().getBlockState(pos).getBlock())
-                && this.getEntityWorld().getEntitiesWithinAABB(BlockTransfiguringEntity.class, new AxisAlignedBB(pos)).isEmpty()) {
-                BlockTransfigurationRecipe.tryTransfigure(this.getRecipe().getTransfigurationType(),
-                        this.createTransfigurationContainer(pos),
+            TransfigurationContainer<BlockState> transContainer = this.createTransfigurationContainer(pos);
+            if (this.getRecipe().matches(transContainer, this.getEntityWorld())
+                    && this.getEntityWorld().getEntitiesWithinAABB(BlockTransfiguringEntity.class, new AxisAlignedBB(pos)).isEmpty()) {
+                        BlockTransfigurationRecipe.tryTransfigure(this.getRecipe().getTransfigurationType(),
+                        transContainer,
                         this.getPowerModifier() / 2.0D,
                         this.getTimeModifier());
             }
