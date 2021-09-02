@@ -36,7 +36,7 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
         this.fluid = Lazy.of(() -> FluidTags.getCollection().get(fluid));
         this.fluidPredicate = fluidState -> {
             ITag<Fluid> fluidTag = this.getFluid();
-            if (fluidTag== null) {
+            if (fluidTag == null) {
                 return fluidState.isEmpty();
             } else {
                 return fluidState.isTagged(fluidTag);
@@ -48,7 +48,8 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
     @Override
     @ParametersAreNonnullByDefault
     public boolean matches(DustRecipeInventory dustRecipeInventory, World world) {
-        return fluidPredicate.test(dustRecipeInventory.getInputFluidState()) &&
+        return type == dustRecipeInventory.getInputType() &&
+                fluidPredicate.test(dustRecipeInventory.getInputFluidState()) &&
                 blockState.test(dustRecipeInventory.getInputBlockState());
     }
 
