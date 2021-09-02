@@ -43,7 +43,7 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
             BlockPos pos = this.getPosition().add(d.getDirectionVec());
             TransfigurationContainer<BlockState> transContainer = this.createTransfigurationContainer(pos);
             if (this.getRecipe().matches(transContainer, this.getEntityWorld())
-                    && this.getEntityWorld().getEntitiesWithinAABB(BlockTransfiguringEntity.class, new AxisAlignedBB(pos)).isEmpty()) {
+                    && this.getEntityWorld().getEntitiesWithinAABB(BlockTransfiguringEntity.class, new AxisAlignedBB(pos), entity -> entity != this).isEmpty()) {
                         BlockTransfigurationRecipe.tryTransfigure(this.getRecipe().getTransfigurationType(),
                         transContainer,
                         this.getPowerModifier() / 2.0D,
