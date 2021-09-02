@@ -3,6 +3,7 @@ package com.minerarcana.transfiguration.entity;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.particles.TransfiguringParticleData;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
+import com.minerarcana.transfiguration.recipe.ingedient.block.SingleBlockIngredient;
 import com.minerarcana.transfiguration.recipe.result.ResultInstance;
 import com.minerarcana.transfiguration.util.Vectors;
 import net.minecraft.entity.Entity;
@@ -70,6 +71,9 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                     this.remove();
                 }
             } else {
+                if (!((SingleBlockIngredient) recipe.getIngredient()).getBlock().equals(this.getEntityWorld().getBlockState(this.getPosition()).getBlock())) {
+                    this.remove();
+                }
                 int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
                 if (!hasSpread && remainingTicks < this.modifiedTime / 2) {
                     this.hasSpread = this.spread();

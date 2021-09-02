@@ -4,15 +4,21 @@ import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.block.SingleBlockIngredient;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigurationRecipe, BlockIngredient, BlockState> {
     public BlockTransfiguringEntity(EntityType<? extends TransfiguringEntity> entityType, World world) {
@@ -25,6 +31,26 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
 
     @Override
     protected boolean spread() {
+        //From a shuffled list of all six directions, attempt to spread to the first 2^(space + 0.5) rounded
+        //Only successfully spread if no other BlockTransfiguringEntity in new pos, and new pos is the same block as this entity's recipe input
+        //Lower power by 1 each spread to avoid runaway
+
+        //int numSpread = Math.min(2 + (int)Math.floor(this.getPowerModifier()), 6);
+        int numSpread = Math.min((int)Math.round(Math.pow(2, this.getPowerModifier() + 0.5)), 6);
+        List<Direction> spreadDirectionsList = Arrays.asList(Direction.values());
+        Collections.shuffle(spreadDirectionsList);
+
+        for (Direction d : spreadDirectionsList.subList(0,  numSpread)) {
+            BlockPos pos = this.getPosition().add(d.getDirectionVec());
+            if (((SingleBlockIngredient) this.getRecipe().getIngredient()).getBlock().equals(this.getEntityWorld().getBlockState(pos).getBlock())
+                && this.getEntityWorld().getEntitiesWithinAABB(BlockTransfiguringEntity.class, new AxisAlignedBB(pos)).isEmpty()) {
+                BlockTransfigurationRecipe.tryTransfigure(this.getRecipe().getTransfigurationType(),
+                        this.createTransfigurationContainer(pos),
+                        this.getPowerModifier() / 2.0D,
+                        this.getTimeModifier());
+            }
+        }
+
         return true;
     }
 
@@ -34,6 +60,15 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
         return TransfigurationContainer.block(
                 world,
                 this.getPosition(),
+                this.getCaster()
+        );
+    }
+
+    @Nonnull
+    public TransfigurationContainer<BlockState> createTransfigurationContainer(BlockPos pos) {
+        return TransfigurationContainer.block(
+                world,
+                pos,
                 this.getCaster()
         );
     }
