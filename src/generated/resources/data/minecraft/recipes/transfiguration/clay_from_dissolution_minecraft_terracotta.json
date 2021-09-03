@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:dissolution",
+  "ingredient": {
+    "type": "transfiguration:block",
+    "block": "minecraft:terracotta"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:clay"
+  },
+  "ticks": 240
+}

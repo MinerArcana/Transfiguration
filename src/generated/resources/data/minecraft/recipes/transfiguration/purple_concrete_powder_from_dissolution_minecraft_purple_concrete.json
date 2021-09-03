@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:dissolution",
+  "ingredient": {
+    "type": "transfiguration:block",
+    "block": "minecraft:purple_concrete"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:purple_concrete_powder"
+  },
+  "ticks": 240
+}
