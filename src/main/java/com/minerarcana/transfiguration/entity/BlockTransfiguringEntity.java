@@ -31,21 +31,22 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
     @Override
     protected boolean spread() {
         //From a shuffled list of all six directions, attempt to spread to the first 2^(space + 0.5) rounded
-        //Only successfully spread if no other BlockTransfiguringEntity in new pos, and new pos is the same block as this entity's recipe input
+        //Only successfully spread if no other BlockTransfiguringEntity in new pos, and new pos has the same block as this entity's currently targeted block
         //Half space(power modifier) each spread to avoid runaway
 
         //int numSpread = Math.min(2 + (int)Math.floor(this.getPowerModifier()), 6);
         int numSpread = Math.min((int)Math.round(Math.pow(2, this.getPowerModifier() + 0.5)), 6);
         List<Direction> spreadDirectionsList = Arrays.asList(Direction.values());
         Collections.shuffle(spreadDirectionsList);
+        TransfigurationContainer<BlockState> oldTransContainer = this.createTransfigurationContainer();
 
         for (Direction d : spreadDirectionsList.subList(0,  numSpread)) {
             BlockPos pos = this.getPosition().add(d.getDirectionVec());
-            TransfigurationContainer<BlockState> transContainer = this.createTransfigurationContainer(pos);
-            if (this.getRecipe().matches(transContainer, this.getEntityWorld())
+            TransfigurationContainer<BlockState> newTransContainer = this.createTransfigurationContainer(pos);
+            if (oldTransContainer.getTargeted().getBlock().equals(newTransContainer.getTargeted().getBlock())
                     && this.getEntityWorld().getEntitiesWithinAABB(BlockTransfiguringEntity.class, new AxisAlignedBB(pos), entity -> entity != this).isEmpty()) {
-                        BlockTransfigurationRecipe.tryTransfigure(this.getRecipe().getTransfigurationType(),
-                        transContainer,
+                BlockTransfigurationRecipe.tryTransfigure(this.getRecipe().getTransfigurationType(),
+                        newTransContainer,
                         this.getPowerModifier() / 2.0D,
                         this.getTimeModifier());
             }
