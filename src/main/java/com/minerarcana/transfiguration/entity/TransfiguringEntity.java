@@ -70,6 +70,10 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                     this.remove();
                 }
             } else {
+                if (!this.getRecipe().matches(this.createTransfigurationContainer(), this.getEntityWorld())) {
+                    this.remove();
+                }
+
                 int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
                 if (!hasSpread && remainingTicks < this.modifiedTime / 2) {
                     this.hasSpread = this.spread();
