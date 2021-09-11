@@ -117,7 +117,8 @@ public class TransfiguringDustItem extends TransfiguringItem {
                                                                 blockPos.getZ() + 0.5
                                                         ),
                                                         8,
-                                                        Math.min(entity.lifespan - age, 40)
+                                                        Math.min(entity.lifespan - age, 40),
+                                                        random.nextInt(32)
                                                 ),
                                                 startPos.x,
                                                 startPos.y,

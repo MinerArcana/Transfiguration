@@ -40,8 +40,10 @@ public class TransfiguringParticleDeserializer implements IParticleData.IDeseria
         int delay = reader.readInt();
         reader.expect(' ');
         int maxAge = reader.readInt();
+        reader.expect(' ');
+        int colorOffset = reader.readInt();
         if (transfigurationType != null) {
-            return new TransfiguringParticleData(transfigurationType, direction, delay, maxAge);
+            return new TransfiguringParticleData(transfigurationType, direction, delay, maxAge, colorOffset);
         } else {
             reader.setCursor(i);
             throw BAD_ID.createWithContext(reader, name);
@@ -55,6 +57,7 @@ public class TransfiguringParticleDeserializer implements IParticleData.IDeseria
         return new TransfiguringParticleData(
                 buffer.readRegistryId(),
                 Buffers.readVector3d(buffer),
+                buffer.readInt(),
                 buffer.readInt(),
                 buffer.readInt()
         );

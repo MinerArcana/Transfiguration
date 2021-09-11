@@ -18,7 +18,9 @@ public class TransfiguringParticleType extends ParticleType<TransfiguringParticl
             Codec.INT.fieldOf("delay")
                     .forGetter(TransfiguringParticleData::getDelay),
             Codec.INT.fieldOf("maxAge")
-                    .forGetter(TransfiguringParticleData::getMaxAge)
+                    .forGetter(TransfiguringParticleData::getMaxAge),
+            Codec.INT.fieldOf("colorOffset")
+                    .forGetter(TransfiguringParticleData::getColorOffset)
     ).apply(instance, TransfiguringParticleData::create));
 
     public TransfiguringParticleType() {

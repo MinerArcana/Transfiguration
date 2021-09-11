@@ -89,7 +89,8 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                                         recipe.getTransfigurationType(),
                                         endPos,
                                         10,
-                                        Math.min(remainingTicks, 60)
+                                        Math.min(remainingTicks, 45),
+                                        rand.nextInt(32)
                                 ),
                                 startPos.x,
                                 startPos.y,

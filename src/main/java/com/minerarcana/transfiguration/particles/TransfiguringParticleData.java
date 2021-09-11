@@ -16,12 +16,14 @@ public class TransfiguringParticleData implements IParticleData {
     private final Vector3d endPosition;
     private final int delay;
     private final int maxAge;
+    private final int colorOffset;
 
-    public TransfiguringParticleData(TransfigurationType type, Vector3d endPosition, int delay, int maxAge) {
+    public TransfiguringParticleData(TransfigurationType type, Vector3d endPosition, int delay, int maxAge, int colorOffset) {
         this.type = type;
         this.endPosition = endPosition;
         this.delay = delay;
         this.maxAge = maxAge;
+        this.colorOffset = colorOffset;
     }
 
     public TransfigurationType getTransfigurationType() {
@@ -40,6 +42,10 @@ public class TransfiguringParticleData implements IParticleData {
         return maxAge;
     }
 
+    public int getColorOffset() {
+        return colorOffset;
+    }
+
     @Override
     @Nonnull
     public ParticleType<?> getType() {
@@ -52,17 +58,18 @@ public class TransfiguringParticleData implements IParticleData {
         Buffers.writeVector3d(endPosition, buffer);
         buffer.writeInt(delay);
         buffer.writeInt(maxAge);
+        buffer.writeInt(colorOffset);
     }
 
     @Override
     @Nonnull
     public String getParameters() {
-        return Objects.requireNonNull(type.getRegistryName()) + " " + endPosition + " " + delay + " " + maxAge;
+        return Objects.requireNonNull(type.getRegistryName()) + " " + endPosition + " " + delay + " " + maxAge + " " + colorOffset;
     }
 
     public static TransfiguringParticleData create(TransfigurationType transfigurationType, Vector3d direction,
-                                                   int delay, int maxAge) {
-        return new TransfiguringParticleData(Objects.requireNonNull(transfigurationType), direction, delay, maxAge);
+                                                   int delay, int maxAge, int colorOffset) {
+        return new TransfiguringParticleData(Objects.requireNonNull(transfigurationType), direction, delay, maxAge, colorOffset);
     }
 
 

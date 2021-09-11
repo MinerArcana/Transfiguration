@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 
 public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType> {
     private final int primaryColor;
+    private final int secondaryColor;
     private final List<TransfiguringKeyword> keywords;
     private final List<Supplier<TransfigurationType>> fallbacks;
 
@@ -27,8 +28,9 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
     private String translationKey;
     private ITextComponent displayName;
 
-    public TransfigurationType(int primaryColor, List<TransfiguringKeyword> keywords, List<Supplier<TransfigurationType>> includes) {
+    public TransfigurationType(int primaryColor, int secondaryColor, List<TransfiguringKeyword> keywords, List<Supplier<TransfigurationType>> includes) {
         this.primaryColor = primaryColor;
+        this.secondaryColor = secondaryColor;
         this.keywords = keywords;
         this.fallbacks = includes;
     }
@@ -63,6 +65,10 @@ public class TransfigurationType extends ForgeRegistryEntry<TransfigurationType>
 
     public int getPrimaryColor() {
         return primaryColor;
+    }
+
+    public int getSecondaryColor() {
+        return secondaryColor;
     }
 
     @Nonnull
