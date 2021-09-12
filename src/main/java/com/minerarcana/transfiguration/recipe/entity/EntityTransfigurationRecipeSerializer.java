@@ -47,7 +47,6 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<IR
     @ParametersAreNonnullByDefault
     public void write(PacketBuffer buffer, EntityTransfigurationRecipe recipe) {
         buffer.writeRegistryId(recipe.getTransfigurationType());
-        buffer.writeRegistryId(recipe.getIngredient().getSerializer());
         BasicIngredient.toBuffer(buffer, recipe.getIngredient());
         Result.toBuffer(buffer, recipe.getResult());
         buffer.writeInt(recipe.getTicks());

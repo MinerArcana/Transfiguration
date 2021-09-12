@@ -39,8 +39,7 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
     public BlockTransfigurationRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
         TransfigurationType transfigurationType = buffer.readRegistryId();
         BasicIngredient ingredient = BasicIngredient.fromBuffer(buffer);
-        ResultSerializer<?> resultSerializer = buffer.readRegistryId();
-        Result result = resultSerializer.parse(buffer);
+        Result result = Result.fromBuffer(buffer);
         int ticks = buffer.readInt();
         return new BlockTransfigurationRecipe(recipeId, transfigurationType, ingredient, result, ticks);
     }
@@ -49,9 +48,7 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
     @ParametersAreNonnullByDefault
     public void write(PacketBuffer buffer, BlockTransfigurationRecipe recipe) {
         buffer.writeRegistryId(recipe.getTransfigurationType());
-        buffer.writeRegistryId(recipe.getIngredient().getSerializer());
         BasicIngredient.toBuffer(buffer, recipe.getIngredient());
-        buffer.writeRegistryId(recipe.getResult().getSerializer());
         Result.toBuffer(buffer, recipe.getResult());
         buffer.writeInt(recipe.getTicks());
     }
