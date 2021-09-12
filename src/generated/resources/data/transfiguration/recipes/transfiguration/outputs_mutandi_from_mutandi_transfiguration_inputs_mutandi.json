@@ -3,7 +3,7 @@
   "transfigurationType": "transfiguration:mutandi",
   "ingredient": {
     "type": "transfiguration:tag",
-    "tag": "transfiguration:inputs/mutandi"
+    "block": "transfiguration:inputs/mutandi"
   },
   "result": {
     "type": "transfiguration:block_tag",

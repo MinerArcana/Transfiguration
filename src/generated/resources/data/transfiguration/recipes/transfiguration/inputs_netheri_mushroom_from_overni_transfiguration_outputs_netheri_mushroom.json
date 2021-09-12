@@ -3,7 +3,7 @@
   "transfigurationType": "transfiguration:overni",
   "ingredient": {
     "type": "transfiguration:tag",
-    "tag": "transfiguration:outputs/netheri/mushroom"
+    "block": "transfiguration:outputs/netheri/mushroom"
   },
   "result": {
     "type": "transfiguration:block_tag",

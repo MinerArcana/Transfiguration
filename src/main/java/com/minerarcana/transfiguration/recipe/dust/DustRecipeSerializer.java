@@ -1,8 +1,8 @@
 package com.minerarcana.transfiguration.recipe.dust;
 
 import com.google.gson.JsonObject;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
-import com.minerarcana.transfiguration.recipe.ingedient.block.SingleBlockIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.MatchIngredient;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
 import net.minecraft.block.Blocks;
@@ -26,7 +26,7 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?
         return new DustRecipe(
                 recipeId,
                 RegistryJson.getTransfigurationType(json),
-                json.has("block") ? SerializerJson.getBlockIngredient(json, "block") : SingleBlockIngredient.create(Blocks.AIR),
+                json.has("block") ? SerializerJson.getBasicIngredient(json, "block") : new MatchIngredient(Blocks.AIR),
                 json.has("fluid") ? ResourceLocation.tryCreate(JSONUtils.getString(json, "fluid")) : null,
                 CraftingHelper.getItemStack(json.getAsJsonObject("output"), true)
         );
@@ -39,7 +39,7 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?
         return new DustRecipe(
                 recipeId,
                 buffer.readRegistryId(),
-                BlockIngredient.fromBuffer(buffer),
+                BasicIngredient.fromBuffer(buffer),
                 buffer.readBoolean() ? buffer.readResourceLocation() : null,
                 buffer.readItemStack()
         );
@@ -49,7 +49,7 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?
     @ParametersAreNonnullByDefault
     public void write(PacketBuffer buffer, DustRecipe recipe) {
         buffer.writeRegistryId(recipe.getTransfigurationType());
-        BlockIngredient.toBuffer(recipe.getBlockState(), buffer);
+        BasicIngredient.toBuffer(buffer, recipe.getIngredient());
         buffer.writeBoolean(recipe.getFluid() != null);
         if (recipe.getFluid() != null) {
             buffer.writeResourceLocation(FluidTags.getCollection().getValidatedIdFromTag(recipe.getFluid()));

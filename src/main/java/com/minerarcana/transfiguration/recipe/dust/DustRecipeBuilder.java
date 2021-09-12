@@ -4,7 +4,7 @@ import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationBlocks;
 import com.minerarcana.transfiguration.recipe.builder.FinishedObject;
 import com.minerarcana.transfiguration.recipe.builder.IngredientBuilder;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
@@ -17,17 +17,17 @@ import java.util.function.Consumer;
 
 public class DustRecipeBuilder {
     private final TransfigurationType transfigurationType;
-    private FinishedObject<BlockIngredientSerializer<?>> blockIngredient;
+    private FinishedObject<BasicIngredientSerializer<?>> ingredient;
     private ITag.INamedTag<Fluid> fluidIngredient;
     private ItemStack output;
 
     public DustRecipeBuilder(TransfigurationType transfigurationType) {
         this.transfigurationType = transfigurationType;
-        this.blockIngredient = IngredientBuilder.block(TransfigurationBlocks.CATALYST_SUBSTRATE.get());
+        this.ingredient = IngredientBuilder.matches(TransfigurationBlocks.CATALYST_SUBSTRATE.get());
     }
 
-    public DustRecipeBuilder withBlock(FinishedObject<BlockIngredientSerializer<?>> blockIngredient) {
-        this.blockIngredient = blockIngredient;
+    public DustRecipeBuilder withBlock(FinishedObject<BasicIngredientSerializer<?>> blockIngredient) {
+        this.ingredient = blockIngredient;
         return this;
     }
 
@@ -51,9 +51,9 @@ public class DustRecipeBuilder {
             ResourceLocation resultId = Objects.requireNonNull(this.output.getItem().getRegistryName());
             id = new ResourceLocation(resultId.getNamespace(), "dust/" + resultId.getPath().replace("/", "_")
                     + "_from_" + Objects.requireNonNull(transfigurationType.getRegistryName()).getPath().replace("/", "_")
-                    + "_" + blockIngredient.getId().toString().replace(":", "_").replace("/", "_"));
+                    + "_" + ingredient.getId().toString().replace(":", "_").replace("/", "_"));
         }
-        recipeConsumer.accept(new DustFinishedRecipe(id, transfigurationType, blockIngredient, fluidIngredient, output));
+        recipeConsumer.accept(new DustFinishedRecipe(id, transfigurationType, ingredient, fluidIngredient, output));
     }
 
     protected void validate(ResourceLocation id) {

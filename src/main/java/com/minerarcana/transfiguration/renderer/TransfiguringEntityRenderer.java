@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class TransfiguringEntityRenderer<T extends TransfiguringEntity<?, ?, ?>> extends EntityRenderer<T> {
+public class TransfiguringEntityRenderer<T extends TransfiguringEntity<?, ?>> extends EntityRenderer<T> {
     public TransfiguringEntityRenderer(EntityRendererManager rendererManager) {
         super(rendererManager);
     }

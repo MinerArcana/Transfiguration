@@ -1,10 +1,8 @@
 package com.minerarcana.transfiguration.recipe.block;
 
 import com.google.gson.JsonObject;
-import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
 import com.minerarcana.transfiguration.recipe.result.Result;
@@ -26,9 +24,13 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
     @Nonnull
     @ParametersAreNonnullByDefault
     public BlockTransfigurationRecipe read(ResourceLocation recipeId, JsonObject json) {
-        return new BlockTransfigurationRecipe(recipeId, RegistryJson.getTransfigurationType(json),
-                SerializerJson.getBlockIngredient(json), SerializerJson.getResult(json),
-                JSONUtils.getInt(json, "ticks", 12));
+        return new BlockTransfigurationRecipe(
+                recipeId,
+                RegistryJson.getTransfigurationType(json),
+                SerializerJson.getBasicIngredient(json),
+                SerializerJson.getResult(json),
+                JSONUtils.getInt(json, "ticks", 12 * 20)
+        );
     }
 
     @Override
@@ -36,8 +38,7 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
     @ParametersAreNonnullByDefault
     public BlockTransfigurationRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
         TransfigurationType transfigurationType = buffer.readRegistryId();
-        BlockIngredientSerializer<?> serializer = buffer.readRegistryId();
-        BlockIngredient ingredient = serializer.parse(buffer);
+        BasicIngredient ingredient = BasicIngredient.fromBuffer(buffer);
         ResultSerializer<?> resultSerializer = buffer.readRegistryId();
         Result result = resultSerializer.parse(buffer);
         int ticks = buffer.readInt();
@@ -49,21 +50,9 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
     public void write(PacketBuffer buffer, BlockTransfigurationRecipe recipe) {
         buffer.writeRegistryId(recipe.getTransfigurationType());
         buffer.writeRegistryId(recipe.getIngredient().getSerializer());
-        writeIngredient(buffer, recipe.getIngredient());
+        BasicIngredient.toBuffer(buffer, recipe.getIngredient());
         buffer.writeRegistryId(recipe.getResult().getSerializer());
-        writeResult(buffer, recipe.getResult());
+        Result.toBuffer(buffer, recipe.getResult());
         buffer.writeInt(recipe.getTicks());
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T extends BlockIngredient> void writeIngredient(PacketBuffer packetBuffer, T blockIngredient) {
-        BlockIngredientSerializer<T> serializer = (BlockIngredientSerializer<T>) blockIngredient.getSerializer();
-        serializer.write(packetBuffer, blockIngredient);
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T extends Result> void writeResult(PacketBuffer packetBuffer, T result) {
-        ResultSerializer<T> serializer = (ResultSerializer<T>) result.getSerializer();
-        serializer.write(packetBuffer, result);
     }
 }

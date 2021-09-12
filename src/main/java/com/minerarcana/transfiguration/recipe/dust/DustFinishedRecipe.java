@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.builder.FinishedObject;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.fluid.Fluid;
@@ -20,13 +20,13 @@ import java.util.Objects;
 public class DustFinishedRecipe implements IFinishedRecipe {
     private final ResourceLocation id;
     private final TransfigurationType type;
-    private final FinishedObject<BlockIngredientSerializer<?>> blockState;
+    private final FinishedObject<BasicIngredientSerializer<?>> blockState;
     private final ITag.INamedTag<Fluid> fluidState;
     private final ItemStack output;
 
 
     public DustFinishedRecipe(ResourceLocation id, TransfigurationType transfigurationType,
-                              FinishedObject<BlockIngredientSerializer<?>> blockIngredient,
+                              FinishedObject<BasicIngredientSerializer<?>> blockIngredient,
                               ITag.INamedTag<Fluid> fluidIngredient, ItemStack output) {
         this.id = id;
         this.type = transfigurationType;

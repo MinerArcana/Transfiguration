@@ -2,7 +2,7 @@
   "type": "transfiguration:block_transfiguration",
   "transfigurationType": "transfiguration:dissolution",
   "ingredient": {
-    "type": "transfiguration:block",
+    "type": "transfiguration:match",
     "block": "minecraft:white_concrete"
   },
   "result": {

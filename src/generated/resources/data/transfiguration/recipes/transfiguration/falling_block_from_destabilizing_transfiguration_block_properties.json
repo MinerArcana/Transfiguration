@@ -2,7 +2,8 @@
   "type": "transfiguration:block_transfiguration",
   "transfigurationType": "transfiguration:destabilizing",
   "ingredient": {
-    "type": "transfiguration:true"
+    "type": "transfiguration:block_properties",
+    "blockEntity": true
   },
   "result": {
     "type": "transfiguration:falling_block"

@@ -1,8 +1,8 @@
 {
-  "type": "transfiguration:entity_transfiguration",
+  "type": "transfiguration:block_transfiguration",
   "transfigurationType": "transfiguration:overni",
   "ingredient": {
-    "type": "transfiguration:entity_type",
+    "type": "transfiguration:match",
     "entity": "minecraft:strider"
   },
   "result": {
