@@ -2,7 +2,7 @@
   "type": "transfiguration:dust",
   "transfigurationType": "transfiguration:mutandi",
   "block": {
-    "type": "transfiguration:block",
+    "type": "transfiguration:match",
     "block": "transfiguration:catalyst_substrate"
   },
   "fluid": "minecraft:water",

@@ -3,7 +3,7 @@
   "transfigurationType": "transfiguration:fungal",
   "ingredient": {
     "type": "transfiguration:tag",
-    "tag": "minecraft:flowers"
+    "block": "minecraft:flowers"
   },
   "result": {
     "type": "transfiguration:block_tag",

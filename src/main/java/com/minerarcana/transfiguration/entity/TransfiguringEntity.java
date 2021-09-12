@@ -18,14 +18,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.NonNullPredicate;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>, U extends NonNullPredicate<V>, V>
-        extends Entity {
+public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V> extends Entity {
     private static final DataParameter<String> RECIPE_NAME = EntityDataManager.createKey(
             TransfiguringEntity.class,
             DataSerializers.STRING
@@ -70,16 +68,17 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                     this.remove();
                 }
             } else {
-                if (!this.getRecipe().matches(this.createTransfigurationContainer(), this.getEntityWorld())) {
-                    this.remove();
-                }
-
-                int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
-                if (!hasSpread && remainingTicks < this.modifiedTime / 2) {
-                    this.hasSpread = this.spread();
-                }
+                T currentRecipe = this.getRecipe();
                 TransfigurationContainer<V> transfigurationContainer = this.createTransfigurationContainer();
-                if (transfigurationContainer != null) {
+                if (currentRecipe != null && transfigurationContainer != null) {
+                    if (!currentRecipe.matches(transfigurationContainer, this.getEntityWorld())) {
+                        this.remove();
+                    }
+                    int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
+                    if (!hasSpread && remainingTicks < this.modifiedTime / 2) {
+                        this.hasSpread = this.spread(currentRecipe, transfigurationContainer);
+                    }
+
                     World world = this.getEntityWorld();
                     if (world instanceof ServerWorld) {
                         Vector3d startPos = Vectors.withRandomOffset(this.getPosition(), world.getRandom(), 3);
@@ -102,17 +101,16 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<U, V>,
                                 0.15F
                         );
                     }
-                    if (this.getResultInstance(recipe).tick(transfigurationContainer, powerModifier, remainingTicks, this::trigger)) {
+                    if (this.getResultInstance(currentRecipe)
+                            .tick(transfigurationContainer, powerModifier, remainingTicks, this::trigger)) {
                         this.remove();
                     }
-                } else {
-                    this.remove();
                 }
             }
         }
     }
 
-    protected abstract boolean spread();
+    protected abstract boolean spread(T recipe, TransfigurationContainer<V> container);
 
     private boolean trigger(boolean removeInput) {
         int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);

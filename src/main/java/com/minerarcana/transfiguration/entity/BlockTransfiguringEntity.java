@@ -3,7 +3,6 @@ package com.minerarcana.transfiguration.entity;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -19,7 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigurationRecipe, BlockIngredient, BlockState> {
+public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigurationRecipe, BlockState> {
     public BlockTransfiguringEntity(EntityType<? extends TransfiguringEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -29,29 +28,28 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
     }
 
     @Override
-    protected boolean spread() {
+    protected boolean spread(BlockTransfigurationRecipe currentRecipe, TransfigurationContainer<BlockState> container) {
         //From a shuffled list of all six directions, attempt to spread to the first 2^(space + 0.5) rounded
         //Only successfully spread if no other BlockTransfiguringEntity in new pos, and new pos has the same block as this entity's currently targeted block
         //Half space(power modifier) each spread to avoid runaway
 
         //int numSpread = Math.min(2 + (int)Math.floor(this.getPowerModifier()), 6);
-        int numSpread = Math.min((int)Math.round(Math.pow(2, this.getPowerModifier() + 0.5)), 6);
+        int numSpread = Math.min((int) Math.round(Math.pow(2, this.getPowerModifier() + 0.5)), 6);
         List<Direction> spreadDirectionsList = Arrays.asList(Direction.values());
         Collections.shuffle(spreadDirectionsList);
-        TransfigurationContainer<BlockState> oldTransContainer = this.createTransfigurationContainer();
 
-        for (Direction d : spreadDirectionsList.subList(0,  numSpread)) {
+        for (Direction d : spreadDirectionsList.subList(0, numSpread)) {
             BlockPos pos = this.getPosition().add(d.getDirectionVec());
             TransfigurationContainer<BlockState> newTransContainer = this.createTransfigurationContainer(pos);
-            if (oldTransContainer.getTargeted().getBlock().equals(newTransContainer.getTargeted().getBlock())
+            if (container.getTargeted().getBlock().equals(newTransContainer.getTargeted().getBlock())
                     && this.getEntityWorld().getEntitiesWithinAABB(BlockTransfiguringEntity.class, new AxisAlignedBB(pos), entity -> entity != this).isEmpty()) {
-                BlockTransfigurationRecipe.tryTransfigure(this.getRecipe().getTransfigurationType(),
+                BlockTransfigurationRecipe.tryTransfigure(
+                        currentRecipe.getTransfigurationType(),
                         newTransContainer,
                         this.getPowerModifier() / 2.0D,
                         this.getTimeModifier());
             }
         }
-
         return true;
     }
 

@@ -4,7 +4,6 @@ import com.minerarcana.transfiguration.api.TransfiguringKeyword;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipe;
-import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.datasync.DataParameter;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfigurationRecipe, EntityIngredient, Entity> {
+public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfigurationRecipe, Entity> {
     public static final DataParameter<Optional<UUID>> INPUT_UUID = EntityDataManager.createKey(
             EntityTransfiguringEntity.class,
             DataSerializers.OPTIONAL_UNIQUE_ID
@@ -69,24 +68,19 @@ public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfi
     }
 
     @Override
-    protected boolean spread() {
-        EntityTransfigurationRecipe recipe = this.getRecipe();
-        if (recipe != null) {
-            if (recipe.getTransfigurationType().hasKeyword(TransfiguringKeyword.CONTAGIOUS) && this.getTimeModifier() >= 1) {
-                this.getEntityWorld().addEntity(new TransfiguringAreaEffectEntity(
-                        world,
-                        recipe,
-                        this.getTimeModifier() / 2,
-                        Math.ceil(this.getPowerModifier() / 2),
-                        this.getPosX(),
-                        this.getPosY(),
-                        this.getPosZ()
-                ));
-            }
-            return true;
-        } else {
-            return false;
+    protected boolean spread(EntityTransfigurationRecipe recipe, TransfigurationContainer<Entity> container) {
+        if (recipe.getTransfigurationType().hasKeyword(TransfiguringKeyword.CONTAGIOUS) && this.getTimeModifier() >= 1) {
+            this.getEntityWorld().addEntity(new TransfiguringAreaEffectEntity(
+                    world,
+                    recipe,
+                    this.getTimeModifier() / 2,
+                    Math.ceil(this.getPowerModifier() / 2),
+                    this.getPosX(),
+                    this.getPosY(),
+                    this.getPosZ()
+            ));
         }
+        return true;
     }
 
     @Nullable

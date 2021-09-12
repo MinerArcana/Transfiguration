@@ -2,7 +2,7 @@ package com.minerarcana.transfiguration.recipe.dust;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
@@ -23,16 +23,16 @@ import java.util.function.Predicate;
 public class DustRecipe implements IRecipe<DustRecipeInventory> {
     private final ResourceLocation id;
     private final TransfigurationType type;
-    private final BlockIngredient blockState;
+    private final BasicIngredient ingredient;
     private final Lazy<ITag<Fluid>> fluid;
     private final Predicate<FluidState> fluidPredicate;
     private final ItemStack output;
 
-    public DustRecipe(ResourceLocation id, TransfigurationType type, BlockIngredient location,
+    public DustRecipe(ResourceLocation id, TransfigurationType type, BasicIngredient ingredient,
                       ResourceLocation fluid, ItemStack output) {
         this.id = id;
         this.type = type;
-        this.blockState = location;
+        this.ingredient = ingredient;
         this.fluid = Lazy.of(() -> FluidTags.getCollection().get(fluid));
         this.fluidPredicate = fluidState -> {
             ITag<Fluid> fluidTag = this.getFluid();
@@ -50,7 +50,7 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
     public boolean matches(DustRecipeInventory dustRecipeInventory, World world) {
         return type == dustRecipeInventory.getInputType() &&
                 fluidPredicate.test(dustRecipeInventory.getInputFluidState()) &&
-                blockState.test(dustRecipeInventory.getInputBlockState());
+                ingredient.test(dustRecipeInventory.getInputBlockState());
     }
 
     @Override
@@ -94,8 +94,8 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
         return true;
     }
 
-    public BlockIngredient getBlockState() {
-        return blockState;
+    public BasicIngredient getIngredient() {
+        return ingredient;
     }
 
     public TransfigurationType getTransfigurationType() {

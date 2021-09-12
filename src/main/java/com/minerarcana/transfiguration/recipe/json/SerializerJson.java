@@ -4,8 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.*;
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
-import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
@@ -21,43 +20,36 @@ import java.util.function.Function;
 public class SerializerJson {
 
     @Nonnull
-    public static BlockIngredient getBlockIngredient(JsonObject jsonObject) {
-        return getBlockIngredient(jsonObject, "ingredient");
+    public static BasicIngredient getBasicIngredient(JsonObject jsonObject) {
+        return getBasicIngredient(jsonObject, "ingredient");
     }
 
     @Nonnull
-    public static BlockIngredient getBlockIngredient(JsonObject jsonObject, String fieldName) {
-        return getSerializable(jsonObject, fieldName, Transfiguration.blockIngredientSerializers::getValue,
-                TransfigurationRecipes.SINGLE_BLOCK_INGREDIENT_SERIALIZER.get()::parse);
+    public static BasicIngredient getBasicIngredient(JsonObject jsonObject, String fieldName) {
+        return getSerializable(
+                jsonObject,
+                fieldName,
+                Transfiguration.basicIngredientSerializers::getValue,
+                TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get()::parse
+        );
     }
 
     @Nonnull
-    public static BlockIngredient[] getBlockIngredients(JsonObject jsonObject) {
+    public static List<BasicIngredient> getBasicIngredients(JsonObject jsonObject) {
         JsonArray ingredientsJson = JSONUtils.getJsonArray(jsonObject, "ingredient");
-        List<BlockIngredient> blockIngredientList = Lists.newArrayList();
+        List<BasicIngredient> ingredients = Lists.newArrayList();
         for (JsonElement jsonElement : ingredientsJson) {
             if (jsonElement.isJsonObject()) {
-                blockIngredientList.add(getSerializable(
+                ingredients.add(getSerializable(
                         jsonElement.getAsJsonObject(),
-                        Transfiguration.blockIngredientSerializers::getValue,
-                        TransfigurationRecipes.SINGLE_BLOCK_INGREDIENT_SERIALIZER.get()::parse
+                        Transfiguration.basicIngredientSerializers::getValue,
+                        TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get()::parse
                 ));
             } else {
                 throw new JsonParseException("Expected Object in 'ingredient' array");
             }
         }
-        return blockIngredientList.toArray(new BlockIngredient[0]);
-    }
-
-    @Nonnull
-    public static EntityIngredient getEntityIngredient(JsonObject jsonObject) {
-        return getEntityIngredient(jsonObject, "ingredient");
-    }
-
-    @Nonnull
-    public static EntityIngredient getEntityIngredient(JsonObject jsonObject, String fieldName) {
-        return getSerializable(jsonObject, fieldName, Transfiguration.entityIngredientSerializers::getValue,
-                TransfigurationRecipes.ENTITY_TYPE_ENTITY_INGREDIENT_SERIALIZER.get()::parse);
+        return ingredients;
     }
 
     @Nonnull

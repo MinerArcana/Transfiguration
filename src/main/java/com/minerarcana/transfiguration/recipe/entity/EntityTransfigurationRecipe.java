@@ -8,9 +8,8 @@ import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.entity.EntityTransfiguringEntity;
 import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
-import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -20,18 +19,26 @@ import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class EntityTransfigurationRecipe extends TransfigurationRecipe<EntityIngredient, Entity> {
+public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
     public EntityTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
-                                       EntityIngredient ingredient, Result result, int time) {
+                                       BasicIngredient ingredient, Result result, int time) {
         super(recipeId, transfigurationType, ingredient, result, time);
     }
 
+
     @Override
-    public TransfiguringEntity<?, EntityIngredient, Entity> createTransfiguringEntity(
+    @ParametersAreNonnullByDefault
+    public boolean matches(TransfigurationContainer<Entity> inv, World world) {
+        return this.getIngredient().test(inv.getTargeted());
+    }
+
+    @Override
+    public TransfiguringEntity<?, Entity> createTransfiguringEntity(
             TransfigurationContainer<Entity> transfigurationContainer, double timeModifier, double powerModifier) {
         return new EntityTransfiguringEntity(
                 transfigurationContainer.getWorld(),
@@ -41,6 +48,7 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<EntityIng
                 powerModifier
         );
     }
+
 
     @Override
     @Nonnull

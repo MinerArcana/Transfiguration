@@ -8,7 +8,7 @@ import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.entity.BlockTransfiguringEntity;
 import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredient;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -21,18 +21,19 @@ import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockIngredient, BlockState> {
+public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState> {
     public BlockTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
-                                      BlockIngredient ingredient, Result result, int ticks) {
+                                      BasicIngredient ingredient, Result result, int ticks) {
         super(recipeId, transfigurationType, ingredient, result, ticks);
     }
 
     @Override
-    public TransfiguringEntity<?, BlockIngredient, BlockState> createTransfiguringEntity(TransfigurationContainer<BlockState> transfigurationContainer, double timeModifier, double powerModifier) {
+    public TransfiguringEntity<?, BlockState> createTransfiguringEntity(TransfigurationContainer<BlockState> transfigurationContainer, double timeModifier, double powerModifier) {
         return new BlockTransfiguringEntity(
                 transfigurationContainer.getWorld(),
                 transfigurationContainer.getTargetedPos(),
@@ -40,6 +41,12 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockIngre
                 timeModifier,
                 powerModifier
         );
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public boolean matches(TransfigurationContainer<BlockState> container, World world) {
+        return this.getIngredient().test(container.getTargeted());
     }
 
     @Override

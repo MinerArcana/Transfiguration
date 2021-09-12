@@ -3,7 +3,7 @@
   "transfigurationType": "transfiguration:fungal",
   "ingredient": {
     "type": "transfiguration:tag",
-    "tag": "minecraft:saplings"
+    "block": "minecraft:saplings"
   },
   "result": {
     "type": "transfiguration:block_tag",

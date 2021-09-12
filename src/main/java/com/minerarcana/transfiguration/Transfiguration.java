@@ -4,8 +4,7 @@ import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.compat.cctweaked.CCTweaked;
 import com.minerarcana.transfiguration.content.*;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
-import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
@@ -24,8 +23,7 @@ public class Transfiguration {
     public static final String ID = "transfiguration";
 
     public static IForgeRegistry<TransfigurationType> transfigurationTypes;
-    public static IForgeRegistry<BlockIngredientSerializer<?>> blockIngredientSerializers;
-    public static IForgeRegistry<EntityIngredientSerializer<?>> entityIngredientSerializers;
+    public static IForgeRegistry<BasicIngredientSerializer<?>> basicIngredientSerializers;
     public static IForgeRegistry<ResultSerializer<?>> resultSerializers;
 
     private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID)
@@ -43,11 +41,9 @@ public class Transfiguration {
                 .setType(TransfigurationType.class)
                 .create();
 
-        makeRegistry("block_ingredient_serializers", BlockIngredientSerializer.class);
-        makeRegistry("entity_ingredient_serializers", EntityIngredientSerializer.class);
+        makeRegistry("ingredient_serializers", BasicIngredientSerializer.class);
         makeRegistry("result_serializers", ResultSerializer.class);
-        blockIngredientSerializers = RegistryManager.ACTIVE.getRegistry(BlockIngredientSerializer.class);
-        entityIngredientSerializers = RegistryManager.ACTIVE.getRegistry(EntityIngredientSerializer.class);
+        basicIngredientSerializers = RegistryManager.ACTIVE.getRegistry(BasicIngredientSerializer.class);
         resultSerializers = RegistryManager.ACTIVE.getRegistry(ResultSerializer.class);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

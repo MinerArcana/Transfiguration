@@ -3,7 +3,7 @@
   "transfigurationType": "transfiguration:netheri",
   "ingredient": {
     "type": "transfiguration:tag",
-    "tag": "transfiguration:inputs/netheri/mushroom"
+    "block": "transfiguration:inputs/netheri/mushroom"
   },
   "result": {
     "type": "transfiguration:block_tag",

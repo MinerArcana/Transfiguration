@@ -3,7 +3,7 @@
   "transfigurationType": "transfiguration:overni",
   "ingredient": {
     "type": "transfiguration:tag",
-    "tag": "transfiguration:outputs/netheri/grass"
+    "block": "transfiguration:outputs/netheri/grass"
   },
   "result": {
     "type": "transfiguration:blockstate",
