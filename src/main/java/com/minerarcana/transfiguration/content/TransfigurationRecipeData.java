@@ -45,10 +45,16 @@ public class TransfigurationRecipeData {
                 .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
                 .build(provider);
 
+//        TransfigurationRecipeBuilder.create(context)
+//                .withIngredient(IngredientBuilder.matches(Blocks.STONE))
+//                .withResult(ResultBuilder.blockTag(Tags.Blocks.ORES))
+//                .build(provider);
+
         TransfigurationRecipeBuilder.create(context)
                 .withIngredient(IngredientBuilder.matches(Blocks.STONE))
-                .withResult(ResultBuilder.blockTag(Tags.Blocks.ORES))
+                .withResult(ResultBuilder.aoeBlockTag(Tags.Blocks.ORES))
                 .build(provider);
+
     }
 
     public static void destabilizingRecipes(DataGenContext<TransfigurationType, TransfigurationType> context,

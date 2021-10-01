@@ -6,7 +6,7 @@
     "block": "minecraft:stone"
   },
   "result": {
-    "type": "transfiguration:block_tag",
+    "type": "transfiguration:aoe_block_tag",
     "tag": "forge:ores"
   },
   "ticks": 240

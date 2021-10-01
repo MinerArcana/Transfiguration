@@ -85,6 +85,11 @@ public class TransfigurationRecipes {
                     .object("block_tag")
                     .simple(ResultSerializer.class, BlockTagResultSerializer::new);
 
+    public static final RegistryEntry<AOEBlockTagResultSerializer> AOE_BLOCK_TAG_RESULT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("aoe_block_tag")
+                    .simple(ResultSerializer.class, AOEBlockTagResultSerializer::new);
+
     public static final RegistryEntry<ItemResultSerializer> ITEM_RESULT_SERIALIZER =
             Transfiguration.getRegistrate()
                     .object("item")
