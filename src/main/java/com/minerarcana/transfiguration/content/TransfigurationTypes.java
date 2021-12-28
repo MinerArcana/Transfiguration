@@ -249,10 +249,18 @@ public class TransfigurationTypes {
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)
                         .addIngredient(TransfigurationItems.MAGIC_POWDER.get(), 6)
                         .addIngredient(Items.SMOOTH_STONE)
-                        .addIngredient(Items.TALL_GRASS)
+                        .addIngredient(Items.GRASS)
                         .addIngredient(Items.LILY_PAD)
                         .addCriterion("has_item", RegistrateRecipeProvider.hasItem(context.get()))
                         .build(provider);
+
+                ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)
+                        .addIngredient(TransfigurationItems.MAGIC_POWDER.get(), 6)
+                        .addIngredient(Items.SMOOTH_STONE)
+                        .addIngredient(Items.TALL_GRASS)
+                        .addIngredient(Items.LILY_PAD)
+                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(context.get()))
+                        .build(provider, ResourceLocationHelper.append(context.getId(), "_", "tall_alt"));
 
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 24)
                         .addIngredient(TransfigurationItems.MAGIC_POWDER.get(), 6)
