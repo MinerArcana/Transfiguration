@@ -9,7 +9,6 @@ import com.minerarcana.transfiguration.recipe.dust.DustRecipeInventory;
 import com.minerarcana.transfiguration.util.Vectors;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.fluid.FluidState;
@@ -23,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -35,13 +33,6 @@ public class TransfiguringDustItem extends TransfiguringItem {
     @Override
     public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
         itemStack.shrink(1);
-    }
-
-    @Override
-    @ParametersAreNonnullByDefault
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-        super.inventoryTick(stack, world, entity, itemSlot, isSelected);
-
     }
 
     @Override
@@ -74,7 +65,7 @@ public class TransfiguringDustItem extends TransfiguringItem {
                             );
                         }
                         if (recipe.isPresent()) {
-                            float progress = (float) age / entity.lifespan;
+                            float progress = (float) age / (entity.lifespan / 2f);
                             if (progress > 0.95) {
                                 if (!world.isRemote()) {
                                     ItemStack inputStack = entity.getItem();
@@ -117,7 +108,7 @@ public class TransfiguringDustItem extends TransfiguringItem {
                                                                 blockPos.getZ() + 0.5
                                                         ),
                                                         8,
-                                                        Math.min(entity.lifespan - age, 40),
+                                                        Math.min((entity.lifespan / 2) - age, 40),
                                                         random.nextInt(32)
                                                 ),
                                                 startPos.x,
