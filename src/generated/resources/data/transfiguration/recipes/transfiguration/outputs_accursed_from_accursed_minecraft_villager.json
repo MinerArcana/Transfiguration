@@ -1,5 +1,5 @@
 {
-  "type": "transfiguration:block_transfiguration",
+  "type": "transfiguration:entity_transfiguration",
   "transfigurationType": "transfiguration:accursed",
   "ingredient": {
     "type": "transfiguration:match",

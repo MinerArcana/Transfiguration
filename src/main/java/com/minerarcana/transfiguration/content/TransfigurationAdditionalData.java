@@ -51,6 +51,12 @@ public class TransfigurationAdditionalData {
                         Blocks.RED_MUSHROOM
                 );
 
+        tagsProvider.getOrCreateBuilder(TransfigurationBlockTags.OUTPUTS_FUNGI_MUSHROOM_LEAVES)
+                .add(
+                        Blocks.BROWN_MUSHROOM_BLOCK,
+                        Blocks.RED_MUSHROOM_BLOCK
+                );
+
         tagsProvider.getOrCreateBuilder(TransfigurationBlockTags.INPUTS_NETHERI_MUSHROOM)
                 .add(
                         Blocks.BROWN_MUSHROOM,

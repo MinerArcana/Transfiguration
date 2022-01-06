@@ -12,4 +12,6 @@ public class TransfigurationBlockTags {
     public static ITag.INamedTag<Block> OUTPUTS_NETHERI_GRASS = BlockTags.makeWrapperTag("transfiguration:outputs/netheri/grass");
     public static ITag.INamedTag<Block> INPUTS_NETHERI_MUSHROOM = BlockTags.makeWrapperTag("transfiguration:inputs/netheri/mushroom");
     public static ITag.INamedTag<Block> OUTPUTS_NETHERI_MUSHROOM = BlockTags.makeWrapperTag("transfiguration:outputs/netheri/mushroom");
+    public static ITag.INamedTag<Block> OUTPUTS_FUNGI_MUSHROOM_LEAVES = BlockTags.makeWrapperTag("transfiguration:outputs/fungal/mushroom_leaves");
+
 }

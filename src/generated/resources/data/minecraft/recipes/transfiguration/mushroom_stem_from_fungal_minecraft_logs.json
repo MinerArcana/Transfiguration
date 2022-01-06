@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:fungal",
+  "ingredient": {
+    "type": "transfiguration:tag",
+    "block": "minecraft:logs"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:mushroom_stem"
+  },
+  "ticks": 240
+}

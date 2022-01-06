@@ -25,12 +25,20 @@ public class TransfigurationRecipeBuilder {
         this.recipeSerializer = recipeSerializer;
     }
 
-    public static TransfigurationRecipeBuilder create(TransfigurationType transfigurationType) {
+    public static TransfigurationRecipeBuilder createBlock(TransfigurationType transfigurationType) {
         return new TransfigurationRecipeBuilder(transfigurationType, TransfigurationRecipes.BLOCK_TRANSFIGURATION.get());
     }
 
-    public static TransfigurationRecipeBuilder create(Supplier<? extends TransfigurationType> transfigurationType) {
-        return create(transfigurationType.get());
+    public static TransfigurationRecipeBuilder createBlock(Supplier<? extends TransfigurationType> transfigurationType) {
+        return createBlock(transfigurationType.get());
+    }
+
+    public static TransfigurationRecipeBuilder createEntity(TransfigurationType transfigurationType) {
+        return new TransfigurationRecipeBuilder(transfigurationType, TransfigurationRecipes.ENTITY_TRANSFIGURATION.get());
+    }
+
+    public static TransfigurationRecipeBuilder createEntity(Supplier<? extends TransfigurationType> transfigurationType) {
+        return createEntity(transfigurationType.get());
     }
 
     public TransfigurationRecipeBuilder withIngredient(IFinishedObject<BasicIngredientSerializer<?>> ingredient) {
