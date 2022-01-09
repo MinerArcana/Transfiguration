@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:dissolution",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "block": "minecraft:sandstone"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:sand"
+  },
+  "ticks": 240
+}

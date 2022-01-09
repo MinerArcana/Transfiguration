@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:netheri",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "block": "minecraft:campfire"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:soul_campfire"
+  },
+  "ticks": 240
+}

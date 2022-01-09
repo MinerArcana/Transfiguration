@@ -1,51 +1,57 @@
 package com.minerarcana.transfiguration.recipe.builder;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
-import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegistryEntry<T>> {
+public class TransfigurationRecipeBuilder {
     private final TransfigurationType transfigurationType;
     private final IRecipeSerializer<?> recipeSerializer;
-    private IFinishedObject<T> ingredient;
+    private IFinishedObject<BasicIngredientSerializer<?>> ingredient;
     private IFinishedObject<ResultSerializer<?>> result;
-    private int ticks = 12;
+    private int ticks = 12 * 20;
 
     private TransfigurationRecipeBuilder(TransfigurationType transfigurationType, IRecipeSerializer<?> recipeSerializer) {
         this.transfigurationType = transfigurationType;
         this.recipeSerializer = recipeSerializer;
     }
 
-    public static TransfigurationRecipeBuilder<BlockIngredientSerializer<?>> block(TransfigurationType transfigurationType) {
-        return new TransfigurationRecipeBuilder<>(transfigurationType, TransfigurationRecipes.BLOCK_TRANSFIGURATION.get());
+    public static TransfigurationRecipeBuilder createBlock(TransfigurationType transfigurationType) {
+        return new TransfigurationRecipeBuilder(transfigurationType, TransfigurationRecipes.BLOCK_TRANSFIGURATION.get());
     }
 
-    public static TransfigurationRecipeBuilder<EntityIngredientSerializer<?>> entity(TransfigurationType transfigurationType) {
-        return new TransfigurationRecipeBuilder<>(transfigurationType, TransfigurationRecipes.ENTITY_TRANSFIGURATION.get());
+    public static TransfigurationRecipeBuilder createBlock(Supplier<? extends TransfigurationType> transfigurationType) {
+        return createBlock(transfigurationType.get());
     }
 
-    public TransfigurationRecipeBuilder<T> withIngredient(IFinishedObject<T> ingredient) {
+    public static TransfigurationRecipeBuilder createEntity(TransfigurationType transfigurationType) {
+        return new TransfigurationRecipeBuilder(transfigurationType, TransfigurationRecipes.ENTITY_TRANSFIGURATION.get());
+    }
+
+    public static TransfigurationRecipeBuilder createEntity(Supplier<? extends TransfigurationType> transfigurationType) {
+        return createEntity(transfigurationType.get());
+    }
+
+    public TransfigurationRecipeBuilder withIngredient(IFinishedObject<BasicIngredientSerializer<?>> ingredient) {
         this.ingredient = ingredient;
         return this;
     }
 
-    public TransfigurationRecipeBuilder<T> withResult(IFinishedObject<ResultSerializer<?>> result) {
+    public TransfigurationRecipeBuilder withResult(IFinishedObject<ResultSerializer<?>> result) {
         this.result = result;
         return this;
     }
 
-    public TransfigurationRecipeBuilder<T> withTicks(int ticks) {
+    public TransfigurationRecipeBuilder withTicks(int ticks) {
         this.ticks = ticks;
         return this;
     }
@@ -58,9 +64,9 @@ public class TransfigurationRecipeBuilder<T extends ISerializer<?> & IForgeRegis
         this.validate(id);
         if (id == null) {
             ResourceLocation resultId = this.result.getId();
-            id = new ResourceLocation(resultId.getNamespace(), "transfiguration/" + resultId.getPath() + "_from_" +
-                    Objects.requireNonNull(transfigurationType.getRegistryName()).getPath() + "_" +
-                    ingredient.getId().toString().replace(":", "_"));
+            id = new ResourceLocation(resultId.getNamespace(), "transfiguration/" + resultId.getPath().replace("/", "_")
+                    + "_from_" + Objects.requireNonNull(transfigurationType.getRegistryName()).getPath().replace("/", "_")
+                    + "_" + ingredient.getId().toString().replace(":", "_").replace("/", "_"));
         }
         recipeConsumer.accept(new TransfigurationFinishedRecipe<>(recipeSerializer, id, transfigurationType,
                 ingredient, result, ticks));

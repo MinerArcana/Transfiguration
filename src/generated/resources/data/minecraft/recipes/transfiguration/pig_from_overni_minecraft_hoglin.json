@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:overni",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "entity": "minecraft:hoglin"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:pig"
+  },
+  "ticks": 240
+}

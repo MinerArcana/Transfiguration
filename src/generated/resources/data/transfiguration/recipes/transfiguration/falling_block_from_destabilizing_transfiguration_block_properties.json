@@ -1,0 +1,12 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:destabilizing",
+  "ingredient": {
+    "type": "transfiguration:block_properties",
+    "blockEntity": false
+  },
+  "result": {
+    "type": "transfiguration:falling_block"
+  },
+  "ticks": 240
+}

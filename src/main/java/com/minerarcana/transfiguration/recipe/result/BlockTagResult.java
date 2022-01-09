@@ -1,7 +1,8 @@
 package com.minerarcana.transfiguration.recipe.result;
 
-import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.content.TransfigurationRecipes;
+import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -17,17 +18,20 @@ public class BlockTagResult extends Result {
         this.tag = tag;
     }
 
-    @Nonnull
-    @Override
-    public ActionResultType handle(@Nonnull TransfigurationContainer<?> transfigurationContainer) {
+    public void handle(@Nonnull TransfigurationContainer<?> transfigurationContainer, double powerModifier) {
         BlockState blockState = tag.getRandomElement(transfigurationContainer.getWorld().rand).getDefaultState();
-        return transfigurationContainer.getWorld().setBlockState(transfigurationContainer.getTargetedPos(), blockState) ?
-                ActionResultType.SUCCESS : ActionResultType.FAIL;
+        transfigurationContainer.getWorld().setBlockState(transfigurationContainer.getTargetedPos(), blockState);
     }
 
     @Nonnull
     @Override
-    public ItemStack getOutputRepresentation() {
+    public ResultInstance create() {
+        return new AfterDoneResultInstance(this::handle);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getRepresentation() {
         return ItemStack.EMPTY;
     }
 

@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:netheri",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "block": "minecraft:dirt"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:soul_soil"
+  },
+  "ticks": 240
+}

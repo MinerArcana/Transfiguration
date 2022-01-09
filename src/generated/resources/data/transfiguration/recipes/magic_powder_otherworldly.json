@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:gems/prismarine"
+    },
+    {
+      "tag": "forge:ender_pearls"
+    },
+    {
+      "tag": "forge:crops/nether_wart"
+    }
+  ],
+  "result": {
+    "item": "transfiguration:magic_powder",
+    "count": 16
+  }
+}

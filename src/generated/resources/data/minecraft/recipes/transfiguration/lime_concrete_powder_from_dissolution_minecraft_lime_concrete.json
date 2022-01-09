@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:dissolution",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "block": "minecraft:lime_concrete"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:lime_concrete_powder"
+  },
+  "ticks": 240
+}

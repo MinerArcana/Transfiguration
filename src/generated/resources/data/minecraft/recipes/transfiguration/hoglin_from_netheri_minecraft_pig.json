@@ -2,11 +2,12 @@
   "type": "transfiguration:entity_transfiguration",
   "transfigurationType": "transfiguration:netheri",
   "ingredient": {
-    "type": "transfiguration:entity_type",
+    "type": "transfiguration:match",
     "entity": "minecraft:pig"
   },
   "result": {
     "type": "transfiguration:entity",
     "entity": "minecraft:hoglin"
-  }
+  },
+  "ticks": 240
 }

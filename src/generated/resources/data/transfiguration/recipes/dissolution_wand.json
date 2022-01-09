@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C",
+    "I",
+    "R"
+  ],
+  "key": {
+    "C": {
+      "item": "transfiguration:dissolution_catalyst"
+    },
+    "I": {
+      "tag": "forge:ingots"
+    },
+    "R": {
+      "item": "minecraft:end_rod"
+    }
+  },
+  "result": {
+    "item": "transfiguration:dissolution_wand"
+  }
+}

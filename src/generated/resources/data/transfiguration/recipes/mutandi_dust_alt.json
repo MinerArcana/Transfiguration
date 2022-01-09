@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "minecraft:slime_block"
+    },
+    {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    {
+      "item": "minecraft:crying_obsidian"
+    }
+  ],
+  "result": {
+    "item": "transfiguration:mutandi_dust",
+    "count": 64
+  }
+}

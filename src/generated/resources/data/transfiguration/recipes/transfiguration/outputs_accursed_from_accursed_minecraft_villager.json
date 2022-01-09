@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:accursed",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "entity": "minecraft:villager"
+  },
+  "result": {
+    "type": "transfiguration:entity_tag",
+    "tag": "transfiguration:outputs/accursed"
+  },
+  "ticks": 240
+}

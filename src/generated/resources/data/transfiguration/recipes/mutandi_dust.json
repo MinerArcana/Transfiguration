@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "minecraft:cactus"
+    },
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "tag": "minecraft:tall_flowers"
+    }
+  ],
+  "result": {
+    "item": "transfiguration:mutandi_dust",
+    "count": 9
+  }
+}

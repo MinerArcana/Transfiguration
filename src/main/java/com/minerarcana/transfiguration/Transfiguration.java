@@ -1,26 +1,17 @@
 package com.minerarcana.transfiguration;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.compat.cctweaked.CCTweaked;
-import com.minerarcana.transfiguration.content.TransfigurationAdditionalData;
-import com.minerarcana.transfiguration.content.TransfigurationEntities;
-import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import com.minerarcana.transfiguration.content.TransfigurationTypes;
+import com.minerarcana.transfiguration.content.*;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
-import com.minerarcana.transfiguration.recipe.ingedient.block.BlockIngredientSerializer;
-import com.minerarcana.transfiguration.recipe.ingedient.entity.EntityIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -32,16 +23,15 @@ public class Transfiguration {
     public static final String ID = "transfiguration";
 
     public static IForgeRegistry<TransfigurationType> transfigurationTypes;
-    public static IForgeRegistry<BlockIngredientSerializer<?>> blockIngredientSerializers;
-    public static IForgeRegistry<EntityIngredientSerializer<?>> entityIngredientSerializers;
+    public static IForgeRegistry<BasicIngredientSerializer<?>> basicIngredientSerializers;
     public static IForgeRegistry<ResultSerializer<?>> resultSerializers;
 
     private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID)
             .itemGroup(TransfiguringItemGroup::new, "Transfiguration")
-            .addDataGenerator(ProviderType.RECIPE, TransfigurationAdditionalData::addRecipes)
             .addDataGenerator(ProviderType.ENTITY_TAGS, TransfigurationAdditionalData::addEntityTypeTags)
             .addDataGenerator(ProviderType.BLOCK_TAGS, TransfigurationAdditionalData::addBlockTags)
             .addDataGenerator(ProviderType.LANG, TransfigurationAdditionalData::addLang)
+            .addDataGenerator(ProviderType.ITEM_TAGS, TransfigurationAdditionalData::addItemTags)
     );
 
     @SuppressWarnings("unchecked")
@@ -51,19 +41,20 @@ public class Transfiguration {
                 .setType(TransfigurationType.class)
                 .create();
 
-        makeRegistry("block_ingredient_serializers", BlockIngredientSerializer.class);
-        makeRegistry("entity_ingredient_serializers", EntityIngredientSerializer.class);
+        makeRegistry("ingredient_serializers", BasicIngredientSerializer.class);
         makeRegistry("result_serializers", ResultSerializer.class);
-        blockIngredientSerializers = RegistryManager.ACTIVE.getRegistry(BlockIngredientSerializer.class);
-        entityIngredientSerializers = RegistryManager.ACTIVE.getRegistry(EntityIngredientSerializer.class);
+        basicIngredientSerializers = RegistryManager.ACTIVE.getRegistry(BasicIngredientSerializer.class);
         resultSerializers = RegistryManager.ACTIVE.getRegistry(ResultSerializer.class);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        TransfigurationBlocks.setup();
         TransfigurationRecipes.register(modEventBus);
         TransfigurationTypes.setup();
         TransfigurationEntities.setup();
+        TransfigurationItems.setup();
+        TransfigurationAttributes.setup(modEventBus);
+        TransfigurationParticles.setup();
 
-        modEventBus.addListener(this::handleClient);
         CCTweaked.setup();
     }
 
@@ -73,13 +64,6 @@ public class Transfiguration {
 
     public static ResourceLocation rl(String path) {
         return new ResourceLocation(ID, path);
-    }
-
-    public void handleClient(FMLClientSetupEvent clientSetupEvent) {
-        EntityRendererManager rendererManager = Minecraft.getInstance().getRenderManager();
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        rendererManager.register(TransfigurationEntities.TRANSFIGURING_PROJECTILE.get(),
-                new SpriteRenderer<>(rendererManager, itemRenderer));
     }
 
     private static <T extends IForgeRegistryEntry<T>> void makeRegistry(String name, Class<T> type) {

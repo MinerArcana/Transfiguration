@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:netheri",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "entity": "minecraft:slime"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:magma_cube"
+  },
+  "ticks": 240
+}

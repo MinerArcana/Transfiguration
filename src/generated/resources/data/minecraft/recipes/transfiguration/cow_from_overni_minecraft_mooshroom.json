@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:overni",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "entity": "minecraft:mooshroom"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:cow"
+  },
+  "ticks": 240
+}

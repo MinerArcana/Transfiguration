@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:dust",
+  "transfigurationType": "transfiguration:dissolution",
+  "block": {
+    "type": "transfiguration:match",
+    "block": "transfiguration:catalyst_substrate"
+  },
+  "fluid": "minecraft:water",
+  "output": {
+    "item": "transfiguration:dissolution_catalyst",
+    "nbt": "{Damage:0}"
+  }
+}

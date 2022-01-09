@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.recipe.result;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
@@ -17,15 +18,19 @@ public class EntityResult extends Result {
         this.entityType = entityType;
     }
 
-    @Override
     @Nonnull
-    public ActionResultType handle(@Nonnull TransfigurationContainer<?> transfigurationContainer) {
-        return summon(transfigurationContainer, entityType);
+    @Override
+    public ResultInstance create() {
+        return new AfterDoneResultInstance(1, this::handle);
+    }
+
+    public void handle(@Nonnull TransfigurationContainer<?> transfigurationContainer, double powerModifier) {
+        summon(transfigurationContainer, entityType);
     }
 
     @Override
     @Nonnull
-    public ItemStack getOutputRepresentation() {
+    public ItemStack getRepresentation() {
         return ItemStack.EMPTY;
     }
 

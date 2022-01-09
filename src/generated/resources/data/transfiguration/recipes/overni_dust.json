@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "minecraft:smooth_stone"
+    },
+    {
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:lily_pad"
+    }
+  ],
+  "result": {
+    "item": "transfiguration:overni_dust",
+    "count": 9
+  }
+}

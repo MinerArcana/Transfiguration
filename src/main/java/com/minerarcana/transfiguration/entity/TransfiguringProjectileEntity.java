@@ -1,9 +1,11 @@
 package com.minerarcana.transfiguration.entity;
 
-import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.content.TransfigurationAttributes;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.item.ITransfiguring;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
+import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -18,7 +20,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class TransfiguringProjectileEntity extends ProjectileItemEntity {
     public TransfiguringProjectileEntity(EntityType<? extends ProjectileItemEntity> type, World world) {
@@ -42,25 +43,29 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
     @Override
     protected void func_230299_a_(@Nonnull BlockRayTraceResult blockRayTraceResult) {
         TransfigurationType type = this.getTransfigurationType();
-        if (type != null) {
-            BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
-            blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
-            TransfigurationContainer<BlockState> container = TransfigurationContainer.block(world,
-                    blockRayTraceResult.getPos(), blockRayTraceResult.getFace(), this.getCaster());
-            world.getRecipeManager().getRecipe(type.getBlockRecipeType(), container, world)
-                    .ifPresent(recipe -> recipe.transfigure(container, 1.0F));
-        }
+        BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
+        blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
+        BlockTransfigurationRecipe.tryTransfigure(
+                type,
+                blockRayTraceResult,
+                this.getEntityWorld(),
+                this.func_234616_v_(),
+                this.getPowerModifier(),
+                this.getTimeModifier()
+        );
+        this.remove();
     }
 
     @Override
     protected void onEntityHit(@Nonnull EntityRayTraceResult entityRayTraceResult) {
         TransfigurationType type = this.getTransfigurationType();
-        if (type != null) {
-            TransfigurationContainer<Entity> container = TransfigurationContainer.entity(entityRayTraceResult.getEntity(),
-                    this.getCaster());
-            world.getRecipeManager().getRecipe(type.getEntityRecipeType(), container, world)
-                    .ifPresent(recipe -> recipe.transfigure(container, 1.0));
-        }
+        EntityTransfigurationRecipe.tryTransfigure(
+                type,
+                entityRayTraceResult.getEntity(),
+                this.func_234616_v_(),
+                this.getPowerModifier(),
+                this.getTimeModifier()
+        );
     }
 
     private TransfigurationType getTransfigurationType() {
@@ -71,9 +76,34 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
         return null;
     }
 
-    @Nullable
-    public LivingEntity getCaster() {
-        return this.func_234616_v_() instanceof LivingEntity ? (LivingEntity) this.func_234616_v_() : null;
+    private double getPowerModifier() {
+        ItemStack itemStack = this.getItem();
+        Entity entity = this.func_234616_v_();
+        if (entity instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            if (livingEntity.getAttributeManager().hasAttributeInstance(TransfigurationAttributes.POWER_MODIFIER.get())) {
+                return livingEntity.getAttributeValue(TransfigurationAttributes.POWER_MODIFIER.get());
+            }
+        }
+        if (itemStack.getItem() instanceof ITransfiguring) {
+            return ((ITransfiguring) itemStack.getItem()).getPowerModifier(itemStack);
+        }
+        return 1.0F;
+    }
+
+    private double getTimeModifier() {
+        ItemStack itemStack = this.getItem();
+        Entity entity = this.func_234616_v_();
+        if (entity instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            if (livingEntity.getAttributeManager().hasAttributeInstance(TransfigurationAttributes.TIME_MODIFIER.get())) {
+                return livingEntity.getAttributeValue(TransfigurationAttributes.TIME_MODIFIER.get());
+            }
+        }
+        if (itemStack.getItem() instanceof ITransfiguring) {
+            return ((ITransfiguring) itemStack.getItem()).getTimeModifier(itemStack);
+        }
+        return 1F;
     }
 
     @Override

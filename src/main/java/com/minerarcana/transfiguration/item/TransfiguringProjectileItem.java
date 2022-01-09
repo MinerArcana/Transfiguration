@@ -1,7 +1,7 @@
 package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.Transfiguration;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +20,16 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
     public ItemStack withTransfigurationType(TransfigurationType type) {
         CompoundNBT tag = new CompoundNBT();
         tag.putString("type", Objects.requireNonNull(type.getRegistryName()).toString());
+        ItemStack itemStack = new ItemStack(this);
+        itemStack.setTag(tag);
+        return itemStack;
+    }
+
+    public ItemStack withTypeAndStats(TransfigurationType type, double powerModifier, double timeModifier) {
+        CompoundNBT tag = new CompoundNBT();
+        tag.putString("type", Objects.requireNonNull(type.getRegistryName()).toString());
+        tag.putDouble("power", powerModifier);
+        tag.putDouble("time", timeModifier);
         ItemStack itemStack = new ItemStack(this);
         itemStack.setTag(tag);
         return itemStack;
@@ -47,6 +57,16 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
     @Override
     public TransfigurationType getType(ItemStack itemStack) {
         return getTransfigurationType(itemStack);
+    }
+
+    @Override
+    public double getPowerModifier(ItemStack itemStack) {
+        return itemStack.getTag() != null && itemStack.getTag().contains("power")? itemStack.getTag().getDouble("power") : 1.0F;
+    }
+
+    @Override
+    public double getTimeModifier(ItemStack itemStack) {
+        return itemStack.getTag() != null && itemStack.getTag().contains("time") ? itemStack.getTag().getDouble("time") : 1.0F;
     }
 
     @Override

@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:fungal",
+  "ingredient": {
+    "type": "transfiguration:tag",
+    "block": "minecraft:saplings"
+  },
+  "result": {
+    "type": "transfiguration:block_tag",
+    "tag": "transfiguration:outputs/fungal/mushroom"
+  },
+  "ticks": 240
+}

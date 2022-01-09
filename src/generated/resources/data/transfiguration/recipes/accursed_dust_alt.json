@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:netheri_dust"
+    },
+    {
+      "tag": "forge:obsidian"
+    },
+    {
+      "item": "minecraft:zombie_head"
+    }
+  ],
+  "result": {
+    "item": "transfiguration:accursed_dust",
+    "count": 32
+  }
+}

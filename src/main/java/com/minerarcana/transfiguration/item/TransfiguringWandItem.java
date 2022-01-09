@@ -1,11 +1,12 @@
 package com.minerarcana.transfiguration.item;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
-import com.minerarcana.transfiguration.transfiguring.TransfigurationType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTier;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -23,7 +24,7 @@ public class TransfiguringWandItem extends TransfiguringItem {
     }
 
     @Override
-    public double getTimeModifier() {
+    public double getTimeModifier(ItemStack itemStack) {
         return 0.5;
     }
 
@@ -38,7 +39,13 @@ public class TransfiguringWandItem extends TransfiguringItem {
         if (!world.isRemote) {
             TransfiguringProjectileEntity projectile = new TransfiguringProjectileEntity(world, playerEntity);
             projectile.setItem(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM.get()
-                    .withTransfigurationType(this.getType(itemStack)));
+                    .withTypeAndStats(
+                            this.getType(itemStack),
+                            this.getPowerModifier(itemStack),
+                            this.getTimeModifier(itemStack)
+                    )
+            );
+            projectile.setShooter(playerEntity);
             projectile.func_234612_a_(playerEntity, playerEntity.rotationPitch, playerEntity.rotationYaw,
                     0.0F, 1.5F, 1.0F);
             world.addEntity(projectile);
@@ -55,5 +62,10 @@ public class TransfiguringWandItem extends TransfiguringItem {
     @Override
     public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
         itemStack.damageItem(1, livingEntity, entity -> entity.sendBreakAnimation(hand));
+    }
+
+    @Override
+    public int getItemEnchantability() {
+        return ItemTier.GOLD.getEnchantability();
     }
 }

@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:dissolution",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "block": "minecraft:stone"
+  },
+  "result": {
+    "type": "transfiguration:block_tag",
+    "tag": "transfiguration:outputs/dissolution"
+  },
+  "ticks": 240
+}

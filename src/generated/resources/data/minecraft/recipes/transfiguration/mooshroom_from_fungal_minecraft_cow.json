@@ -2,11 +2,12 @@
   "type": "transfiguration:entity_transfiguration",
   "transfigurationType": "transfiguration:fungal",
   "ingredient": {
-    "type": "transfiguration:entity_type",
+    "type": "transfiguration:match",
     "entity": "minecraft:cow"
   },
   "result": {
     "type": "transfiguration:entity",
     "entity": "minecraft:mooshroom"
-  }
+  },
+  "ticks": 240
 }
