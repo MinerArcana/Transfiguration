@@ -73,7 +73,7 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
 
     public static boolean tryTransfigure(TransfigurationType type, TransfigurationContainer<Entity> container,
                                          double powerModifier, double timeModifier) {
-        if (type != null) {
+        if (type != null && !(container.getTargeted().getRidingEntity() instanceof TransfiguringEntity<?,?>)) {
             World world = container.getWorld();
             Optional<ITransfigurationRecipe<Entity>> recipeOptional = world.getRecipeManager()
                     .getRecipe(type.getEntityRecipeType(), container, world);

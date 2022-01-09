@@ -15,6 +15,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -73,7 +75,7 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState
 
     public static boolean tryTransfigure(TransfigurationType type, TransfigurationContainer<BlockState> container,
                                          double powerModifier, double timeModifier) {
-        if (type != null) {
+        if (type != null && !containsTransfiguringEntity(container.getWorld(), container.getTargetedPos())) {
             World world = container.getWorld();
             Optional<ITransfigurationRecipe<BlockState>> recipeOptional = world.getRecipeManager()
                     .getRecipe(type.getBlockRecipeType(), container, world);
@@ -96,5 +98,11 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState
         }
 
         return false;
+    }
+
+    private static boolean containsTransfiguringEntity(World world, BlockPos blockPos) {
+        return world.getEntitiesWithinAABB(TransfiguringEntity.class, new AxisAlignedBB(blockPos))
+                .stream()
+                .anyMatch(transfiguringEntity -> transfiguringEntity.getPosition().equals(blockPos));
     }
 }
