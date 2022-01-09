@@ -352,4 +352,37 @@ public class TransfigurationRecipeData {
                 .withResult(ResultBuilder.entityType(EntityType.COW))
                 .build(provider);
     }
+
+    public static void animationRecipes(DataGenContext<TransfigurationType, TransfigurationType> context,
+                                     RegistrateRecipeProvider provider) {
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.STONE))
+                .withResult(ResultBuilder.block(Blocks.INFESTED_STONE))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.CHISELED_STONE_BRICKS))
+                .withResult(ResultBuilder.block(Blocks.INFESTED_CHISELED_STONE_BRICKS))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.COBBLESTONE))
+                .withResult(ResultBuilder.block(Blocks.INFESTED_COBBLESTONE))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.CRACKED_STONE_BRICKS))
+                .withResult(ResultBuilder.block(Blocks.INFESTED_CRACKED_STONE_BRICKS))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.MOSSY_STONE_BRICKS))
+                .withResult(ResultBuilder.block(Blocks.INFESTED_MOSSY_STONE_BRICKS))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.STONE_BRICKS))
+                .withResult(ResultBuilder.block(Blocks.INFESTED_STONE_BRICKS))
+                .build(provider);
+    }
 }

@@ -251,7 +251,7 @@ public class TransfigurationTypes {
                         .addIngredient(Items.SMOOTH_STONE)
                         .addIngredient(Items.GRASS)
                         .addIngredient(Items.LILY_PAD)
-                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(context.get()))
+                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(TransfigurationItems.MAGIC_POWDER.get()))
                         .build(provider);
 
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 9)
@@ -259,7 +259,7 @@ public class TransfigurationTypes {
                         .addIngredient(Items.SMOOTH_STONE)
                         .addIngredient(Items.TALL_GRASS)
                         .addIngredient(Items.LILY_PAD)
-                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(context.get()))
+                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(TransfigurationItems.MAGIC_POWDER.get()))
                         .build(provider, ResourceLocationHelper.append(context.getId(), "_", "tall_alt"));
 
                 ShapelessRecipeBuilder.shapelessRecipe(context.get(), 24)
@@ -267,9 +267,29 @@ public class TransfigurationTypes {
                         .addIngredient(Items.SMOOTH_STONE)
                         .addIngredient(Items.SCUTE)
                         .addIngredient(Items.NAUTILUS_SHELL)
-                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(context.get()))
+                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(TransfigurationItems.MAGIC_POWDER.get()))
                         .build(provider, ResourceLocationHelper.append(context.getId(), "_", "alt"));
             })
+            .build()
+            .defaultCatalyst()
+            .defaultWand()
+            .register();
+
+    public static final RegistryEntry<TransfigurationType> ANIMATION = Transfiguration.getRegistrate()
+            .object("animation")
+            .entry(TRANSFIGURATION_TYPE)
+            .lang("Animation")
+            .primaryColor(DyeColor.WHITE)
+            .secondaryColor(DyeColor.ORANGE)
+            .recipe(TransfigurationRecipeData::animationRecipes)
+            .dust()
+            .recipe((context, provider) -> ShapelessRecipeBuilder.shapelessRecipe(context.get(), 6)
+                    .addIngredient(TransfigurationItems.MAGIC_POWDER.get(), 6)
+                    .addIngredient(getDust(TransfigurationTypes.MUTANDI))
+                    .addIngredient(Tags.Items.EGGS)
+                    .addIngredient(Items.JACK_O_LANTERN)
+                    .addCriterion("has_item", RegistrateRecipeProvider.hasItem(getDust(TransfigurationTypes.MUTANDI)))
+                    .build(provider))
             .build()
             .defaultCatalyst()
             .defaultWand()

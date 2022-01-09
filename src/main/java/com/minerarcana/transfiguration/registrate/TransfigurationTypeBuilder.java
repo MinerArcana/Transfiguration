@@ -19,6 +19,7 @@ import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tags.FluidTags;
@@ -47,9 +48,17 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
         this.fallback = Lists.newArrayList();
     }
 
+    public TransfigurationTypeBuilder<T, P> primaryColor(DyeColor primaryColor) {
+        return this.primaryColor(primaryColor.getColorValue());
+    }
+
     public TransfigurationTypeBuilder<T, P> primaryColor(int primaryColor) {
         this.primaryColor = primaryColor;
         return this;
+    }
+
+    public TransfigurationTypeBuilder<T, P> secondaryColor(DyeColor secondaryColor) {
+        return this.secondaryColor(secondaryColor.getColorValue());
     }
 
     public TransfigurationTypeBuilder<T, P> secondaryColor(int secondaryColor) {
