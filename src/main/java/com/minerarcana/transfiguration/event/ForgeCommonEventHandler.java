@@ -18,11 +18,14 @@ public class ForgeCommonEventHandler {
         ItemStack itemStack = event.getPlayer()
                 .getHeldItem(event.getHand());
         if (itemStack.getItem() instanceof ITransfiguring) {
-            if (((ITransfiguring) itemStack.getItem()).transfigureEntity(
+            ITransfiguring transfiguring = (ITransfiguring) itemStack.getItem();
+            boolean transfigured = transfiguring.transfigureEntity(
                     event.getTarget(),
                     event.getPlayer(),
                     itemStack
-            )) {
+            );
+            if (transfigured) {
+                transfiguring.afterTransfiguration(itemStack, event.getPlayer(), event.getHand());
                 event.setCancellationResult(ActionResultType.SUCCESS);
             }
         }
