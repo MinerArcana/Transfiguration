@@ -346,5 +346,10 @@ public class TransfigurationRecipeData {
                 .withIngredient(IngredientBuilder.matches(Blocks.BASALT))
                 .withResult(ResultBuilder.block(Blocks.STONE))
                 .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.MOOSHROOM))
+                .withResult(ResultBuilder.entityType(EntityType.COW))
+                .build(provider);
     }
 }
