@@ -300,12 +300,16 @@ public class TransfigurationTypes {
     }
 
     public static Item getDust(Supplier<TransfigurationType> transfigurationTypeSupplier) {
+        return getItem(transfigurationTypeSupplier, "dust");
+    }
+
+    public static Item getItem(Supplier<TransfigurationType> transfigurationTypeSupplier, String name) {
         ResourceLocation registryName = transfigurationTypeSupplier.get().getRegistryName();
         if (registryName == null) {
             throw new IllegalStateException("Registry Name was null");
         } else {
             Item dustItem = ForgeRegistries.ITEMS.getValue(
-                    new ResourceLocation(registryName.getNamespace(), registryName.getPath() + "_dust")
+                    new ResourceLocation(registryName.getNamespace(), registryName.getPath() + "_" + name)
             );
             if (dustItem == null) {
                 throw new IllegalStateException("Failed to find Dust for Type: " + registryName);

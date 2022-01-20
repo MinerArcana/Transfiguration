@@ -3,9 +3,13 @@ package com.minerarcana.transfiguration.recipe.ingedient;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
 import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class BasicIngredient implements ISerializable<BasicIngredientSerializer<?>> {
     public boolean test(@Nonnull BlockState blockState) {
@@ -26,5 +30,9 @@ public abstract class BasicIngredient implements ISerializable<BasicIngredientSe
         BasicIngredientSerializer<T> blockIngredientSerializer = (BasicIngredientSerializer<T>) basicIngredient.getSerializer();
         packetBuffer.writeRegistryId(blockIngredientSerializer);
         blockIngredientSerializer.write(packetBuffer, basicIngredient);
+    }
+
+    public List<ItemStack> getMatchingStacks() {
+        return Collections.emptyList();
     }
 }

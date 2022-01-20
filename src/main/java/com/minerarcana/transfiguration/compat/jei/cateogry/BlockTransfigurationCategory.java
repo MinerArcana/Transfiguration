@@ -1,7 +1,7 @@
 package com.minerarcana.transfiguration.compat.jei.cateogry;
 
 import com.minerarcana.transfiguration.Transfiguration;
-import com.minerarcana.transfiguration.compat.jei.TransfigurationJEIPlugin;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import mezz.jei.api.constants.VanillaTypes;
@@ -13,29 +13,31 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class BlockTransfigurationCategory implements IRecipeCategory<BlockTransfigurationRecipe> {
-    public static final ResourceLocation UID = Transfiguration.rl("block_transfiguration");
 
+    private final TransfigurationType type;
     private final IDrawable background;
     private final IDrawable icon;
 
-    public BlockTransfigurationCategory(IGuiHelper guiHelper) {
-        ResourceLocation location = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
-        background = guiHelper.drawableBuilder(location, 0, 168, 125, 18)
-                .addPadding(0, 20, 0, 0)
+    public BlockTransfigurationCategory(TransfigurationType type, IGuiHelper guiHelper) {
+        ResourceLocation location = Transfiguration.rl("textures/jei/background.png");
+        background = guiHelper.drawableBuilder(location, 0, 0, 72, 62)
                 .build();
-        icon = guiHelper.createDrawableIngredient(new ItemStack(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM.get()));
+        icon = guiHelper.createDrawableIngredient(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM
+                .map(item -> item.withTransfigurationType(type))
+                .orElse(ItemStack.EMPTY)
+        );
+        this.type = type;
     }
 
     @Override
     @Nonnull
     public ResourceLocation getUid() {
-        return UID;
+        return type.getBlockRecipeId();
     }
 
     @Override
@@ -46,14 +48,15 @@ public class BlockTransfigurationCategory implements IRecipeCategory<BlockTransf
 
     @Override
     @Nonnull
+    @SuppressWarnings("deprecated")
     public String getTitle() {
-        return "";
+        return "Block Transfiguring";
     }
 
     @Override
     @Nonnull
     public ITextComponent getTitleAsTextComponent() {
-        return new TranslationTextComponent("screen.transfiguration.jei.category.transfiguring");
+        return type.getDisplayName();
     }
 
     @Override
@@ -72,24 +75,18 @@ public class BlockTransfigurationCategory implements IRecipeCategory<BlockTransf
     @ParametersAreNonnullByDefault
     public void setIngredients(BlockTransfigurationRecipe blockTransfigurationRecipe, IIngredients iIngredients) {
         iIngredients.setInputs(
-                TransfigurationJEIPlugin.BLOCK_INGREDIENT_TYPE,
-                blockTransfigurationRecipe.getIngredient().getMatching()
-        );
-        iIngredients.setOutput(
                 VanillaTypes.ITEM,
-                blockTransfigurationRecipe.getRecipeOutput()
+                blockTransfigurationRecipe.getIngredient().getMatchingStacks()
         );
+
     }
 
     @Override
     @ParametersAreNonnullByDefault
     public void setRecipe(IRecipeLayout iRecipeLayout, BlockTransfigurationRecipe blockTransfigurationRecipe, IIngredients iIngredients) {
-        iRecipeLayout.getIngredientsGroup(TransfigurationJEIPlugin.BLOCK_INGREDIENT_TYPE)
-                .init(0, true, 0, 8);
-        iRecipeLayout.getIngredientsGroup(TransfigurationJEIPlugin.BLOCK_INGREDIENT_TYPE)
+        iRecipeLayout.getItemStacks()
+                .init(0, true, 75, 22);
+        iRecipeLayout.getItemStacks()
                 .set(iIngredients);
-
-        iRecipeLayout.getItemStacks().init(1, false, 0, 8);
-        iRecipeLayout.getItemStacks().set(iIngredients);
     }
 }
