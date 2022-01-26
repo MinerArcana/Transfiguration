@@ -18,12 +18,12 @@ import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -90,8 +90,8 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
 
     public ItemBuilder<TransfiguringCatalystItem, TransfigurationTypeBuilder<T, P>> catalyst() {
         return this.item("catalyst", TransfiguringCatalystItem::new)
-                .properties(properties -> properties.maxStackSize(1))
-                .properties(properties -> properties.maxDamage(256))
+                .properties(properties -> properties.stacksTo(1))
+                .properties(properties -> properties.durability(256))
                 .model((context, provider) -> provider.generated(context, provider.modLoc("item/catalyst")))
                 .color(TransfigurationColors.transfiguringTypeColors(0))
                 .lang("%s Catalyst")
@@ -108,7 +108,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
 
     public ItemBuilder<TransfiguringWandItem, TransfigurationTypeBuilder<T, P>> wand() {
         return this.item("wand", TransfiguringWandItem::new)
-                .properties(properties -> properties.maxDamage(256))
+                .properties(properties -> properties.durability(256))
                 .model((context, provider) -> provider.generated(context, provider.modLoc("item/wand"),
                         provider.modLoc("item/wand_overlay")))
                 .color(TransfigurationColors.transfiguringTypeColors(1))
@@ -119,15 +119,15 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                     if (catalyst == null) {
                         throw new IllegalStateException("Failed to Find Catalyst for name: " + catalystName);
                     } else {
-                        ShapedRecipeBuilder.shapedRecipe(context.get())
-                                .patternLine("C")
-                                .patternLine("I")
-                                .patternLine("R")
-                                .key('C', catalyst)
-                                .key('I', Tags.Items.INGOTS)
-                                .key('R', Items.END_ROD)
-                                .addCriterion("has_item", RegistrateRecipeProvider.hasItem(catalyst))
-                                .build(provider);
+                        ShapedRecipeBuilder.shaped(context.get())
+                                .pattern("C")
+                                .pattern("I")
+                                .pattern("R")
+                                .define('C', catalyst)
+                                .define('I', Tags.Items.INGOTS)
+                                .define('R', Items.END_ROD)
+                                .unlockedBy("has_item", RegistrateRecipeProvider.hasItem(catalyst))
+                                .save(provider);
                     }
                 });
     }

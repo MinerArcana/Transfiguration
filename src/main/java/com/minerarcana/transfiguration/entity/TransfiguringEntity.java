@@ -5,28 +5,28 @@ import com.minerarcana.transfiguration.particles.TransfiguringParticleData;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.result.ResultInstance;
 import com.minerarcana.transfiguration.util.Vectors;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V> extends Entity {
-    private static final DataParameter<String> RECIPE_NAME = EntityDataManager.createKey(
+    private static final EntityDataAccessor<String> RECIPE_NAME = SynchedEntityData.defineId(
             TransfiguringEntity.class,
-            DataSerializers.STRING
+            EntityDataSerializers.STRING
     );
 
     private T recipe;
@@ -39,15 +39,15 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
     private boolean hasTriggered;
     private boolean hasSpread;
 
-    public TransfiguringEntity(EntityType<? extends Entity> entityType, World world) {
+    public TransfiguringEntity(EntityType<? extends Entity> entityType, Level world) {
         super(entityType, world);
         this.hasTriggered = false;
     }
 
-    public TransfiguringEntity(EntityType<? extends Entity> entityType, World world, BlockPos blockPos, T recipe,
+    public TransfiguringEntity(EntityType<? extends Entity> entityType, Level world, BlockPos blockPos, T recipe,
                                double timeModifier, double powerModifier) {
         super(entityType, world);
-        this.setPosition(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
+        this.setPos(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
         this.startTime = world.getGameTime();
         this.recipe = recipe;
         this.setRecipeName(recipe.getId().toString());
@@ -60,36 +60,36 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
     @Override
     public void tick() {
         super.tick();
-        if (!this.getEntityWorld().isRemote()) {
+        if (!this.getCommandSenderWorld().isClientSide()) {
             if (recipe == null) {
                 recipe = this.getRecipe();
                 noRecipeTicks++;
                 if (noRecipeTicks > 5) {
-                    this.remove();
+                    this.discard();
                 }
             } else {
                 T currentRecipe = this.getRecipe();
                 TransfigurationContainer<V> transfigurationContainer = this.createTransfigurationContainer();
                 if (currentRecipe != null && transfigurationContainer != null) {
-                    if (!currentRecipe.matches(transfigurationContainer, this.getEntityWorld())) {
-                        this.remove();
+                    if (!currentRecipe.matches(transfigurationContainer, this.getCommandSenderWorld())) {
+                        this.discard();
                     }
-                    int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
+                    int remainingTicks = this.modifiedTime - (int) (this.getCommandSenderWorld().getGameTime() - startTime);
                     if (!hasSpread && remainingTicks < this.modifiedTime / 2) {
                         this.hasSpread = this.spread(currentRecipe, transfigurationContainer);
                     }
 
-                    World world = this.getEntityWorld();
-                    if (world instanceof ServerWorld) {
-                        Vector3d startPos = Vectors.withRandomOffset(this.getPosition(), world.getRandom(), 3);
-                        Vector3d endPos = Vectors.centered(this.getPosition());
-                        ((ServerWorld) world).spawnParticle(
+                    Level world = this.getCommandSenderWorld();
+                    if (world instanceof ServerLevel) {
+                        Vec3 startPos = Vectors.withRandomOffset(this.blockPosition(), world.getRandom(), 3);
+                        Vec3 endPos = Vectors.centered(this.blockPosition());
+                        ((ServerLevel) world).sendParticles(
                                 new TransfiguringParticleData(
                                         recipe.getTransfigurationType(),
                                         endPos,
                                         10,
                                         Math.min(remainingTicks, 45),
-                                        rand.nextInt(32)
+                                        random.nextInt(32)
                                 ),
                                 startPos.x,
                                 startPos.y,
@@ -103,7 +103,7 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
                     }
                     if (this.getResultInstance(currentRecipe)
                             .tick(transfigurationContainer, powerModifier, remainingTicks, this::trigger)) {
-                        this.remove();
+                        this.discard();
                     }
                 }
             }
@@ -113,17 +113,17 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
     protected abstract boolean spread(T recipe, TransfigurationContainer<V> container);
 
     private boolean trigger(boolean removeInput) {
-        int remainingTicks = this.modifiedTime - (int) (this.getEntityWorld().getGameTime() - startTime);
+        int remainingTicks = this.modifiedTime - (int) (this.getCommandSenderWorld().getGameTime() - startTime);
         if (remainingTicks <= 0 && !this.hasTriggered) {
             if (removeInput) {
                 this.removeInput();
             }
 
-            this.getEntityWorld().playSound(
+            this.getCommandSenderWorld().playSound(
                     null,
-                    this.getPosition(),
-                    SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL,
-                    SoundCategory.PLAYERS,
+                    this.blockPosition(),
+                    SoundEvents.ILLUSIONER_CAST_SPELL,
+                    SoundSource.PLAYERS,
                     1,
                     1
             );
@@ -134,12 +134,12 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
     }
 
     @Override
-    protected void registerData() {
-        this.getDataManager().register(RECIPE_NAME, "");
+    protected void defineSynchedData() {
+        this.getEntityData().define(RECIPE_NAME, "");
     }
 
     @Override
-    public void readAdditional(@Nonnull CompoundNBT compound) {
+    public void readAdditionalSaveData(@Nonnull CompoundTag compound) {
         this.setRecipeName(compound.getString("recipeName"));
         this.startTime = compound.getLong("startTime");
         this.modifiedTime = compound.getInt("modifiedTime");
@@ -147,7 +147,7 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
     }
 
     @Override
-    public void writeAdditional(@Nonnull CompoundNBT compound) {
+    public void addAdditionalSaveData(@Nonnull CompoundTag compound) {
         compound.putString("recipeName", this.getRecipeName());
         compound.putLong("startTime", this.startTime);
         compound.putInt("modifiedTime", this.modifiedTime);
@@ -156,16 +156,16 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
 
     @Override
     @Nonnull
-    public IPacket<?> createSpawnPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public void setRecipeName(String recipeName) {
-        this.getDataManager().set(RECIPE_NAME, recipeName);
+        this.getEntityData().set(RECIPE_NAME, recipeName);
     }
 
     public String getRecipeName() {
-        return this.getDataManager().get(RECIPE_NAME);
+        return this.getEntityData().get(RECIPE_NAME);
     }
 
     @Nullable

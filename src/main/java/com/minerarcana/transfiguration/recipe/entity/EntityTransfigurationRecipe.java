@@ -10,11 +10,11 @@ import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
@@ -33,7 +33,7 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean matches(TransfigurationContainer<Entity> inv, World world) {
+    public boolean matches(TransfigurationContainer<Entity> inv, Level world) {
         return this.getIngredient().test(inv.getTargeted());
     }
 
@@ -41,7 +41,7 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
     public TransfiguringEntity<?, Entity> createTransfiguringEntity(
             TransfigurationContainer<Entity> transfigurationContainer, double timeModifier, double powerModifier) {
         return new EntityTransfiguringEntity(
-                transfigurationContainer.getWorld(),
+                transfigurationContainer.getLevel(),
                 transfigurationContainer.getTargeted(),
                 this,
                 timeModifier,
@@ -52,13 +52,13 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
 
     @Override
     @Nonnull
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return TransfigurationRecipes.ENTITY_TRANSFIGURATION.get();
     }
 
     @Override
     @Nonnull
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return this.getTransfigurationType().getEntityRecipeType();
     }
 
@@ -73,10 +73,10 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
 
     public static boolean tryTransfigure(TransfigurationType type, TransfigurationContainer<Entity> container,
                                          double powerModifier, double timeModifier) {
-        if (type != null && !(container.getTargeted().getRidingEntity() instanceof TransfiguringEntity<?,?>)) {
-            World world = container.getWorld();
+        if (type != null && !(container.getTargeted().getVehicle() instanceof TransfiguringEntity<?,?>)) {
+            Level world = container.getLevel();
             Optional<ITransfigurationRecipe<Entity>> recipeOptional = world.getRecipeManager()
-                    .getRecipe(type.getEntityRecipeType(), container, world);
+                    .getRecipeFor(type.getEntityRecipeType(), container, world);
             TransfigurationEvent transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
             MinecraftForge.EVENT_BUS.post(transfigurationEvent);
             if (!recipeOptional.isPresent()) {
@@ -86,7 +86,7 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
                     transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
                     MinecraftForge.EVENT_BUS.post(transfigurationEvent);
                     recipeOptional = world.getRecipeManager()
-                            .getRecipe(nextType.getEntityRecipeType(), container, world);
+                            .getRecipeFor(nextType.getEntityRecipeType(), container, world);
                 }
             }
             double finalPowerModifier = transfigurationEvent.getCurrentPowerModifier();

@@ -2,17 +2,17 @@ package com.minerarcana.transfiguration.recipe.json;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.TagCollectionManager;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.SerializationTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Block;
 
 public class TagJson {
-    public static ITag<EntityType<?>> getEntityTypeTag(JsonObject jsonObject, String fieldName) {
-        String tagName = JSONUtils.getString(jsonObject, fieldName);
-        ITag<EntityType<?>> entityTypeITag = TagCollectionManager.getManager().getEntityTypeTags().get(new ResourceLocation(tagName));
+    public static Tag<EntityType<?>> getEntityTypeTag(JsonObject jsonObject, String fieldName) {
+        String tagName = GsonHelper.getAsString(jsonObject, fieldName);
+        Tag<EntityType<?>> entityTypeITag = SerializationTags.getInstance().getEntityTypes().getTag(new ResourceLocation(tagName));
         if (entityTypeITag != null) {
             return entityTypeITag;
         } else {
@@ -20,13 +20,13 @@ public class TagJson {
         }
     }
 
-    public static ITag<EntityType<?>> getEntityTypeTag(JsonObject jsonObject) {
+    public static Tag<EntityType<?>> getEntityTypeTag(JsonObject jsonObject) {
         return getEntityTypeTag(jsonObject, "tag");
     }
 
-    public static ITag<Block> getBlockTag(JsonObject jsonObject, String fieldName) {
-        String tagName = JSONUtils.getString(jsonObject, fieldName);
-        ITag<Block> blockITag = TagCollectionManager.getManager().getBlockTags().get(new ResourceLocation(tagName));
+    public static Tag<Block> getBlockTag(JsonObject jsonObject, String fieldName) {
+        String tagName = GsonHelper.getAsString(jsonObject, fieldName);
+        Tag<Block> blockITag = SerializationTags.getInstance().getBlocks().getTag(new ResourceLocation(tagName));
         if (blockITag != null) {
             return blockITag;
         } else {
@@ -34,7 +34,7 @@ public class TagJson {
         }
     }
 
-    public static ITag<Block> getBlockTag(JsonObject jsonObject) {
+    public static Tag<Block> getBlockTag(JsonObject jsonObject) {
         return getBlockTag(jsonObject, "tag");
     }
 }

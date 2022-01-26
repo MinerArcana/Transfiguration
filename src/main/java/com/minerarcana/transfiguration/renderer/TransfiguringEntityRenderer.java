@@ -1,31 +1,31 @@
 package com.minerarcana.transfiguration.renderer;
 
 import com.minerarcana.transfiguration.entity.TransfiguringEntity;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class TransfiguringEntityRenderer<T extends TransfiguringEntity<?, ?>> extends EntityRenderer<T> {
-    public TransfiguringEntityRenderer(EntityRendererManager rendererManager) {
-        super(rendererManager);
+    public TransfiguringEntityRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
     @ParametersAreNonnullByDefault
-    public void render(T entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer,
+    public void render(T entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer,
                        int packedLight) {
 
     }
 
     @Override
     @Nonnull
-    public ResourceLocation getEntityTexture(@Nonnull T entity) {
-        return PlayerContainer.LOCATION_BLOCKS_TEXTURE;
+    public ResourceLocation getTextureLocation(@Nonnull T entity) {
+        return InventoryMenu.BLOCK_ATLAS;
     }
 }

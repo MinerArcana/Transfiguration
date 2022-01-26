@@ -1,10 +1,9 @@
 package com.minerarcana.transfiguration.compat.cctweaked.turtle;
 
-import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import dan200.computercraft.api.ComputerCraftAPI;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 
 public class Turtles {
@@ -20,6 +19,6 @@ public class Turtles {
     }
 
     public static void createTurtleFor(RegistryEntry<TransfigurationType> transfigurationType) {
-        ComputerCraftAPI.registerTurtleUpgrade(new TransfiguringTurtleUpgrade(transfigurationType));
+//        ComputerCraftAPI.registerTurtleUpgrade(new TransfiguringTurtleUpgrade(transfigurationType)); TODO: Re-enable registering of TransfigurationTypes
     }
 }

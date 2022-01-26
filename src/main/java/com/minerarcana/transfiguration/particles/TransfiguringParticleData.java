@@ -3,22 +3,22 @@ package com.minerarcana.transfiguration.particles;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationParticles;
 import com.minerarcana.transfiguration.util.Buffers;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-public class TransfiguringParticleData implements IParticleData {
+public class TransfiguringParticleData implements ParticleOptions {
     private final TransfigurationType type;
-    private final Vector3d endPosition;
+    private final Vec3 endPosition;
     private final int delay;
     private final int maxAge;
     private final int colorOffset;
 
-    public TransfiguringParticleData(TransfigurationType type, Vector3d endPosition, int delay, int maxAge, int colorOffset) {
+    public TransfiguringParticleData(TransfigurationType type, Vec3 endPosition, int delay, int maxAge, int colorOffset) {
         this.type = type;
         this.endPosition = endPosition;
         this.delay = delay;
@@ -34,7 +34,7 @@ public class TransfiguringParticleData implements IParticleData {
         return delay;
     }
 
-    public Vector3d getEndPosition() {
+    public Vec3 getEndPosition() {
         return endPosition;
     }
 
@@ -53,7 +53,7 @@ public class TransfiguringParticleData implements IParticleData {
     }
 
     @Override
-    public void write(@Nonnull PacketBuffer buffer) {
+    public void writeToNetwork(@Nonnull FriendlyByteBuf buffer) {
         buffer.writeRegistryId(type);
         Buffers.writeVector3d(endPosition, buffer);
         buffer.writeInt(delay);
@@ -63,11 +63,11 @@ public class TransfiguringParticleData implements IParticleData {
 
     @Override
     @Nonnull
-    public String getParameters() {
+    public String writeToString() {
         return Objects.requireNonNull(type.getRegistryName()) + " " + endPosition + " " + delay + " " + maxAge + " " + colorOffset;
     }
 
-    public static TransfiguringParticleData create(TransfigurationType transfigurationType, Vector3d direction,
+    public static TransfiguringParticleData create(TransfigurationType transfigurationType, Vec3 direction,
                                                    int delay, int maxAge, int colorOffset) {
         return new TransfiguringParticleData(Objects.requireNonNull(transfigurationType), direction, delay, maxAge, colorOffset);
     }

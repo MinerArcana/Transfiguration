@@ -2,12 +2,12 @@ package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -18,7 +18,7 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
     }
 
     public ItemStack withTransfigurationType(TransfigurationType type) {
-        CompoundNBT tag = new CompoundNBT();
+        CompoundTag tag = new CompoundTag();
         tag.putString("type", Objects.requireNonNull(type.getRegistryName()).toString());
         ItemStack itemStack = new ItemStack(this);
         itemStack.setTag(tag);
@@ -26,7 +26,7 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
     }
 
     public ItemStack withTypeAndStats(TransfigurationType type, double powerModifier, double timeModifier) {
-        CompoundNBT tag = new CompoundNBT();
+        CompoundTag tag = new CompoundTag();
         tag.putString("type", Objects.requireNonNull(type.getRegistryName()).toString());
         tag.putDouble("power", powerModifier);
         tag.putDouble("time", timeModifier);
@@ -70,7 +70,7 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
     }
 
     @Override
-    public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
+    public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, InteractionHand hand) {
 
     }
 }

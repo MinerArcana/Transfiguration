@@ -1,9 +1,9 @@
 package com.minerarcana.transfiguration.content;
 
-import net.minecraft.entity.EntityType;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.EntityType;
 
 public class TransfigurationEntityTypeTags {
-    public static ITag.INamedTag<EntityType<?>> OUTPUTS_ACCURSED = EntityTypeTags.getTagById("transfiguration:outputs/accursed");
+    public static Tag.Named<EntityType<?>> OUTPUTS_ACCURSED = EntityTypeTags.bind("transfiguration:outputs/accursed");
 }

@@ -3,9 +3,9 @@ package com.minerarcana.transfiguration.content;
 import com.minerarcana.transfiguration.Transfiguration;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import net.minecraft.data.ShapelessRecipeBuilder;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 
 public class TransfigurationItems {
@@ -14,26 +14,26 @@ public class TransfigurationItems {
             .object("magic_powder")
             .item(Item::new)
             .recipe((context, provider) -> {
-                ShapelessRecipeBuilder.shapelessRecipe(context.get())
-                        .addIngredient(Tags.Items.DUSTS_REDSTONE)
-                        .addIngredient(TransfigurationItemTags.CORALS)
-                        .addIngredient(Tags.Items.GEMS_LAPIS)
-                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(Tags.Items.DUSTS_REDSTONE))
-                        .build(provider, Transfiguration.rl("magic_powder_basic"));
+                ShapelessRecipeBuilder.shapeless(context.get())
+                        .requires(Tags.Items.DUSTS_REDSTONE)
+                        .requires(TransfigurationItemTags.CORALS)
+                        .requires(Tags.Items.GEMS_LAPIS)
+                        .unlockedBy("has_item", RegistrateRecipeProvider.has(Tags.Items.DUSTS_REDSTONE))
+                        .save(provider, Transfiguration.rl("magic_powder_basic"));
 
-                ShapelessRecipeBuilder.shapelessRecipe(context.get(), 4)
-                        .addIngredient(Items.CRIMSON_ROOTS)
-                        .addIngredient(Items.WARPED_ROOTS)
-                        .addIngredient(Tags.Items.DUSTS_GLOWSTONE)
-                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(Tags.Items.DUSTS_REDSTONE))
-                        .build(provider, Transfiguration.rl("magic_powder_nether"));
+                ShapelessRecipeBuilder.shapeless(context.get(), 4)
+                        .requires(Items.CRIMSON_ROOTS)
+                        .requires(Items.WARPED_ROOTS)
+                        .requires(Tags.Items.DUSTS_GLOWSTONE)
+                        .unlockedBy("has_item", RegistrateRecipeProvider.has(Tags.Items.DUSTS_REDSTONE))
+                        .save(provider, Transfiguration.rl("magic_powder_nether"));
 
-                ShapelessRecipeBuilder.shapelessRecipe(context.get(), 16)
-                        .addIngredient(Tags.Items.GEMS_PRISMARINE)
-                        .addIngredient(Tags.Items.ENDER_PEARLS)
-                        .addIngredient(Tags.Items.CROPS_NETHER_WART)
-                        .addCriterion("has_item", RegistrateRecipeProvider.hasItem(Tags.Items.ENDER_PEARLS))
-                        .build(provider, Transfiguration.rl("magic_powder_otherworldly"));
+                ShapelessRecipeBuilder.shapeless(context.get(), 16)
+                        .requires(Tags.Items.GEMS_PRISMARINE)
+                        .requires(Tags.Items.ENDER_PEARLS)
+                        .requires(Tags.Items.CROPS_NETHER_WART)
+                        .unlockedBy("has_item", RegistrateRecipeProvider.has(Tags.Items.ENDER_PEARLS))
+                        .save(provider, Transfiguration.rl("magic_powder_otherworldly"));
             })
             .register();
 

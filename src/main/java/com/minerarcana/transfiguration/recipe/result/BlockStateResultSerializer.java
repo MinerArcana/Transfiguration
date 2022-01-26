@@ -3,15 +3,15 @@ package com.minerarcana.transfiguration.recipe.result;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
-import net.minecraft.block.Block;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nonnull;
 
 public class BlockStateResultSerializer extends ResultSerializer<BlockStateResult> {
     @Nonnull
     @Override
-    public BlockStateResult parse(@Nonnull PacketBuffer buffer) {
+    public BlockStateResult parse(@Nonnull FriendlyByteBuf buffer) {
         return BlockStateResult.create(buffer.<Block>readRegistryId());
     }
 
@@ -22,7 +22,7 @@ public class BlockStateResultSerializer extends ResultSerializer<BlockStateResul
     }
 
     @Override
-    public void write(@Nonnull PacketBuffer buffer, @Nonnull BlockStateResult object) {
+    public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull BlockStateResult object) {
         buffer.writeRegistryId(object.getBlockState().getBlock());
     }
 }

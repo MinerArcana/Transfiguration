@@ -3,24 +3,23 @@ package com.minerarcana.transfiguration.recipe.result;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
 public class BlockTagResult extends Result {
-    private final ITag<Block> tag;
+    private final Tag<Block> tag;
 
-    public BlockTagResult(ITag<Block> tag) {
+    public BlockTagResult(Tag<Block> tag) {
         this.tag = tag;
     }
 
     public void handle(@Nonnull TransfigurationContainer<?> transfigurationContainer, double powerModifier) {
-        BlockState blockState = tag.getRandomElement(transfigurationContainer.getWorld().rand).getDefaultState();
-        transfigurationContainer.getWorld().setBlockState(transfigurationContainer.getTargetedPos(), blockState);
+        BlockState blockState = tag.getRandomElement(transfigurationContainer.getLevel().random).defaultBlockState();
+        transfigurationContainer.getLevel().setBlockAndUpdate(transfigurationContainer.getTargetedPos(), blockState);
     }
 
     @Nonnull
@@ -41,7 +40,7 @@ public class BlockTagResult extends Result {
         return TransfigurationRecipes.BLOCK_TAG_RESULT_SERIALIZER.get();
     }
 
-    public ITag<Block> getTag() {
+    public Tag<Block> getTag() {
         return tag;
     }
 }

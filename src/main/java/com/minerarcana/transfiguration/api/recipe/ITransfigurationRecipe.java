@@ -1,7 +1,7 @@
 package com.minerarcana.transfiguration.api.recipe;
 
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.item.crafting.Recipe;
 
-public interface ITransfigurationRecipe<T> extends IRecipe<TransfigurationContainer<T>> {
+public interface ITransfigurationRecipe<T> extends Recipe<TransfigurationContainer<T>> {
     boolean transfigure(TransfigurationContainer<T> container, double powerModifier, double timeModifier);
 }

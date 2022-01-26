@@ -3,23 +3,23 @@ package com.minerarcana.transfiguration.content;
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.entity.BlockTransfiguringEntity;
 import com.minerarcana.transfiguration.entity.EntityTransfiguringEntity;
-import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.entity.TransfiguringAreaEffectEntity;
+import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.item.TransfiguringProjectileItem;
 import com.minerarcana.transfiguration.renderer.TransfiguringEntityRenderer;
 import com.minerarcana.transfiguration.renderer.TransfiguringProjectileRenderer;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.minecraft.client.renderer.entity.AreaEffectCloudRenderer;
-import net.minecraft.entity.AreaEffectCloudEntity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.AreaEffectCloud;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 
 public class TransfigurationEntities {
     public static final RegistryEntry<EntityType<TransfiguringProjectileEntity>> TRANSFIGURING_PROJECTILE =
             Transfiguration.getRegistrate()
                     .object("transfiguring_projectile")
-                    .<TransfiguringProjectileEntity>entity(TransfiguringProjectileEntity::new, EntityClassification.MISC)
+                    .<TransfiguringProjectileEntity>entity(TransfiguringProjectileEntity::new, MobCategory.MISC)
                     .lang("Transfiguring Projectile")
                     .renderer(() -> TransfiguringProjectileRenderer::new)
                     .register();
@@ -32,38 +32,38 @@ public class TransfigurationEntities {
                     .color(() -> () -> TransfiguringProjectileItem::getColor)
                     .register();
 
-    public static final RegistryEntry<EntityType<AreaEffectCloudEntity>> TRANSFIGURING_AREA_EFFECT =
+    public static final RegistryEntry<EntityType<AreaEffectCloud>> TRANSFIGURING_AREA_EFFECT =
             Transfiguration.getRegistrate()
                     .object("transfiguring_area_effect")
-                    .<AreaEffectCloudEntity>entity(TransfiguringAreaEffectEntity::new, EntityClassification.MISC)
-                    .properties(properties -> properties.immuneToFire()
-                            .size(6.0F, 0.5F)
-                            .trackingRange(10)
-                            .func_233608_b_(Integer.MAX_VALUE)
+                    .<AreaEffectCloud>entity(TransfiguringAreaEffectEntity::new, MobCategory.MISC)
+                    .properties(properties -> properties.fireImmune()
+                            .sized(6.0F, 0.5F)
+                            .clientTrackingRange(10)
+                            .updateInterval(Integer.MAX_VALUE)
                     )
                     .lang("Transfiguring")
-                    .renderer(() -> AreaEffectCloudRenderer::new)
+                    .renderer(() -> NoopRenderer::new)
                     .register();
 
     public static final RegistryEntry<EntityType<BlockTransfiguringEntity>> BLOCK_TRANSFIGURING =
             Transfiguration.getRegistrate()
                     .object("block_transfiguring")
-                    .<BlockTransfiguringEntity>entity(BlockTransfiguringEntity::new, EntityClassification.MISC)
+                    .<BlockTransfiguringEntity>entity(BlockTransfiguringEntity::new, MobCategory.MISC)
                     .lang("Transfiguration")
                     .renderer(() -> TransfiguringEntityRenderer::new)
-                    .properties(properties -> properties.immuneToFire()
-                            .size(1.0F, 1.0F)
+                    .properties(properties -> properties.fireImmune()
+                            .sized(1.0F, 1.0F)
                     )
                     .register();
 
     public static final RegistryEntry<EntityType<EntityTransfiguringEntity>> ENTITY_TRANSFIGURING =
             Transfiguration.getRegistrate()
                     .object("block_transfiguring")
-                    .<EntityTransfiguringEntity>entity(EntityTransfiguringEntity::new, EntityClassification.MISC)
+                    .<EntityTransfiguringEntity>entity(EntityTransfiguringEntity::new, MobCategory.MISC)
                     .lang("Transfiguration")
                     .renderer(() -> TransfiguringEntityRenderer::new)
-                    .properties(properties -> properties.immuneToFire()
-                            .size(1.0F, 1.0F)
+                    .properties(properties -> properties.fireImmune()
+                            .sized(1.0F, 1.0F)
                     )
                     .register();
 

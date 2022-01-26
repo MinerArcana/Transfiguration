@@ -11,18 +11,18 @@ buildscript {
         }
     }
     dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "4.1.+", changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: "org.spongepowered", name: "mixingradle", version: "0.7-SNAPSHOT"
     }
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: 'org.spongepowered.mixin'
-apply plugin: "maven"
+apply plugin: 'maven-publish'
 apply plugin: "java"
 apply plugin: "idea"
 
@@ -31,8 +31,8 @@ group = "${group}"
 archivesBaseName = "${mod_name}"
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    mavenLocal()
     maven {
         name = "forge"
         url = "https://maven.minecraftforge.net"
@@ -59,11 +59,13 @@ test {
 }
 
 minecraft {
-    mappings channel: "snapshot", version: "${mappings_version}"
+    mappings channel: "official", version: "${mappings_version}"
 
     runs {
         client {
             arg "-mixin.config=transfiguration.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             workingDirectory project.file("run")
             source sourceSets.main
@@ -71,6 +73,8 @@ minecraft {
 
         server {
             arg "-mixin.config=transfiguration.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             workingDirectory project.file("run")
             source sourceSets.main
@@ -78,6 +82,8 @@ minecraft {
 
         data {
             arg "-mixin.config=transfiguration.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             workingDirectory project.file("run")
             environment 'target', 'fmluserdevdata'
@@ -123,16 +129,16 @@ build.dependsOn reobfShadowJar
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("org.squiddev:cc-tweaked-1.16.3:${cctweaked_version}")
+    implementation fg.deobf("org.squiddev:cc-tweaked-1.18.1:${cctweaked_version}")
 
-    def registrate = "com.tterrag.registrate:Registrate:MC${minecraft_version}-${registrate_version}"
+    def registrate = "com.tterrag.registrate:Registrate:MC1.18-${registrate_version}"
     implementation fg.deobf(registrate)
     shade registrate
 
-    compileOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.1:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:${jei_version}")
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 task srcJar(type: Jar) {
@@ -166,16 +172,23 @@ artifacts {
     archives srcJar
 }
 
-uploadArchives {
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+            artifact javadocJar
+        }
+    }
     repositories {
-        mavenDeployer {
-            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
+        maven {
+            url "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven"))
         }
     }
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+
+// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 String getVersion() {
     String version = "${mod_version}"

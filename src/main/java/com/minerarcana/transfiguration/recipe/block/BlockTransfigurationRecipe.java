@@ -10,15 +10,15 @@ import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
@@ -37,7 +37,7 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState
     @Override
     public TransfiguringEntity<?, BlockState> createTransfiguringEntity(TransfigurationContainer<BlockState> transfigurationContainer, double timeModifier, double powerModifier) {
         return new BlockTransfiguringEntity(
-                transfigurationContainer.getWorld(),
+                transfigurationContainer.getLevel(),
                 transfigurationContainer.getTargetedPos(),
                 this,
                 timeModifier,
@@ -47,38 +47,38 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean matches(TransfigurationContainer<BlockState> container, World world) {
+    public boolean matches(TransfigurationContainer<BlockState> container, Level world) {
         return this.getIngredient().test(container.getTargeted());
     }
 
     @Override
     @Nonnull
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return TransfigurationRecipes.BLOCK_TRANSFIGURATION.get();
     }
 
     @Override
     @Nonnull
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return this.getTransfigurationType().getBlockRecipeType();
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    public static boolean tryTransfigure(TransfigurationType type, BlockRayTraceResult blockRayTraceResult, World world,
+    public static boolean tryTransfigure(TransfigurationType type, BlockHitResult blockRayTraceResult, Level world,
                                          @Nullable Entity entity, double powerModifier, double timeModifier) {
         return tryTransfigure(type, TransfigurationContainer.block(
                 world,
-                blockRayTraceResult.getPos(),
+                blockRayTraceResult.getBlockPos(),
                 entity
         ), powerModifier, timeModifier);
     }
 
     public static boolean tryTransfigure(TransfigurationType type, TransfigurationContainer<BlockState> container,
                                          double powerModifier, double timeModifier) {
-        if (type != null && !containsTransfiguringEntity(container.getWorld(), container.getTargetedPos())) {
-            World world = container.getWorld();
+        if (type != null && !containsTransfiguringEntity(container.getLevel(), container.getTargetedPos())) {
+            Level world = container.getLevel();
             Optional<ITransfigurationRecipe<BlockState>> recipeOptional = world.getRecipeManager()
-                    .getRecipe(type.getBlockRecipeType(), container, world);
+                    .getRecipeFor(type.getBlockRecipeType(), container, world);
             TransfigurationEvent transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
             MinecraftForge.EVENT_BUS.post(transfigurationEvent);
             if (!recipeOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState
                     transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
                     MinecraftForge.EVENT_BUS.post(transfigurationEvent);
                     recipeOptional = world.getRecipeManager()
-                            .getRecipe(nextType.getBlockRecipeType(), container, world);
+                            .getRecipeFor(nextType.getBlockRecipeType(), container, world);
                 }
             }
             double finalPowerModifier = transfigurationEvent.getCurrentPowerModifier();
@@ -100,9 +100,9 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState
         return false;
     }
 
-    private static boolean containsTransfiguringEntity(World world, BlockPos blockPos) {
-        return world.getEntitiesWithinAABB(TransfiguringEntity.class, new AxisAlignedBB(blockPos))
+    private static boolean containsTransfiguringEntity(Level world, BlockPos blockPos) {
+        return world.getEntitiesOfClass(TransfiguringEntity.class, new AABB(blockPos))
                 .stream()
-                .anyMatch(transfiguringEntity -> transfiguringEntity.getPosition().equals(blockPos));
+                .anyMatch(transfiguringEntity -> transfiguringEntity.blockPosition().equals(blockPos));
     }
 }

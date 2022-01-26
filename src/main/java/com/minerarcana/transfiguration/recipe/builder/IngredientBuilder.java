@@ -6,17 +6,17 @@ import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.EntityType;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.PushReaction;
 import org.apache.commons.lang3.Range;
 
 import java.util.List;
 import java.util.Objects;
 
 public class IngredientBuilder {
-    public static FinishedObject<BasicIngredientSerializer<?>> blockTag(ITag.INamedTag<Block> blockTag) {
+    public static FinishedObject<BasicIngredientSerializer<?>> blockTag(Tag.Named<Block> blockTag) {
         return new FinishedObject<>(
                 TransfigurationRecipes.TAG_INGREDIENT_SERIALIZER.get(),
                 blockTag::getName,

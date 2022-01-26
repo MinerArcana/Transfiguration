@@ -1,21 +1,21 @@
 package com.minerarcana.transfiguration.entity;
 
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public enum TransfigurationPlacement {
     ENTITY(null) {
         @Override
-        public AxisAlignedBB getBoundingBox(BlockPos blockPos) {
-            return AxisAlignedBB.fromVector(Vector3d.copyCenteredHorizontally(blockPos));
+        public AABB getBoundingBox(BlockPos blockPos) {
+            return AABB.unitCubeFromLowerCorner(Vec3.atBottomCenterOf(blockPos));
         }
     },
     DOWN(Direction.DOWN) {
         @Override
-        public AxisAlignedBB getBoundingBox(BlockPos blockPos) {
-            return new AxisAlignedBB(
+        public AABB getBoundingBox(BlockPos blockPos) {
+            return new AABB(
                     blockPos.getX() + 0.25D,
                     blockPos.getY(),
                     blockPos.getZ() + 0.25D,
@@ -27,8 +27,8 @@ public enum TransfigurationPlacement {
     },
     UP(Direction.UP) {
         @Override
-        public AxisAlignedBB getBoundingBox(BlockPos blockPos) {
-            return new AxisAlignedBB(
+        public AABB getBoundingBox(BlockPos blockPos) {
+            return new AABB(
                     blockPos.getX() + 0.25D,
                     blockPos.getY() + 1,
                     blockPos.getZ() + 0.25D,
@@ -40,26 +40,26 @@ public enum TransfigurationPlacement {
     },
     NORTH(Direction.NORTH) {
         @Override
-        public AxisAlignedBB getBoundingBox(BlockPos blockPos) {
-            return AxisAlignedBB.fromVector(Vector3d.copyCenteredHorizontally(blockPos));
+        public AABB getBoundingBox(BlockPos blockPos) {
+            return AABB.unitCubeFromLowerCorner(Vec3.atBottomCenterOf(blockPos));
         }
     },
     EAST(Direction.EAST) {
         @Override
-        public AxisAlignedBB getBoundingBox(BlockPos blockPos) {
-            return AxisAlignedBB.fromVector(Vector3d.copyCenteredHorizontally(blockPos));
+        public AABB getBoundingBox(BlockPos blockPos) {
+            return AABB.unitCubeFromLowerCorner(Vec3.atBottomCenterOf(blockPos));
         }
     },
     SOUTH(Direction.SOUTH) {
         @Override
-        public AxisAlignedBB getBoundingBox(BlockPos blockPos) {
-            return AxisAlignedBB.fromVector(Vector3d.copyCenteredHorizontally(blockPos));
+        public AABB getBoundingBox(BlockPos blockPos) {
+            return AABB.unitCubeFromLowerCorner(Vec3.atBottomCenterOf(blockPos));
         }
     },
     WEST(Direction.WEST) {
         @Override
-        public AxisAlignedBB getBoundingBox(BlockPos blockPos) {
-            return AxisAlignedBB.fromVector(Vector3d.copyCenteredHorizontally(blockPos));
+        public AABB getBoundingBox(BlockPos blockPos) {
+            return AABB.unitCubeFromLowerCorner(Vec3.atBottomCenterOf(blockPos));
         }
     };
 
@@ -69,7 +69,7 @@ public enum TransfigurationPlacement {
         this.direction = direction;
     }
 
-    public abstract AxisAlignedBB getBoundingBox(BlockPos blockPos);
+    public abstract AABB getBoundingBox(BlockPos blockPos);
 
     public Direction getDirection() {
         return direction != null ? direction : Direction.DOWN;

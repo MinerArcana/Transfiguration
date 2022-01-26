@@ -3,9 +3,9 @@ package com.minerarcana.transfiguration.recipe.result;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -24,8 +24,8 @@ public class ItemResult extends Result {
 
     public void summonItemStack(TransfigurationContainer<?> container, double powerModifier) {
         BlockPos blockPos = container.getTargetedPos();
-        container.getWorld().addEntity(new ItemEntity(
-                container.getWorld(),
+        container.getLevel().addFreshEntity(new ItemEntity(
+                container.getLevel(),
                 blockPos.getX() + 0.5,
                 blockPos.getY() + 0.5,
                 blockPos.getZ() + 0.5,

@@ -2,8 +2,8 @@ package com.minerarcana.transfiguration.recipe.dust;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.EmptyInventory;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 
 public class DustRecipeInventory extends EmptyInventory {
     private final BlockState inputBlockState;

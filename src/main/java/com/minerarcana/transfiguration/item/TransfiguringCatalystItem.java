@@ -1,10 +1,10 @@
 package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTier;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
@@ -20,12 +20,12 @@ public class TransfiguringCatalystItem extends TransfiguringItem {
     }
 
     @Override
-    public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
-        itemStack.damageItem(1, livingEntity, entity -> entity.sendBreakAnimation(hand));
+    public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, InteractionHand hand) {
+        itemStack.hurtAndBreak(1, livingEntity, entity -> entity.broadcastBreakEvent(hand));
     }
 
     @Override
-    public int getItemEnchantability() {
-        return ItemTier.IRON.getEnchantability();
+    public int getEnchantmentValue() {
+        return Tiers.IRON.getEnchantmentValue();
     }
 }

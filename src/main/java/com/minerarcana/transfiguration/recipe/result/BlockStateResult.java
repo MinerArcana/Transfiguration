@@ -3,9 +3,9 @@ package com.minerarcana.transfiguration.recipe.result;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
@@ -24,7 +24,7 @@ public class BlockStateResult extends Result {
     }
 
     public void handle(@Nonnull TransfigurationContainer<?> transfigurationContainer, double powerModifier) {
-        transfigurationContainer.getWorld().setBlockState(transfigurationContainer.getTargetedPos(), blockState);
+        transfigurationContainer.getLevel().setBlockAndUpdate(transfigurationContainer.getTargetedPos(), blockState);
     }
 
     @Override
@@ -48,6 +48,6 @@ public class BlockStateResult extends Result {
     }
 
     public static BlockStateResult create(Block block) {
-        return new BlockStateResult(block.getDefaultState());
+        return new BlockStateResult(block.defaultBlockState());
     }
 }

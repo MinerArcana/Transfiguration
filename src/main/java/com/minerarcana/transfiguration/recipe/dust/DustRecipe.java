@@ -3,16 +3,16 @@ package com.minerarcana.transfiguration.recipe.dust;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.common.util.Lazy;
 
 import javax.annotation.Nonnull;
@@ -20,11 +20,11 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Predicate;
 
-public class DustRecipe implements IRecipe<DustRecipeInventory> {
+public class DustRecipe implements Recipe<DustRecipeInventory> {
     private final ResourceLocation id;
     private final TransfigurationType type;
     private final BasicIngredient ingredient;
-    private final Lazy<ITag<Fluid>> fluid;
+    private final Lazy<Tag<Fluid>> fluid;
     private final Predicate<FluidState> fluidPredicate;
     private final ItemStack output;
 
@@ -33,13 +33,13 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
         this.id = id;
         this.type = type;
         this.ingredient = ingredient;
-        this.fluid = Lazy.of(() -> FluidTags.getCollection().get(fluid));
+        this.fluid = Lazy.of(() -> FluidTags.getAllTags().getTag(fluid));
         this.fluidPredicate = fluidState -> {
-            ITag<Fluid> fluidTag = this.getFluid();
+            Tag<Fluid> fluidTag = this.getFluid();
             if (fluidTag == null) {
                 return fluidState.isEmpty();
             } else {
-                return fluidState.isTagged(fluidTag);
+                return fluidState.is(fluidTag);
             }
         };
         this.output = output;
@@ -47,7 +47,7 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean matches(DustRecipeInventory dustRecipeInventory, World world) {
+    public boolean matches(DustRecipeInventory dustRecipeInventory, Level world) {
         return type == dustRecipeInventory.getInputType() &&
                 fluidPredicate.test(dustRecipeInventory.getInputFluidState()) &&
                 ingredient.test(dustRecipeInventory.getInputBlockState());
@@ -56,18 +56,18 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
-    public ItemStack getCraftingResult(DustRecipeInventory inv) {
+    public ItemStack assemble(DustRecipeInventory inv) {
         return output.copy();
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return false;
     }
 
     @Override
     @Nonnull
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return output;
     }
 
@@ -79,18 +79,18 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
 
     @Override
     @Nonnull
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return TransfigurationRecipes.DUST_RECIPE_SERIALIZER.get();
     }
 
     @Override
     @Nonnull
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return TransfigurationRecipes.DUST_RECIPE_TYPE;
     }
 
     @Override
-    public boolean isDynamic() {
+    public boolean isSpecial() {
         return true;
     }
 
@@ -107,7 +107,7 @@ public class DustRecipe implements IRecipe<DustRecipeInventory> {
     }
 
     @Nullable
-    public ITag<Fluid> getFluid() {
+    public Tag<Fluid> getFluid() {
         return fluid.get();
     }
 }

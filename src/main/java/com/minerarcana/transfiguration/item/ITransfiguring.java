@@ -3,11 +3,11 @@ package com.minerarcana.transfiguration.item;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationAttributes;
 import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipe;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,12 +37,12 @@ public interface ITransfiguring {
     default double getValue(@Nullable Entity caster, ItemStack itemStack, Attribute attribute, ToDoubleFunction<ItemStack> def) {
         if (caster instanceof LivingEntity) {
             LivingEntity livingCaster = (LivingEntity) caster;
-            if (livingCaster.getAttributeManager().hasAttributeInstance(attribute)) {
+            if (livingCaster.getAttributes().hasAttribute(attribute)) {
                 return livingCaster.getAttributeValue(attribute);
             }
         }
         return def.applyAsDouble(itemStack);
     }
 
-    void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand);
+    void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, InteractionHand hand);
 }

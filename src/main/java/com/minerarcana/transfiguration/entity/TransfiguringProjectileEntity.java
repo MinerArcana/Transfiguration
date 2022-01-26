@@ -6,31 +6,31 @@ import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.item.ITransfiguring;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.entity.EntityTransfigurationRecipe;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 
-public class TransfiguringProjectileEntity extends ProjectileItemEntity {
-    public TransfiguringProjectileEntity(EntityType<? extends ProjectileItemEntity> type, World world) {
+public class TransfiguringProjectileEntity extends ThrowableItemProjectile {
+    public TransfiguringProjectileEntity(EntityType<? extends ThrowableItemProjectile> type, Level world) {
         super(type, world);
     }
 
-    public TransfiguringProjectileEntity(World worldIn, LivingEntity throwerIn) {
+    public TransfiguringProjectileEntity(Level worldIn, LivingEntity throwerIn) {
         super(TransfigurationEntities.TRANSFIGURING_PROJECTILE.get(), throwerIn, worldIn);
     }
 
-    public TransfiguringProjectileEntity(World worldIn, double x, double y, double z) {
+    public TransfiguringProjectileEntity(Level worldIn, double x, double y, double z) {
         super(TransfigurationEntities.TRANSFIGURING_PROJECTILE.get(), x, y, z, worldIn);
     }
 
@@ -41,28 +41,28 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
     }
 
     @Override
-    protected void func_230299_a_(@Nonnull BlockRayTraceResult blockRayTraceResult) {
+    protected void onHitBlock(@Nonnull BlockHitResult blockRayTraceResult) {
         TransfigurationType type = this.getTransfigurationType();
-        BlockState blockstate = this.world.getBlockState(blockRayTraceResult.getPos());
-        blockstate.onProjectileCollision(this.world, blockstate, blockRayTraceResult, this);
+        BlockState blockstate = this.level.getBlockState(blockRayTraceResult.getBlockPos());
+        blockstate.onProjectileHit(this.level, blockstate, blockRayTraceResult, this);
         BlockTransfigurationRecipe.tryTransfigure(
                 type,
                 blockRayTraceResult,
-                this.getEntityWorld(),
-                this.func_234616_v_(),
+                this.getCommandSenderWorld(),
+                this.getOwner(),
                 this.getPowerModifier(),
                 this.getTimeModifier()
         );
-        this.remove();
+        this.discard();
     }
 
     @Override
-    protected void onEntityHit(@Nonnull EntityRayTraceResult entityRayTraceResult) {
+    protected void onHitEntity(@Nonnull EntityHitResult entityRayTraceResult) {
         TransfigurationType type = this.getTransfigurationType();
         EntityTransfigurationRecipe.tryTransfigure(
                 type,
                 entityRayTraceResult.getEntity(),
-                this.func_234616_v_(),
+                this.getOwner(),
                 this.getPowerModifier(),
                 this.getTimeModifier()
         );
@@ -78,10 +78,10 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
 
     private double getPowerModifier() {
         ItemStack itemStack = this.getItem();
-        Entity entity = this.func_234616_v_();
+        Entity entity = this.getOwner();
         if (entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) entity;
-            if (livingEntity.getAttributeManager().hasAttributeInstance(TransfigurationAttributes.POWER_MODIFIER.get())) {
+            if (livingEntity.getAttributes().hasAttribute(TransfigurationAttributes.POWER_MODIFIER.get())) {
                 return livingEntity.getAttributeValue(TransfigurationAttributes.POWER_MODIFIER.get());
             }
         }
@@ -93,10 +93,10 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
 
     private double getTimeModifier() {
         ItemStack itemStack = this.getItem();
-        Entity entity = this.func_234616_v_();
+        Entity entity = this.getOwner();
         if (entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) entity;
-            if (livingEntity.getAttributeManager().hasAttributeInstance(TransfigurationAttributes.TIME_MODIFIER.get())) {
+            if (livingEntity.getAttributes().hasAttribute(TransfigurationAttributes.TIME_MODIFIER.get())) {
                 return livingEntity.getAttributeValue(TransfigurationAttributes.TIME_MODIFIER.get());
             }
         }
@@ -108,7 +108,7 @@ public class TransfiguringProjectileEntity extends ProjectileItemEntity {
 
     @Override
     @Nonnull
-    public IPacket<?> createSpawnPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

@@ -6,17 +6,17 @@ import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationAttributes;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -32,14 +32,14 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
 
     @Override
     @Nonnull
-    public ActionResultType onItemUse(@Nonnull ItemUseContext context) {
+    public InteractionResult useOn(@Nonnull UseOnContext context) {
         TransfigurationContainer<BlockState> blockTransfigurationContainer = TransfigurationContainer.block(
-                context.getWorld(),
-                context.getPos(),
+                context.getLevel(),
+                context.getClickedPos(),
                 context.getPlayer()
         );
-        ItemStack held = context.getItem();
-        Optional<PlayerEntity> player = Optional.ofNullable(context.getPlayer());
+        ItemStack held = context.getItemInHand();
+        Optional<Player> player = Optional.ofNullable(context.getPlayer());
         boolean transfigured = BlockTransfigurationRecipe.tryTransfigure(this.type.get(),
                 blockTransfigurationContainer,
                 player.map(value -> value.getAttributeValue(TransfigurationAttributes.POWER_MODIFIER.get()))
@@ -49,16 +49,16 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
         );
         if (transfigured) {
             if (context.getPlayer() != null && !context.getPlayer().isCreative()) {
-                this.afterTransfiguration(context.getItem(), context.getPlayer(), context.getHand());
+                this.afterTransfiguration(context.getItemInHand(), context.getPlayer(), context.getHand());
             }
         }
-        return transfigured ? ActionResultType.func_233537_a_(context.getWorld().isRemote()) : ActionResultType.FAIL;
+        return transfigured ? InteractionResult.sidedSuccess(context.getLevel().isClientSide()) : InteractionResult.FAIL;
     }
 
     @Override
     @Nonnull
-    public ITextComponent getDisplayName(@Nonnull ItemStack itemStack) {
-        return new TranslationTextComponent(this.getDefaultTranslationKey(), this.getType(itemStack).getDisplayName());
+    public Component getName(@Nonnull ItemStack itemStack) {
+        return new TranslatableComponent(this.getOrCreateDescriptionId(), this.getType(itemStack).getDisplayName());
     }
 
     @Override
@@ -67,8 +67,8 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        return slot == EquipmentSlotType.MAINHAND ? ImmutableMultimap.of(
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        return slot == EquipmentSlot.MAINHAND ? ImmutableMultimap.of(
                 TransfigurationAttributes.POWER_MODIFIER.get(), new AttributeModifier(
                         TransfigurationAttributes.POWER_UUID,
                         "Item Modifier",

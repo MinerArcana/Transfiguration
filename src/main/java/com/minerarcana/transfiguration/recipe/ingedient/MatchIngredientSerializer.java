@@ -2,19 +2,17 @@ package com.minerarcana.transfiguration.recipe.ingedient;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.minerarcana.transfiguration.recipe.json.ObjectJson;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
-import com.minerarcana.transfiguration.recipe.json.SerializerJson;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nonnull;
 
 public class MatchIngredientSerializer extends BasicIngredientSerializer<MatchIngredient> {
     @Nonnull
     @Override
-    public MatchIngredient parse(@Nonnull PacketBuffer buffer) {
+    public MatchIngredient parse(@Nonnull FriendlyByteBuf buffer) {
         if (buffer.readBoolean()) {
             return new MatchIngredient(buffer.<Block>readRegistryId());
         } else {
@@ -35,7 +33,7 @@ public class MatchIngredientSerializer extends BasicIngredientSerializer<MatchIn
     }
 
     @Override
-    public void write(@Nonnull PacketBuffer buffer, @Nonnull MatchIngredient object) {
+    public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull MatchIngredient object) {
         buffer.writeBoolean(object.getBlock() != null);
         if (object.getBlock() != null) {
             buffer.writeRegistryId(object.getBlock());

@@ -3,10 +3,10 @@ package com.minerarcana.transfiguration.recipe.builder;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ public class ResultBuilder {
                 Objects.requireNonNull(block.getRegistryName()).toString()));
     }
 
-    public static FinishedObject<ResultSerializer<?>> blockTag(ITag.INamedTag<Block> tag) {
+    public static FinishedObject<ResultSerializer<?>> blockTag(Tag.Named<Block> tag) {
         return new FinishedObject<>(TransfigurationRecipes.BLOCK_TAG_RESULT_SERIALIZER.get(),
                 tag::getName, jsonObject -> jsonObject.addProperty("tag",
                 tag.getName().toString()));
@@ -29,7 +29,7 @@ public class ResultBuilder {
                 Objects.requireNonNull(entityType.getRegistryName()).toString()));
     }
 
-    public static FinishedObject<ResultSerializer<?>> entityTypeTag(ITag.INamedTag<EntityType<?>> entityTypeTag) {
+    public static FinishedObject<ResultSerializer<?>> entityTypeTag(Tag.Named<EntityType<?>> entityTypeTag) {
         return new FinishedObject<>(TransfigurationRecipes.ENTITY_TAG_RESULT_SERIALIZER.get(),
                 entityTypeTag::getName, jsonObject -> jsonObject.addProperty("tag", entityTypeTag.getName()
                 .toString()));

@@ -2,7 +2,7 @@ package com.minerarcana.transfiguration.recipe.result;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 import javax.annotation.Nonnull;
@@ -10,8 +10,8 @@ import javax.annotation.Nonnull;
 public class ItemResultSerializer extends ResultSerializer<ItemResult> {
     @Nonnull
     @Override
-    public ItemResult parse(@Nonnull PacketBuffer buffer) {
-        return new ItemResult(buffer.readItemStack());
+    public ItemResult parse(@Nonnull FriendlyByteBuf buffer) {
+        return new ItemResult(buffer.readItem());
     }
 
     @Nonnull
@@ -21,7 +21,7 @@ public class ItemResultSerializer extends ResultSerializer<ItemResult> {
     }
 
     @Override
-    public void write(@Nonnull PacketBuffer buffer, @Nonnull ItemResult object) {
-        buffer.writeItemStack(object.getRepresentation());
+    public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull ItemResult object) {
+        buffer.writeItem(object.getRepresentation());
     }
 }

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -22,7 +22,7 @@ public class IngredientListIngredientSerializer<T extends BasicIngredient> exten
 
     @Nonnull
     @Override
-    public T parse(@Nonnull PacketBuffer buffer) {
+    public T parse(@Nonnull FriendlyByteBuf buffer) {
         List<BasicIngredient> ingredients = Lists.newArrayList();
         int number = buffer.readInt();
         for (int x = 0; x < number; x++) {
@@ -38,7 +38,7 @@ public class IngredientListIngredientSerializer<T extends BasicIngredient> exten
     }
 
     @Override
-    public void write(@Nonnull PacketBuffer buffer, @Nonnull T object) {
+    public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull T object) {
         List<BasicIngredient> basicIngredients = describe.apply(object);
         buffer.writeInt(basicIngredients.size());
         for (BasicIngredient basicIngredient : basicIngredients) {

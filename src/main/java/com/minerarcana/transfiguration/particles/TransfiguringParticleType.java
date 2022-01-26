@@ -4,7 +4,7 @@ import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.util.Codecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.core.particles.ParticleType;
 
 import javax.annotation.Nonnull;
 
@@ -33,7 +33,7 @@ public class TransfiguringParticleType extends ParticleType<TransfiguringParticl
 
     @Override
     @Nonnull
-    public Codec<TransfiguringParticleData> func_230522_e_() {
+    public Codec<TransfiguringParticleData> codec() {
         return CODEC;
     }
 }

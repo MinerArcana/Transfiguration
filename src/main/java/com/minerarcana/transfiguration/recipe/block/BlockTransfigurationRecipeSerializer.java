@@ -6,37 +6,36 @@ import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
 import com.minerarcana.transfiguration.recipe.result.Result;
-import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>
-        implements IRecipeSerializer<BlockTransfigurationRecipe> {
+public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>>
+        implements RecipeSerializer<BlockTransfigurationRecipe> {
 
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
-    public BlockTransfigurationRecipe read(ResourceLocation recipeId, JsonObject json) {
+    public BlockTransfigurationRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
         return new BlockTransfigurationRecipe(
                 recipeId,
                 RegistryJson.getTransfigurationType(json),
                 SerializerJson.getBasicIngredient(json),
                 SerializerJson.getResult(json),
-                JSONUtils.getInt(json, "ticks", 12 * 20)
+                GsonHelper.getAsInt(json, "ticks", 12 * 20)
         );
     }
 
     @Override
     @Nullable
     @ParametersAreNonnullByDefault
-    public BlockTransfigurationRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+    public BlockTransfigurationRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
         TransfigurationType transfigurationType = buffer.readRegistryId();
         BasicIngredient ingredient = BasicIngredient.fromBuffer(buffer);
         Result result = Result.fromBuffer(buffer);
@@ -46,7 +45,7 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<IRe
 
     @Override
     @ParametersAreNonnullByDefault
-    public void write(PacketBuffer buffer, BlockTransfigurationRecipe recipe) {
+    public void toNetwork(FriendlyByteBuf buffer, BlockTransfigurationRecipe recipe) {
         buffer.writeRegistryId(recipe.getTransfigurationType());
         BasicIngredient.toBuffer(buffer, recipe.getIngredient());
         Result.toBuffer(buffer, recipe.getResult());

@@ -1,31 +1,31 @@
 package com.minerarcana.transfiguration.recipe.ingedient;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
 public class TagIngredient extends BasicIngredient {
-    private final ITag<Block> blockTag;
-    private final ITag<EntityType<?>> entityTag;
+    private final Tag<Block> blockTag;
+    private final Tag<EntityType<?>> entityTag;
 
-    public TagIngredient(ITag<Block> blockTag, ITag<EntityType<?>> entityTag) {
+    public TagIngredient(Tag<Block> blockTag, Tag<EntityType<?>> entityTag) {
         this.blockTag = blockTag;
         this.entityTag = entityTag;
     }
 
     @Override
     public boolean test(@Nonnull Entity entity) {
-        return entityTag != null && entity.getType().isContained(entityTag);
+        return entityTag != null && entity.getType().is(entityTag);
     }
 
     @Override
     public boolean test(@Nonnull BlockState blockState) {
-        return blockTag != null && blockState.isIn(blockTag);
+        return blockTag != null && blockState.is(blockTag);
     }
 
     @Nonnull
@@ -34,11 +34,11 @@ public class TagIngredient extends BasicIngredient {
         return TransfigurationRecipes.TAG_INGREDIENT_SERIALIZER.get();
     }
 
-    public ITag<Block> getBlockTag() {
+    public Tag<Block> getBlockTag() {
         return blockTag;
     }
 
-    public ITag<EntityType<?>> getEntityTag() {
+    public Tag<EntityType<?>> getEntityTag() {
         return entityTag;
     }
 }

@@ -7,19 +7,19 @@ import com.minerarcana.transfiguration.particles.TransfiguringParticleData;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipe;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipeInventory;
 import com.minerarcana.transfiguration.util.Vectors;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -31,20 +31,20 @@ public class TransfiguringDustItem extends TransfiguringItem {
     }
 
     @Override
-    public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
+    public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, InteractionHand hand) {
         itemStack.shrink(1);
     }
 
     @Override
     public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-        CompoundNBT persistent = entity.getPersistentData();
+        CompoundTag persistent = entity.getPersistentData();
         if (!persistent.contains("PreventRemoteMovement")) {
             persistent.putBoolean("PreventRemoteMovement", true);
         }
         if (entity instanceof IAged) {
             int age = ((IAged) entity).getActualAge();
             if (age > 50) {
-                World world = entity.getEntityWorld();
+                Level world = entity.getCommandSenderWorld();
                 if (!persistent.contains("Recipe")) {
                     persistent.putString("Recipe", this.getDustRecipeFor(entity)
                             .map(DustRecipe::getId)
@@ -67,11 +67,11 @@ public class TransfiguringDustItem extends TransfiguringItem {
                         if (recipe.isPresent()) {
                             float progress = (float) age / (entity.lifespan / 2f);
                             if (progress > 0.95) {
-                                if (!world.isRemote()) {
+                                if (!world.isClientSide()) {
                                     ItemStack inputStack = entity.getItem();
                                     float chance = inputStack.getMaxStackSize() / (float) inputStack.getCount();
                                     if (random.nextFloat() < chance) {
-                                        BlockPos blockPos = entity.getPosition();
+                                        BlockPos blockPos = entity.blockPosition();
                                         BlockState blockState = world.getBlockState(blockPos);
                                         FluidState fluidState = world.getFluidState(blockPos);
                                         DustRecipeInventory dustRecipeInventory = new DustRecipeInventory(
@@ -79,15 +79,15 @@ public class TransfiguringDustItem extends TransfiguringItem {
                                                 fluidState,
                                                 this.getType(entity.getItem())
                                         );
-                                        world.addEntity(new ItemEntity(
+                                        world.addFreshEntity(new ItemEntity(
                                                 world,
-                                                entity.getPosX(),
-                                                entity.getPosY(),
-                                                entity.getPosZ(),
+                                                entity.getX(),
+                                                entity.getY(),
+                                                entity.getZ(),
                                                 recipe.get()
-                                                        .getCraftingResult(dustRecipeInventory)
+                                                        .assemble(dustRecipeInventory)
                                         ));
-                                        world.setBlockState(entity.getPosition(), Blocks.AIR.getDefaultState());
+                                        world.setBlockAndUpdate(entity.blockPosition(), Blocks.AIR.defaultBlockState());
                                     }
                                 }
 
@@ -96,13 +96,13 @@ public class TransfiguringDustItem extends TransfiguringItem {
                             } else {
                                 int numberOfParticles = (int) Math.ceil(4 * progress);
                                 for (int x = 0; x < numberOfParticles; x++) {
-                                    if (world instanceof ServerWorld) {
-                                        BlockPos blockPos = entity.getPosition();
-                                        Vector3d startPos = Vectors.withRandomOffset(blockPos, world.getRandom(), 3);
-                                        ((ServerWorld) world).spawnParticle(
+                                    if (world instanceof ServerLevel) {
+                                        BlockPos blockPos = entity.blockPosition();
+                                        Vec3 startPos = Vectors.withRandomOffset(blockPos, world.getRandom(), 3);
+                                        ((ServerLevel) world).sendParticles(
                                                 new TransfiguringParticleData(
                                                         recipe.get().getTransfigurationType(),
-                                                        new Vector3d(
+                                                        new Vec3(
                                                                 blockPos.getX() + 0.5,
                                                                 blockPos.getY() + 0.2,
                                                                 blockPos.getZ() + 0.5
@@ -140,8 +140,8 @@ public class TransfiguringDustItem extends TransfiguringItem {
     }
 
     private Optional<DustRecipe> getDustRecipeFor(ItemEntity entity) {
-        World world = entity.getEntityWorld();
-        BlockPos blockPos = entity.getPosition();
+        Level world = entity.getCommandSenderWorld();
+        BlockPos blockPos = entity.blockPosition();
         BlockState blockState = world.getBlockState(blockPos);
         FluidState fluidState = world.getFluidState(blockPos);
         DustRecipeInventory dustRecipeInventory = new DustRecipeInventory(
@@ -150,13 +150,13 @@ public class TransfiguringDustItem extends TransfiguringItem {
                 this.getType(entity.getItem())
         );
         return world.getRecipeManager()
-                .getRecipe(TransfigurationRecipes.DUST_RECIPE_TYPE, dustRecipeInventory, world);
+                .getRecipeFor(TransfigurationRecipes.DUST_RECIPE_TYPE, dustRecipeInventory, world);
     }
 
-    private Optional<DustRecipe> getDustRecipeFor(World world, String recipeName) {
-        return Optional.ofNullable(ResourceLocation.tryCreate(recipeName))
+    private Optional<DustRecipe> getDustRecipeFor(Level world, String recipeName) {
+        return Optional.ofNullable(ResourceLocation.tryParse(recipeName))
                 .flatMap(name -> world.getRecipeManager()
-                        .getRecipe(name)
+                        .byKey(name)
                         .filter(DustRecipe.class::isInstance)
                         .map(DustRecipe.class::cast)
                 );

@@ -2,13 +2,20 @@ package com.minerarcana.transfiguration;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.compat.cctweaked.CCTweaked;
-import com.minerarcana.transfiguration.content.*;
+import com.minerarcana.transfiguration.content.TransfigurationAdditionalData;
+import com.minerarcana.transfiguration.content.TransfigurationAttributes;
+import com.minerarcana.transfiguration.content.TransfigurationBlocks;
+import com.minerarcana.transfiguration.content.TransfigurationEntities;
+import com.minerarcana.transfiguration.content.TransfigurationItems;
+import com.minerarcana.transfiguration.content.TransfigurationParticles;
+import com.minerarcana.transfiguration.content.TransfigurationRecipes;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -27,7 +34,7 @@ public class Transfiguration {
     public static IForgeRegistry<ResultSerializer<?>> resultSerializers;
 
     private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID)
-            .itemGroup(TransfiguringItemGroup::new, "Transfiguration")
+            .creativeModeTab(TransfiguringItemGroup::new, "Transfiguration")
             .addDataGenerator(ProviderType.ENTITY_TAGS, TransfigurationAdditionalData::addEntityTypeTags)
             .addDataGenerator(ProviderType.BLOCK_TAGS, TransfigurationAdditionalData::addBlockTags)
             .addDataGenerator(ProviderType.LANG, TransfigurationAdditionalData::addLang)

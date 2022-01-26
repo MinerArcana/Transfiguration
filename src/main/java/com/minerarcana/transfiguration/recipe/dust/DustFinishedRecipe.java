@@ -6,28 +6,28 @@ import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.builder.FinishedObject;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.material.Fluid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class DustFinishedRecipe implements IFinishedRecipe {
+public class DustFinishedRecipe implements FinishedRecipe {
     private final ResourceLocation id;
     private final TransfigurationType type;
     private final FinishedObject<BasicIngredientSerializer<?>> blockState;
-    private final ITag.INamedTag<Fluid> fluidState;
+    private final Tag.Named<Fluid> fluidState;
     private final ItemStack output;
 
 
     public DustFinishedRecipe(ResourceLocation id, TransfigurationType transfigurationType,
                               FinishedObject<BasicIngredientSerializer<?>> blockIngredient,
-                              ITag.INamedTag<Fluid> fluidIngredient, ItemStack output) {
+                              Tag.Named<Fluid> fluidIngredient, ItemStack output) {
         this.id = id;
         this.type = transfigurationType;
         this.blockState = blockIngredient;
@@ -36,7 +36,7 @@ public class DustFinishedRecipe implements IFinishedRecipe {
     }
 
     @Override
-    public void serialize(@Nonnull JsonObject json) {
+    public void serializeRecipeData(@Nonnull JsonObject json) {
         json.addProperty("transfigurationType", Objects.requireNonNull(type.getRegistryName()).toString());
         json.add("block", blockState.getJson());
         if (fluidState != null) {
@@ -47,25 +47,25 @@ public class DustFinishedRecipe implements IFinishedRecipe {
 
     @Override
     @Nonnull
-    public ResourceLocation getID() {
+    public ResourceLocation getId() {
         return id;
     }
 
     @Override
     @Nonnull
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getType() {
         return TransfigurationRecipes.DUST_RECIPE_SERIALIZER.get();
     }
 
     @Nullable
     @Override
-    public JsonObject getAdvancementJson() {
+    public JsonObject serializeAdvancement() {
         return null;
     }
 
     @Nullable
     @Override
-    public ResourceLocation getAdvancementID() {
+    public ResourceLocation getAdvancementId() {
         return null;
     }
 }

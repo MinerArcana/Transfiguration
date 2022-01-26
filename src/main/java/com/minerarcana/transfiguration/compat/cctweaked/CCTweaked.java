@@ -1,7 +1,7 @@
 package com.minerarcana.transfiguration.compat.cctweaked;
 
 import com.minerarcana.transfiguration.compat.cctweaked.turtle.Turtles;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 

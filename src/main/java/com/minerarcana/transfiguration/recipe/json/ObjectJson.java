@@ -1,8 +1,12 @@
 package com.minerarcana.transfiguration.recipe.json;
 
 import com.google.common.collect.Lists;
-import com.google.gson.*;
-import net.minecraft.item.ItemStack;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.Range;
 
 import java.util.List;

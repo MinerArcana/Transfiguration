@@ -5,11 +5,11 @@ import com.minerarcana.transfiguration.content.TransfigurationBlocks;
 import com.minerarcana.transfiguration.recipe.builder.FinishedObject;
 import com.minerarcana.transfiguration.recipe.builder.IngredientBuilder;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public class DustRecipeBuilder {
     private final TransfigurationType transfigurationType;
     private FinishedObject<BasicIngredientSerializer<?>> ingredient;
-    private ITag.INamedTag<Fluid> fluidIngredient;
+    private Tag.Named<Fluid> fluidIngredient;
     private ItemStack output;
 
     public DustRecipeBuilder(TransfigurationType transfigurationType) {
@@ -31,7 +31,7 @@ public class DustRecipeBuilder {
         return this;
     }
 
-    public DustRecipeBuilder withFluid(ITag.INamedTag<Fluid> fluid) {
+    public DustRecipeBuilder withFluid(Tag.Named<Fluid> fluid) {
         this.fluidIngredient = fluid;
         return this;
     }
@@ -41,11 +41,11 @@ public class DustRecipeBuilder {
         return this;
     }
 
-    public void build(Consumer<IFinishedRecipe> recipeConsumer) {
+    public void build(Consumer<FinishedRecipe> recipeConsumer) {
         build(recipeConsumer, null);
     }
 
-    public void build(Consumer<IFinishedRecipe> recipeConsumer, @Nullable ResourceLocation id) {
+    public void build(Consumer<FinishedRecipe> recipeConsumer, @Nullable ResourceLocation id) {
         this.validate(id);
         if (id == null) {
             ResourceLocation resultId = Objects.requireNonNull(this.output.getItem().getRegistryName());

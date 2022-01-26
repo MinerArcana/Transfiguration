@@ -3,12 +3,12 @@ package com.minerarcana.transfiguration.recipe.ingedient;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.json.TagJson;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.ITagCollection;
-import net.minecraft.tags.ITagCollectionSupplier;
-import net.minecraft.tags.TagCollectionManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.SerializationTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollection;
+import net.minecraft.tags.TagContainer;
 
 import javax.annotation.Nonnull;
 import java.util.function.Function;
@@ -16,10 +16,10 @@ import java.util.function.Function;
 public class TagIngredientSerializer extends BasicIngredientSerializer<TagIngredient> {
     @Nonnull
     @Override
-    public TagIngredient parse(@Nonnull PacketBuffer buffer) {
+    public TagIngredient parse(@Nonnull FriendlyByteBuf buffer) {
         return new TagIngredient(
-                getTag(ITagCollectionSupplier::getBlockTags, buffer),
-                getTag(ITagCollectionSupplier::getEntityTypeTags, buffer)
+                getTag(TagContainer::getBlocks, buffer),
+                getTag(TagContainer::getEntityTypes, buffer)
         );
     }
 
@@ -33,22 +33,22 @@ public class TagIngredientSerializer extends BasicIngredientSerializer<TagIngred
     }
 
     @Override
-    public void write(@Nonnull PacketBuffer buffer, @Nonnull TagIngredient object) {
-        writeTag(ITagCollectionSupplier::getBlockTags, buffer, object.getBlockTag());
-        writeTag(ITagCollectionSupplier::getEntityTypeTags, buffer, object.getEntityTag());
+    public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull TagIngredient object) {
+        writeTag(TagContainer::getBlocks, buffer, object.getBlockTag());
+        writeTag(TagContainer::getEntityTypes, buffer, object.getEntityTag());
     }
 
-    private <T> void writeTag(Function<ITagCollectionSupplier, ITagCollection<T>> getTagCol, PacketBuffer buffer, ITag<T> tag) {
+    private <T> void writeTag(Function<TagContainer, TagCollection<T>> getTagCol, FriendlyByteBuf buffer, Tag<T> tag) {
         buffer.writeBoolean(tag != null);
         if (tag != null) {
-            buffer.writeString(getTagCol.apply(TagCollectionManager.getManager()).getValidatedIdFromTag(tag).toString());
+            buffer.writeUtf(getTagCol.apply(SerializationTags.getInstance()).getIdOrThrow(tag).toString());
         }
     }
 
-    private <T> ITag<T> getTag(Function<ITagCollectionSupplier, ITagCollection<T>> getTagCol, PacketBuffer buffer) {
+    private <T> Tag<T> getTag(Function<TagContainer, TagCollection<T>> getTagCol, FriendlyByteBuf buffer) {
         if (buffer.readBoolean()) {
-            return getTagCol.apply(TagCollectionManager.getManager())
-                    .get(new ResourceLocation(buffer.readString()));
+            return getTagCol.apply(SerializationTags.getInstance())
+                    .getTag(new ResourceLocation(buffer.readUtf()));
         } else {
             return null;
         }

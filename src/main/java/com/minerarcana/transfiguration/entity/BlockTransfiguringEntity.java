@@ -3,14 +3,14 @@ package com.minerarcana.transfiguration.entity;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,11 +19,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigurationRecipe, BlockState> {
-    public BlockTransfiguringEntity(EntityType<? extends TransfiguringEntity> entityType, World world) {
+    public BlockTransfiguringEntity(EntityType<? extends TransfiguringEntity> entityType, Level world) {
         super(entityType, world);
     }
 
-    public BlockTransfiguringEntity(World world, BlockPos blockPos, BlockTransfigurationRecipe recipe, double timeModifier, double powerModifier) {
+    public BlockTransfiguringEntity(Level world, BlockPos blockPos, BlockTransfigurationRecipe recipe, double timeModifier, double powerModifier) {
         super(TransfigurationEntities.BLOCK_TRANSFIGURING.get(), world, blockPos, recipe, timeModifier, powerModifier);
     }
 
@@ -39,10 +39,10 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
         Collections.shuffle(spreadDirectionsList);
 
         for (Direction d : spreadDirectionsList.subList(0, numSpread)) {
-            BlockPos pos = this.getPosition().add(d.getDirectionVec());
+            BlockPos pos = this.blockPosition().offset(d.getNormal());
             TransfigurationContainer<BlockState> newTransContainer = this.createTransfigurationContainer(pos);
             if (container.getTargeted().getBlock().equals(newTransContainer.getTargeted().getBlock())
-                    && this.getEntityWorld().getEntitiesWithinAABB(BlockTransfiguringEntity.class, new AxisAlignedBB(pos), entity -> entity != this).isEmpty()) {
+                    && this.getCommandSenderWorld().getEntitiesOfClass(BlockTransfiguringEntity.class, new AABB(pos), entity -> entity != this).isEmpty()) {
                 BlockTransfigurationRecipe.tryTransfigure(
                         currentRecipe.getTransfigurationType(),
                         newTransContainer,
@@ -57,8 +57,8 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
     @Override
     public TransfigurationContainer<BlockState> createTransfigurationContainer() {
         return TransfigurationContainer.block(
-                world,
-                this.getPosition(),
+                level,
+                this.blockPosition(),
                 this.getCaster()
         );
     }
@@ -66,7 +66,7 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
     @Nonnull
     public TransfigurationContainer<BlockState> createTransfigurationContainer(BlockPos pos) {
         return TransfigurationContainer.block(
-                world,
+                level,
                 pos,
                 this.getCaster()
         );
@@ -75,9 +75,9 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
     @Nullable
     @Override
     public BlockTransfigurationRecipe getRecipe() {
-        return this.getEntityWorld()
+        return this.getCommandSenderWorld()
                 .getRecipeManager()
-                .getRecipe(new ResourceLocation(this.getRecipeName()))
+                .byKey(new ResourceLocation(this.getRecipeName()))
                 .filter(BlockTransfigurationRecipe.class::isInstance)
                 .map(BlockTransfigurationRecipe.class::cast)
                 .orElse(null);
@@ -85,6 +85,6 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
 
     @Override
     public void removeInput() {
-        this.getEntityWorld().setBlockState(this.getPosition(), Blocks.AIR.getDefaultState());
+        this.getCommandSenderWorld().setBlockAndUpdate(this.blockPosition(), Blocks.AIR.defaultBlockState());
     }
 }

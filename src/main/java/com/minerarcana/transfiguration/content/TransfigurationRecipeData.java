@@ -7,10 +7,10 @@ import com.minerarcana.transfiguration.recipe.builder.ResultBuilder;
 import com.minerarcana.transfiguration.recipe.builder.TransfigurationRecipeBuilder;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.EntityType;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.common.Tags;
 import org.apache.commons.lang3.Range;
 

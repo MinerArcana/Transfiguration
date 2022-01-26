@@ -1,17 +1,17 @@
 package com.minerarcana.transfiguration.content;
 
-import net.minecraft.block.Block;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.block.Block;
 
 public class TransfigurationBlockTags {
-    public static ITag.INamedTag<Block> OUTPUTS_DISSOLUTION = BlockTags.makeWrapperTag("transfiguration:outputs/dissolution");
-    public static ITag.INamedTag<Block> INPUTS_MUTANDI = BlockTags.makeWrapperTag("transfiguration:inputs/mutandi");
-    public static ITag.INamedTag<Block> OUTPUTS_MUTANDI = BlockTags.makeWrapperTag("transfiguration:outputs/mutandi");
-    public static ITag.INamedTag<Block> OUTPUTS_FUNGAL_MUSHROOM = BlockTags.makeWrapperTag("transfiguration:outputs/fungal/mushroom");
-    public static ITag.INamedTag<Block> OUTPUTS_NETHERI_GRASS = BlockTags.makeWrapperTag("transfiguration:outputs/netheri/grass");
-    public static ITag.INamedTag<Block> INPUTS_NETHERI_MUSHROOM = BlockTags.makeWrapperTag("transfiguration:inputs/netheri/mushroom");
-    public static ITag.INamedTag<Block> OUTPUTS_NETHERI_MUSHROOM = BlockTags.makeWrapperTag("transfiguration:outputs/netheri/mushroom");
-    public static ITag.INamedTag<Block> OUTPUTS_FUNGI_MUSHROOM_LEAVES = BlockTags.makeWrapperTag("transfiguration:outputs/fungal/mushroom_leaves");
+    public static Tag.Named<Block> OUTPUTS_DISSOLUTION = BlockTags.bind("transfiguration:outputs/dissolution");
+    public static Tag.Named<Block> INPUTS_MUTANDI = BlockTags.bind("transfiguration:inputs/mutandi");
+    public static Tag.Named<Block> OUTPUTS_MUTANDI = BlockTags.bind("transfiguration:outputs/mutandi");
+    public static Tag.Named<Block> OUTPUTS_FUNGAL_MUSHROOM = BlockTags.bind("transfiguration:outputs/fungal/mushroom");
+    public static Tag.Named<Block> OUTPUTS_NETHERI_GRASS = BlockTags.bind("transfiguration:outputs/netheri/grass");
+    public static Tag.Named<Block> INPUTS_NETHERI_MUSHROOM = BlockTags.bind("transfiguration:inputs/netheri/mushroom");
+    public static Tag.Named<Block> OUTPUTS_NETHERI_MUSHROOM = BlockTags.bind("transfiguration:outputs/netheri/mushroom");
+    public static Tag.Named<Block> OUTPUTS_FUNGI_MUSHROOM_LEAVES = BlockTags.bind("transfiguration:outputs/fungal/mushroom_leaves");
 
 }

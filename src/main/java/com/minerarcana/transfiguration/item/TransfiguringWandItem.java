@@ -3,16 +3,16 @@ package com.minerarcana.transfiguration.item;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTier;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -31,12 +31,12 @@ public class TransfiguringWandItem extends TransfiguringItem {
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity playerEntity, Hand hand) {
-        ItemStack itemStack = playerEntity.getHeldItem(hand);
-        world.playSound(null, playerEntity.getPosX(), playerEntity.getPosY(), playerEntity.getPosZ(),
-                SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F /
+    public InteractionResultHolder<ItemStack> use(Level world, Player playerEntity, InteractionHand hand) {
+        ItemStack itemStack = playerEntity.getItemInHand(hand);
+        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(),
+                SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F /
                         (random.nextFloat() * 0.4F + 0.8F));
-        if (!world.isRemote) {
+        if (!world.isClientSide) {
             TransfiguringProjectileEntity projectile = new TransfiguringProjectileEntity(world, playerEntity);
             projectile.setItem(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM.get()
                     .withTypeAndStats(
@@ -45,27 +45,27 @@ public class TransfiguringWandItem extends TransfiguringItem {
                             this.getTimeModifier(itemStack)
                     )
             );
-            projectile.setShooter(playerEntity);
-            projectile.func_234612_a_(playerEntity, playerEntity.rotationPitch, playerEntity.rotationYaw,
+            projectile.setOwner(playerEntity);
+            projectile.shootFromRotation(playerEntity, playerEntity.xRot, playerEntity.yRot,
                     0.0F, 1.5F, 1.0F);
-            world.addEntity(projectile);
+            world.addFreshEntity(projectile);
         }
 
-        playerEntity.addStat(Stats.ITEM_USED.get(this));
-        if (!playerEntity.abilities.isCreativeMode) {
-            itemStack.damageItem(1, playerEntity, stack -> playerEntity.sendBreakAnimation(hand));
+        playerEntity.awardStat(Stats.ITEM_USED.get(this));
+        if (!playerEntity.abilities.instabuild) {
+            itemStack.hurtAndBreak(1, playerEntity, stack -> playerEntity.broadcastBreakEvent(hand));
         }
 
-        return ActionResult.func_233538_a_(itemStack, world.isRemote());
+        return InteractionResultHolder.sidedSuccess(itemStack, world.isClientSide());
     }
 
     @Override
-    public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, Hand hand) {
-        itemStack.damageItem(1, livingEntity, entity -> entity.sendBreakAnimation(hand));
+    public void afterTransfiguration(ItemStack itemStack, @Nonnull LivingEntity livingEntity, InteractionHand hand) {
+        itemStack.hurtAndBreak(1, livingEntity, entity -> entity.broadcastBreakEvent(hand));
     }
 
     @Override
-    public int getItemEnchantability() {
-        return ItemTier.GOLD.getEnchantability();
+    public int getEnchantmentValue() {
+        return Tiers.GOLD.getEnchantmentValue();
     }
 }

@@ -4,9 +4,9 @@ import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -15,12 +15,12 @@ import java.util.function.Supplier;
 
 public class TransfigurationRecipeBuilder {
     private final TransfigurationType transfigurationType;
-    private final IRecipeSerializer<?> recipeSerializer;
+    private final RecipeSerializer<?> recipeSerializer;
     private IFinishedObject<BasicIngredientSerializer<?>> ingredient;
     private IFinishedObject<ResultSerializer<?>> result;
     private int ticks = 12 * 20;
 
-    private TransfigurationRecipeBuilder(TransfigurationType transfigurationType, IRecipeSerializer<?> recipeSerializer) {
+    private TransfigurationRecipeBuilder(TransfigurationType transfigurationType, RecipeSerializer<?> recipeSerializer) {
         this.transfigurationType = transfigurationType;
         this.recipeSerializer = recipeSerializer;
     }
@@ -56,11 +56,11 @@ public class TransfigurationRecipeBuilder {
         return this;
     }
 
-    public void build(Consumer<IFinishedRecipe> recipeConsumer) {
+    public void build(Consumer<FinishedRecipe> recipeConsumer) {
         this.build(recipeConsumer, null);
     }
 
-    public void build(Consumer<IFinishedRecipe> recipeConsumer, @Nullable ResourceLocation id) {
+    public void build(Consumer<FinishedRecipe> recipeConsumer, @Nullable ResourceLocation id) {
         this.validate(id);
         if (id == null) {
             ResourceLocation resultId = this.result.getId();

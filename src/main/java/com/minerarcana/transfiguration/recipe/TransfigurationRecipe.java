@@ -6,8 +6,8 @@ import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -29,18 +29,18 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
 
     @Override
     @Nonnull
-    public ItemStack getCraftingResult(@Nonnull TransfigurationContainer<U> transfigurationContainer) {
+    public ItemStack assemble(@Nonnull TransfigurationContainer<U> transfigurationContainer) {
         return result.getRepresentation().copy();
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return false;
     }
 
     @Override
     @Nonnull
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return result.getRepresentation();
     }
 
@@ -51,12 +51,12 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
     }
 
     @Override
-    public boolean isDynamic() {
+    public boolean isSpecial() {
         return true;
     }
 
     public boolean transfigure(TransfigurationContainer<U> transfigurationContainer, double powerModifier, double timeModifier) {
-        return transfigurationContainer.getWorld().isRemote() || transfigurationContainer.getWorld().addEntity(
+        return transfigurationContainer.getLevel().isClientSide() || transfigurationContainer.getLevel().addFreshEntity(
                 this.createTransfiguringEntity(transfigurationContainer, timeModifier, powerModifier)
         );
     }

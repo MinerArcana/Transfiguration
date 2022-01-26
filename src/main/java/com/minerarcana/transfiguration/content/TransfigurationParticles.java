@@ -4,7 +4,7 @@ import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.particles.TransfiguringParticleData;
 import com.minerarcana.transfiguration.particles.TransfiguringParticleType;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.core.particles.ParticleType;
 
 public class TransfigurationParticles {
 

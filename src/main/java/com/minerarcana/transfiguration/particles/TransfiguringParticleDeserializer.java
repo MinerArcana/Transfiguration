@@ -6,32 +6,32 @@ import com.minerarcana.transfiguration.util.Buffers;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @SuppressWarnings("deprecation")
-public class TransfiguringParticleDeserializer implements IParticleData.IDeserializer<TransfiguringParticleData> {
+public class TransfiguringParticleDeserializer implements ParticleOptions.Deserializer<TransfiguringParticleData> {
     public static final DynamicCommandExceptionType BAD_ID = new DynamicCommandExceptionType(
-            (value) -> new TranslationTextComponent("argument.transfiguration.type.id.invalid", value)
+            (value) -> new TranslatableComponent("argument.transfiguration.type.id.invalid", value)
     );
 
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
-    public TransfiguringParticleData deserialize(ParticleType<TransfiguringParticleData> particleType, StringReader reader) throws CommandSyntaxException {
+    public TransfiguringParticleData fromCommand(ParticleType<TransfiguringParticleData> particleType, StringReader reader) throws CommandSyntaxException {
         reader.expect(' ');
         int i = reader.getCursor();
         ResourceLocation name = ResourceLocation.read(reader);
         TransfigurationType transfigurationType = Transfiguration.transfigurationTypes.getValue(name);
         reader.expect(' ');
-        Vector3d direction = new Vector3d(
+        Vec3 direction = new Vec3(
                 reader.readDouble(),
                 reader.readDouble(),
                 reader.readDouble()
@@ -53,7 +53,7 @@ public class TransfiguringParticleDeserializer implements IParticleData.IDeseria
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
-    public TransfiguringParticleData read(ParticleType<TransfiguringParticleData> particleType, PacketBuffer buffer) {
+    public TransfiguringParticleData fromNetwork(ParticleType<TransfiguringParticleData> particleType, FriendlyByteBuf buffer) {
         return new TransfiguringParticleData(
                 buffer.readRegistryId(),
                 Buffers.readVector3d(buffer),

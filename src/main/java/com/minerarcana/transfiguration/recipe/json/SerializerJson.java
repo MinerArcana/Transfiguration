@@ -1,15 +1,19 @@
 package com.minerarcana.transfiguration.recipe.json;
 
 import com.google.common.collect.Lists;
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,7 +40,7 @@ public class SerializerJson {
 
     @Nonnull
     public static List<BasicIngredient> getBasicIngredients(JsonObject jsonObject) {
-        JsonArray ingredientsJson = JSONUtils.getJsonArray(jsonObject, "ingredient");
+        JsonArray ingredientsJson = GsonHelper.getAsJsonArray(jsonObject, "ingredient");
         List<BasicIngredient> ingredients = Lists.newArrayList();
         for (JsonElement jsonElement : ingredientsJson) {
             if (jsonElement.isJsonObject()) {

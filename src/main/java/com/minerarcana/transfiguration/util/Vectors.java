@@ -1,22 +1,22 @@
 package com.minerarcana.transfiguration.util;
 
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
 
 public class Vectors {
-    public static Vector3d withRandomOffset(Vector3i center, Random random, int size) {
+    public static Vec3 withRandomOffset(Vec3i center, Random random, int size) {
         double sizeHalved = size / 2D;
-        return new Vector3d(
+        return new Vec3(
                 center.getX() + 0.5D + (random.nextFloat() * size) - sizeHalved,
                 center.getY() + 0.5D + (random.nextFloat() * size) - sizeHalved,
                 center.getZ() + 0.5D + (random.nextFloat() * size) - sizeHalved
         );
     }
 
-    public static Vector3d centered(Vector3i vector) {
-        return new Vector3d(
+    public static Vec3 centered(Vec3i vector) {
+        return new Vec3(
                 vector.getX() + 0.5,
                 vector.getY() + 0.5,
                 vector.getZ() + 0.5

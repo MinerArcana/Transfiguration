@@ -3,12 +3,12 @@ package com.minerarcana.transfiguration.recipe.result;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.item.FallingBlockEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 
 import javax.annotation.Nonnull;
 
@@ -22,12 +22,12 @@ public class FallingBlockResult extends Result {
     private void handle(TransfigurationContainer<?> container, double powerModifier) {
         Object object = container.getTargeted();
         if (object instanceof BlockState) {
-            World world = container.getWorld();
+            Level world = container.getLevel();
             BlockPos blockPos = container.getTargetedPos();
             BlockState blockState = (BlockState) object;
-            if (blockState.getPushReaction() != PushReaction.BLOCK && world.getTileEntity(blockPos) == null &&
-                    blockState.getBlockHardness(world, blockPos) > 0) {
-                world.addEntity(new FallingBlockEntity(
+            if (blockState.getPistonPushReaction() != PushReaction.BLOCK && world.getBlockEntity(blockPos) == null &&
+                    blockState.getDestroySpeed(world, blockPos) > 0) {
+                world.addFreshEntity(new FallingBlockEntity(
                         world,
                         blockPos.getX() + 0.5,
                         blockPos.getY(),

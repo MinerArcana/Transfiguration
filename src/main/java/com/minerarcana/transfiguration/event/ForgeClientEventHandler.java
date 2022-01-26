@@ -15,7 +15,7 @@ public class ForgeClientEventHandler {
 
     @SubscribeEvent
     public static void registerParticles(ParticleFactoryRegisterEvent event) {
-        Minecraft.getInstance().particles.registerFactory(
+        Minecraft.getInstance().particleEngine.register(
                 TransfigurationParticles.TRANSFIGURING.get(),
                 TransfiguringParticleFactory::new
         );

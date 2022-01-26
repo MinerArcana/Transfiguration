@@ -2,10 +2,9 @@ package com.minerarcana.transfiguration.event;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.item.ITransfiguring;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -16,7 +15,7 @@ public class ForgeCommonEventHandler {
     @SubscribeEvent
     public static void handleEntityInteract(PlayerInteractEvent.EntityInteract event) {
         ItemStack itemStack = event.getPlayer()
-                .getHeldItem(event.getHand());
+                .getItemInHand(event.getHand());
         if (itemStack.getItem() instanceof ITransfiguring) {
             ITransfiguring transfiguring = (ITransfiguring) itemStack.getItem();
             boolean transfigured = transfiguring.transfigureEntity(
@@ -26,7 +25,7 @@ public class ForgeCommonEventHandler {
             );
             if (transfigured) {
                 transfiguring.afterTransfiguration(itemStack, event.getPlayer(), event.getHand());
-                event.setCancellationResult(ActionResultType.SUCCESS);
+                event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }
     }

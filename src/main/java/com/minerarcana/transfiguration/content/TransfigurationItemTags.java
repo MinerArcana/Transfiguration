@@ -1,9 +1,9 @@
 package com.minerarcana.transfiguration.content;
 
-import net.minecraft.item.Item;
-import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag.Named;
+import net.minecraft.world.item.Item;
 
 public class TransfigurationItemTags {
-    public static final INamedTag<Item> CORALS = ItemTags.makeWrapperTag("forge:corals");
+    public static final Named<Item> CORALS = ItemTags.bind("forge:corals");
 }

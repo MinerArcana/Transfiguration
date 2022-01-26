@@ -3,8 +3,8 @@ package com.minerarcana.transfiguration.recipe.result;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.json.TagJson;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tags.TagCollectionManager;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.tags.SerializationTags;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -12,9 +12,9 @@ import java.util.Objects;
 public class EntityTagResultSerializer extends ResultSerializer<EntityTagResult> {
     @Nonnull
     @Override
-    public EntityTagResult parse(@Nonnull PacketBuffer buffer) {
-        return new EntityTagResult(TagCollectionManager.getManager().getEntityTypeTags()
-                .get(buffer.readResourceLocation()));
+    public EntityTagResult parse(@Nonnull FriendlyByteBuf buffer) {
+        return new EntityTagResult(SerializationTags.getInstance().getEntityTypes()
+                .getTag(buffer.readResourceLocation()));
     }
 
     @Nonnull
@@ -24,8 +24,8 @@ public class EntityTagResultSerializer extends ResultSerializer<EntityTagResult>
     }
 
     @Override
-    public void write(@Nonnull PacketBuffer buffer, @Nonnull EntityTagResult object) {
-        buffer.writeResourceLocation(Objects.requireNonNull(TagCollectionManager.getManager().getEntityTypeTags()
-                .getDirectIdFromTag(object.getTag())));
+    public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull EntityTagResult object) {
+        buffer.writeResourceLocation(Objects.requireNonNull(SerializationTags.getInstance().getEntityTypes()
+                .getId(object.getTag())));
     }
 }

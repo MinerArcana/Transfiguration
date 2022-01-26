@@ -1,14 +1,14 @@
 package com.minerarcana.transfiguration.api.recipe;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class EmptyInventory implements IInventory {
+public class EmptyInventory implements Container {
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return 0;
     }
 
@@ -19,39 +19,39 @@ public class EmptyInventory implements IInventory {
 
     @Override
     @Nonnull
-    public ItemStack getStackInSlot(int index) {
+    public ItemStack getItem(int index) {
         return ItemStack.EMPTY;
     }
 
     @Override
     @Nonnull
-    public ItemStack decrStackSize(int index, int count) {
+    public ItemStack removeItem(int index, int count) {
         return ItemStack.EMPTY;
     }
 
     @Override
     @Nonnull
-    public ItemStack removeStackFromSlot(int index) {
+    public ItemStack removeItemNoUpdate(int index) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
+    public void setItem(int index, @Nonnull ItemStack stack) {
 
     }
 
     @Override
-    public void markDirty() {
+    public void setChanged() {
 
     }
 
     @Override
-    public boolean isUsableByPlayer(@Nonnull PlayerEntity player) {
+    public boolean stillValid(@Nonnull Player player) {
         return false;
     }
 
     @Override
-    public void clear() {
+    public void clearContent() {
 
     }
 }

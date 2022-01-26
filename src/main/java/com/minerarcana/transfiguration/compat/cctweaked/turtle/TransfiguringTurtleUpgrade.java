@@ -7,18 +7,23 @@ import com.minerarcana.transfiguration.content.TransfigurationEntities;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Transformation;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dan200.computercraft.api.client.TransformedModel;
-import dan200.computercraft.api.turtle.*;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.TransformationMatrix;
-import net.minecraft.world.World;
+import dan200.computercraft.api.turtle.ITurtleAccess;
+import dan200.computercraft.api.turtle.ITurtleUpgrade;
+import dan200.computercraft.api.turtle.TurtleCommandResult;
+import dan200.computercraft.api.turtle.TurtleSide;
+import dan200.computercraft.api.turtle.TurtleUpgradeType;
+import dan200.computercraft.api.turtle.TurtleVerb;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -69,7 +74,7 @@ public class TransfiguringTurtleUpgrade implements ITurtleUpgrade {
                 0.0f, -1.0f, 0.0f, 1.0f,
                 0.0f, 0.0f, 0.0f, 1.0f,
         });
-        return TransformedModel.of(getCraftingItem(), new TransformationMatrix(transform));
+        return TransformedModel.of(getCraftingItem(), new Transformation(transform));
     }
 
     @Nonnull
@@ -88,7 +93,7 @@ public class TransfiguringTurtleUpgrade implements ITurtleUpgrade {
     @Nonnull
     private TurtleCommandResult dig(@Nonnull ITurtleAccess turtle, @Nonnull Direction direction) {
         TransfigurationContainer<BlockState> blockTransfigurationContainer = TransfigurationContainer.block(
-                turtle.getWorld(), turtle.getPosition().offset(direction), null);
+                turtle.getLevel(), turtle.getPosition().relative(direction), null);
 
         return BlockTransfigurationRecipe.tryTransfigure(this.transfigurationType.get(), blockTransfigurationContainer, 1.0, 1.0) ?
                 TurtleCommandResult.success() : TurtleCommandResult.failure();
@@ -97,16 +102,16 @@ public class TransfiguringTurtleUpgrade implements ITurtleUpgrade {
     @Nonnull
     private TurtleCommandResult attack(@Nonnull ITurtleAccess turtle, @Nonnull Direction direction) {
         BlockPos position = turtle.getPosition();
-        double x = position.getX() + 0.7D * (double) direction.getXOffset();
-        double y = position.getY() + 0.7D * (double) direction.getYOffset();
-        double z = position.getZ() + 0.7D * (double) direction.getZOffset();
-        World world = turtle.getWorld();
+        double x = position.getX() + 0.7D * (double) direction.getStepX();
+        double y = position.getY() + 0.7D * (double) direction.getStepY();
+        double z = position.getZ() + 0.7D * (double) direction.getStepZ();
+        Level world = turtle.getLevel();
         TransfiguringProjectileEntity transfiguringProjectileEntity = new TransfiguringProjectileEntity(world, x, y, z);
         transfiguringProjectileEntity.setItem(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM.get()
                 .withTransfigurationType(transfigurationType.get()));
-        transfiguringProjectileEntity.shoot(direction.getXOffset(), direction.getYOffset() + 0.1F, direction.getZOffset(),
+        transfiguringProjectileEntity.shoot(direction.getStepX(), direction.getStepY() + 0.1F, direction.getStepZ(),
                 1.1F, 6.0F);
-        world.addEntity(transfiguringProjectileEntity);
+        world.addFreshEntity(transfiguringProjectileEntity);
         return TurtleCommandResult.success();
     }
 

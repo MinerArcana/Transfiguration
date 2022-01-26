@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.material.PushReaction;
 import org.apache.commons.lang3.Range;
 
 import javax.annotation.Nonnull;
@@ -16,7 +16,7 @@ import java.util.List;
 public class BlockPropertiesIngredientSerializer extends BasicIngredientSerializer<BlockPropertiesIngredient> {
     @Nonnull
     @Override
-    public BlockPropertiesIngredient parse(@Nonnull PacketBuffer buffer) {
+    public BlockPropertiesIngredient parse(@Nonnull FriendlyByteBuf buffer) {
         return new BlockPropertiesIngredient(
                 buffer.readBoolean() ? buffer.readBoolean() : null,
                 Range.between(buffer.readFloat(), buffer.readFloat()),
@@ -24,11 +24,11 @@ public class BlockPropertiesIngredientSerializer extends BasicIngredientSerializ
         );
     }
 
-    private List<PushReaction> readReactions(PacketBuffer packetBuffer) {
+    private List<PushReaction> readReactions(FriendlyByteBuf packetBuffer) {
         int amount = packetBuffer.readInt();
         List<PushReaction> pushReactions = Lists.newArrayList();
         for (int x = 0; x < amount; x++) {
-            pushReactions.add(packetBuffer.readEnumValue(PushReaction.class));
+            pushReactions.add(packetBuffer.readEnum(PushReaction.class));
         }
         return pushReactions;
     }
@@ -44,10 +44,10 @@ public class BlockPropertiesIngredientSerializer extends BasicIngredientSerializ
     }
 
     @Override
-    public void write(@Nonnull PacketBuffer buffer, @Nonnull BlockPropertiesIngredient object) {
-        if (object.getTileEntity() != null) {
+    public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull BlockPropertiesIngredient object) {
+        if (object.getBlockEntity() != null) {
             buffer.writeBoolean(true);
-            buffer.writeBoolean(object.getTileEntity());
+            buffer.writeBoolean(object.getBlockEntity());
         } else {
             buffer.writeBoolean(false);
         }
@@ -55,6 +55,6 @@ public class BlockPropertiesIngredientSerializer extends BasicIngredientSerializ
         buffer.writeFloat(object.getHardness().getMaximum());
         List<PushReaction> pushReactions = object.getPushReactions();
         buffer.writeInt(pushReactions.size());
-        pushReactions.forEach(buffer::writeEnumValue);
+        pushReactions.forEach(buffer::writeEnum);
     }
 }

@@ -1,17 +1,17 @@
 package com.minerarcana.transfiguration.recipe.ingedient.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class IngredientBlockReader implements IBlockReader {
+public class IngredientBlockReader implements BlockGetter {
     private final BlockState blockState;
 
     public IngredientBlockReader(BlockState blockState) {
@@ -20,19 +20,29 @@ public class IngredientBlockReader implements IBlockReader {
 
     @Nullable
     @Override
-    public TileEntity getTileEntity(@Nonnull BlockPos pos) {
+    public BlockEntity getBlockEntity(@Nonnull BlockPos pos) {
         return null;
     }
 
     @Override
     @Nonnull
     public BlockState getBlockState(@Nonnull BlockPos pos) {
-        return pos.equals(BlockPos.ZERO) ? blockState : Blocks.AIR.getDefaultState();
+        return pos.equals(BlockPos.ZERO) ? blockState : Blocks.AIR.defaultBlockState();
     }
 
     @Override
     @Nonnull
     public FluidState getFluidState(@Nonnull BlockPos pos) {
-        return Fluids.EMPTY.getDefaultState();
+        return Fluids.EMPTY.defaultFluidState();
+    }
+
+    @Override
+    public int getHeight() {
+        return 0;
+    }
+
+    @Override
+    public int getMinBuildHeight() {
+        return 0;
     }
 }

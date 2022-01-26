@@ -1,13 +1,13 @@
 package com.minerarcana.transfiguration.recipe.result;
 
-import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
+import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -48,20 +48,20 @@ public class EntityResult extends Result {
         return new EntityResult(entityType);
     }
 
-    public static ActionResultType summon(TransfigurationContainer<?> transfigurationContainer, EntityType<?> entityType) {
-        Entity entity = entityType.create(transfigurationContainer.getWorld());
+    public static InteractionResult summon(TransfigurationContainer<?> transfigurationContainer, EntityType<?> entityType) {
+        Entity entity = entityType.create(transfigurationContainer.getLevel());
         if (entity != null) {
-            if (transfigurationContainer.getWorld().isRemote()) {
-                return ActionResultType.CONSUME;
+            if (transfigurationContainer.getLevel().isClientSide()) {
+                return InteractionResult.CONSUME;
             } else {
                 BlockPos blockPos = transfigurationContainer.getTargetedPos();
-                entity.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                transfigurationContainer.getWorld().addEntity(entity);
-                return ActionResultType.SUCCESS;
+                entity.setPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                transfigurationContainer.getLevel().addFreshEntity(entity);
+                return InteractionResult.SUCCESS;
             }
 
         } else {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
     }
 }
