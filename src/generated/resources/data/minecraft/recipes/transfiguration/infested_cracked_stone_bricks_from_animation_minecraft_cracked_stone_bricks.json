@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:animation",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "block": "minecraft:cracked_stone_bricks"
+  },
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:infested_cracked_stone_bricks"
+  },
+  "ticks": 240
+}

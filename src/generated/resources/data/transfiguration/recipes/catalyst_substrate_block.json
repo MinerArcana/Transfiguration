@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "transfiguration:catalyst_substrate"
+    }
+  },
+  "result": {
+    "item": "transfiguration:catalyst_substrate_block"
+  }
+}
