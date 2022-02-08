@@ -22,8 +22,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class CatalystSubstrateBlock extends Block implements IWaterLoggable {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape SHAPE = Block.makeCuboidShape(
-            6, 0, 6,
-            10, 8, 10
+            5, 0, 5,
+            11, 6, 11
     );
 
     public CatalystSubstrateBlock(Properties properties) {

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "transfiguration:catalyst_substrate_block"
+    ]
+  },
+  "criteria": {
+    "has_catalyst_substrate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "transfiguration:catalyst_substrate"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "transfiguration:catalyst_substrate_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_catalyst_substrate",
+      "has_the_recipe"
+    ]
+  ]
+}

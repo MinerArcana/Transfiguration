@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "transfiguration:block/catalyst_substrate_block"
+    }
+  }
+}
