@@ -9,15 +9,28 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import dan200.computercraft.client.render.RenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
+
 @SuppressWarnings("deprecation")
 public class TransfiguringParticleRenderTypes {
-    static final ParticleRenderType EMBER_RENDER = new ParticleRenderType() {
+    private static ShaderInstance BRIGHT_SOLID;
+
+    public static void setBrightSolid(ShaderInstance brightSolid) {
+        BRIGHT_SOLID = brightSolid;
+    }
+
+    public static ShaderInstance getBrightSolid() {
+        return BRIGHT_SOLID;
+    }
+
+    public static final ParticleRenderType EMBER_RENDER = new ParticleRenderType() {
         @Override
-        public void begin(BufferBuilder buffer, TextureManager textureManager) {
+        public void begin(BufferBuilder buffer, @Nonnull TextureManager textureManager) {
             Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
             RenderSystem.enableBlend();
 
@@ -28,7 +41,7 @@ public class TransfiguringParticleRenderTypes {
 
             RenderSystem.depthMask(false);
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ONE.value);
-            RenderSystem.setShader(() -> RenderTypes.CustomRenderTypes.brightSolidShader);
+            RenderSystem.setShader(TransfiguringParticleRenderTypes::getBrightSolid);
 
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
         }
