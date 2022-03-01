@@ -31,13 +31,13 @@ public class TransfiguringWandItem extends TransfiguringItem {
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
-    public InteractionResultHolder<ItemStack> use(Level world, Player playerEntity, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player playerEntity, InteractionHand hand) {
         ItemStack itemStack = playerEntity.getItemInHand(hand);
-        world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(),
+        level.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(),
                 SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F /
-                        (random.nextFloat() * 0.4F + 0.8F));
-        if (!world.isClientSide) {
-            TransfiguringProjectileEntity projectile = new TransfiguringProjectileEntity(world, playerEntity);
+                        (level.getRandom().nextFloat() * 0.4F + 0.8F));
+        if (!level.isClientSide) {
+            TransfiguringProjectileEntity projectile = new TransfiguringProjectileEntity(level, playerEntity);
             projectile.setItem(TransfigurationEntities.TRANSFIGURING_PROJECTILE_ITEM.get()
                     .withTypeAndStats(
                             this.getType(itemStack),
@@ -46,17 +46,17 @@ public class TransfiguringWandItem extends TransfiguringItem {
                     )
             );
             projectile.setOwner(playerEntity);
-            projectile.shootFromRotation(playerEntity, playerEntity.xRot, playerEntity.yRot,
+            projectile.shootFromRotation(playerEntity, playerEntity.getXRot(), playerEntity.getYRot(),
                     0.0F, 1.5F, 1.0F);
-            world.addFreshEntity(projectile);
+            level.addFreshEntity(projectile);
         }
 
         playerEntity.awardStat(Stats.ITEM_USED.get(this));
-        if (!playerEntity.abilities.instabuild) {
+        if (!playerEntity.getAbilities().instabuild) {
             itemStack.hurtAndBreak(1, playerEntity, stack -> playerEntity.broadcastBreakEvent(hand));
         }
 
-        return InteractionResultHolder.sidedSuccess(itemStack, world.isClientSide());
+        return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
     }
 
     @Override

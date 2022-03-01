@@ -49,7 +49,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     }
 
     public TransfigurationTypeBuilder<T, P> primaryColor(DyeColor primaryColor) {
-        return this.primaryColor(primaryColor.getColorValue());
+        return this.primaryColor(primaryColor.getTextColor());
     }
 
     public TransfigurationTypeBuilder<T, P> primaryColor(int primaryColor) {
@@ -58,7 +58,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     }
 
     public TransfigurationTypeBuilder<T, P> secondaryColor(DyeColor secondaryColor) {
-        return this.secondaryColor(secondaryColor.getColorValue());
+        return this.secondaryColor(secondaryColor.getTextColor());
     }
 
     public TransfigurationTypeBuilder<T, P> secondaryColor(int secondaryColor) {
@@ -126,7 +126,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                                 .define('C', catalyst)
                                 .define('I', Tags.Items.INGOTS)
                                 .define('R', Items.END_ROD)
-                                .unlockedBy("has_item", RegistrateRecipeProvider.hasItem(catalyst))
+                                .unlockedBy("has_item", RegistrateRecipeProvider.has(catalyst))
                                 .save(provider);
                     }
                 });

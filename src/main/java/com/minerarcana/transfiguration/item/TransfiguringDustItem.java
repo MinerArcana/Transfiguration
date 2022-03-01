@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +24,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class TransfiguringDustItem extends TransfiguringItem {
@@ -68,6 +70,7 @@ public class TransfiguringDustItem extends TransfiguringItem {
                             float progress = (float) age / (entity.lifespan / 2f);
                             if (progress > 0.95) {
                                 if (!world.isClientSide()) {
+                                    Random random = world.getRandom();
                                     ItemStack inputStack = entity.getItem();
                                     float chance = inputStack.getMaxStackSize() / (float) inputStack.getCount();
                                     if (random.nextFloat() < chance) {
@@ -91,7 +94,7 @@ public class TransfiguringDustItem extends TransfiguringItem {
                                     }
                                 }
 
-                                entity.remove();
+                                entity.remove(Entity.RemovalReason.KILLED);
                                 return true;
                             } else {
                                 int numberOfParticles = (int) Math.ceil(4 * progress);
@@ -109,7 +112,7 @@ public class TransfiguringDustItem extends TransfiguringItem {
                                                         ),
                                                         8,
                                                         Math.min((entity.lifespan / 2) - age, 40),
-                                                        random.nextInt(32)
+                                                        world.getRandom().nextInt(32)
                                                 ),
                                                 startPos.x,
                                                 startPos.y,

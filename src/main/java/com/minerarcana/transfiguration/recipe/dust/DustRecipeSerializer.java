@@ -17,6 +17,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Objects;
 
 public class DustRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DustRecipe> {
     @Override
@@ -52,7 +53,7 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>
         BasicIngredient.toBuffer(buffer, recipe.getIngredient());
         buffer.writeBoolean(recipe.getFluid() != null);
         if (recipe.getFluid() != null) {
-            buffer.writeResourceLocation(FluidTags.getAllTags().getIdOrThrow(recipe.getFluid()));
+            buffer.writeResourceLocation(Objects.requireNonNull(FluidTags.getAllTags().getId(recipe.getFluid())));
         }
         buffer.writeItem(recipe.getOutput());
     }

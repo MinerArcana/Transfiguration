@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "transfiguration:overni_dust_alt"
+      "transfiguration:animation_dust"
     ]
   },
   "criteria": {
@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "transfiguration:magic_powder"
+            "item": "transfiguration:mutandi_dust"
           }
         ]
       }
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "transfiguration:overni_dust_alt"
+        "recipe": "transfiguration:animation_dust"
       }
     }
   },

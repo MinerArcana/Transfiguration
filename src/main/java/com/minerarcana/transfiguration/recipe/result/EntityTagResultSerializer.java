@@ -3,6 +3,7 @@ package com.minerarcana.transfiguration.recipe.result;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.json.TagJson;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.SerializationTags;
 
@@ -13,8 +14,11 @@ public class EntityTagResultSerializer extends ResultSerializer<EntityTagResult>
     @Nonnull
     @Override
     public EntityTagResult parse(@Nonnull FriendlyByteBuf buffer) {
-        return new EntityTagResult(SerializationTags.getInstance().getEntityTypes()
-                .getTag(buffer.readResourceLocation()));
+        return new EntityTagResult(
+                SerializationTags.getInstance()
+                        .getOrEmpty(Registry.ENTITY_TYPE_REGISTRY)
+                        .getTag(buffer.readResourceLocation())
+        );
     }
 
     @Nonnull
@@ -25,7 +29,10 @@ public class EntityTagResultSerializer extends ResultSerializer<EntityTagResult>
 
     @Override
     public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull EntityTagResult object) {
-        buffer.writeResourceLocation(Objects.requireNonNull(SerializationTags.getInstance().getEntityTypes()
-                .getId(object.getTag())));
+        buffer.writeResourceLocation(Objects.requireNonNull(
+                SerializationTags.getInstance()
+                        .getOrEmpty(Registry.ENTITY_TYPE_REGISTRY)
+                        .getId(object.getTag())
+        ));
     }
 }

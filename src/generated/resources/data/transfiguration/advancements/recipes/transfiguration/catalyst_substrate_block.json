@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "transfiguration:overni_dust_alt"
+      "transfiguration:catalyst_substrate_block"
     ]
   },
   "criteria": {
-    "has_item": {
+    "has_catalyst_substrate": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "transfiguration:magic_powder"
+            "item": "transfiguration:catalyst_substrate"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "transfiguration:overni_dust_alt"
+        "recipe": "transfiguration:catalyst_substrate_block"
       }
     }
   },
   "requirements": [
     [
-      "has_item",
+      "has_catalyst_substrate",
       "has_the_recipe"
     ]
   ]

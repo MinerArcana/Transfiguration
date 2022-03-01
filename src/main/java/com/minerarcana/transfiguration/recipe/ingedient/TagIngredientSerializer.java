@@ -3,23 +3,22 @@ package com.minerarcana.transfiguration.recipe.ingedient;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.json.TagJson;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.SerializationTags;
 import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
-import net.minecraft.tags.TagContainer;
 
 import javax.annotation.Nonnull;
-import java.util.function.Function;
+import java.util.Objects;
 
 public class TagIngredientSerializer extends BasicIngredientSerializer<TagIngredient> {
     @Nonnull
     @Override
     public TagIngredient parse(@Nonnull FriendlyByteBuf buffer) {
         return new TagIngredient(
-                getTag(TagContainer::getBlocks, buffer),
-                getTag(TagContainer::getEntityTypes, buffer)
+                getTag(Registry.BLOCK_REGISTRY, buffer),
+                getTag(Registry.ENTITY_TYPE_REGISTRY, buffer)
         );
     }
 
@@ -34,21 +33,25 @@ public class TagIngredientSerializer extends BasicIngredientSerializer<TagIngred
 
     @Override
     public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull TagIngredient object) {
-        writeTag(TagContainer::getBlocks, buffer, object.getBlockTag());
-        writeTag(TagContainer::getEntityTypes, buffer, object.getEntityTag());
+        writeTag(Registry.BLOCK_REGISTRY, buffer, object.getBlockTag());
+        writeTag(Registry.ENTITY_TYPE_REGISTRY, buffer, object.getEntityTag());
     }
 
-    private <T> void writeTag(Function<TagContainer, TagCollection<T>> getTagCol, FriendlyByteBuf buffer, Tag<T> tag) {
+    private <T extends Registry<U>, U> void writeTag(ResourceKey<T> key, FriendlyByteBuf buffer, Tag<U> tag) {
         buffer.writeBoolean(tag != null);
         if (tag != null) {
-            buffer.writeUtf(getTagCol.apply(SerializationTags.getInstance()).getIdOrThrow(tag).toString());
+            buffer.writeResourceLocation(Objects.requireNonNull(SerializationTags.getInstance()
+                    .getOrEmpty(key)
+                    .getId(tag)
+            ));
         }
     }
 
-    private <T> Tag<T> getTag(Function<TagContainer, TagCollection<T>> getTagCol, FriendlyByteBuf buffer) {
+    private <T extends Registry<U>, U> Tag<U> getTag(ResourceKey<T> key, FriendlyByteBuf buffer) {
         if (buffer.readBoolean()) {
-            return getTagCol.apply(SerializationTags.getInstance())
-                    .getTag(new ResourceLocation(buffer.readUtf()));
+            return SerializationTags.getInstance()
+                    .getOrEmpty(key)
+                    .getTag(buffer.readResourceLocation());
         } else {
             return null;
         }
