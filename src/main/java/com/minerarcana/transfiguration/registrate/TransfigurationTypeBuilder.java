@@ -4,11 +4,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.TransfiguringKeyword;
+import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
 import com.minerarcana.transfiguration.item.TransfiguringCatalystItem;
 import com.minerarcana.transfiguration.item.TransfiguringDustItem;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipeBuilder;
-import com.mojang.datafixers.util.Function4;
+import com.mojang.datafixers.util.Function6;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -21,11 +22,16 @@ import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -33,19 +39,39 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extends AbstractBuilder<TransfigurationType, T, P, TransfigurationTypeBuilder<T, P>> {
-    private final Function4<Integer, Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>, T> creator;
+    private final Function6<Integer, Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>,
+            RegistryObject<RecipeType<ITransfigurationRecipe<BlockState>>>,
+            RegistryObject<RecipeType<ITransfigurationRecipe<Entity>>>, T> creator;
     private int primaryColor = -1;
     private int secondaryColor = -1;
     private final List<TransfiguringKeyword> keywords;
     private final List<Supplier<TransfigurationType>> fallback;
 
+    private final RegistryObject<RecipeType<ITransfigurationRecipe<BlockState>>> blockRecipeType;
+    private final RegistryObject<RecipeType<ITransfigurationRecipe<Entity>>> entityRecipeType;
+
     public TransfigurationTypeBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback,
                                       Class<? super TransfigurationType> registryType,
-                                      Function4<Integer, Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>, T> creator) {
+                                      Function6<Integer, Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>,
+                                              RegistryObject<RecipeType<ITransfigurationRecipe<BlockState>>>,
+                                              RegistryObject<RecipeType<ITransfigurationRecipe<Entity>>>, T> creator,
+                                      DeferredRegister<RecipeType<?>> deferredRegister) {
         super(owner, parent, name, callback, registryType);
         this.creator = creator;
         this.keywords = Lists.newArrayList();
         this.fallback = Lists.newArrayList();
+        this.entityRecipeType = deferredRegister.register(name + "/entity", () -> new RecipeType<>() {
+            @Override
+            public String toString() {
+                return owner.getModid() + ":" + name + "/entity";
+            }
+        });
+        this.blockRecipeType = deferredRegister.register(name + "/block", () -> new RecipeType<>() {
+            @Override
+            public String toString() {
+                return owner.getModid() + ":" + name + "/block";
+            }
+        });
     }
 
     public TransfigurationTypeBuilder<T, P> primaryColor(DyeColor primaryColor) {
@@ -154,17 +180,25 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     @Override
     @Nonnull
     protected T createEntry() {
-        return creator.apply(primaryColor, secondaryColor, ImmutableList.copyOf(keywords), ImmutableList.copyOf(fallback));
+        return creator.apply(primaryColor, secondaryColor, ImmutableList.copyOf(keywords), ImmutableList.copyOf(fallback), blockRecipeType, entityRecipeType);
     }
 
     public static <P> TransfigurationTypeBuilder<TransfigurationType, P> create(AbstractRegistrate<?> owner, P parent,
-                                                                                String name, BuilderCallback callback) {
-        return new TransfigurationTypeBuilder<>(owner, parent, name, callback, TransfigurationType.class,
-                TransfigurationType::new);
+                                                                                String name, BuilderCallback callback,
+                                                                                DeferredRegister<RecipeType<?>> deferredRegister) {
+        return new TransfigurationTypeBuilder<>(
+                owner,
+                parent,
+                name,
+                callback,
+                TransfigurationType.class,
+                TransfigurationType::new,
+                deferredRegister
+        );
     }
 
     public static <P extends AbstractRegistrate<P>> NonNullBiFunction<String, BuilderCallback,
-            TransfigurationTypeBuilder<TransfigurationType, AbstractRegistrate<?>>> entry(Supplier<P> owner) {
-        return (name, builderCallback) -> create(owner.get(), owner.get(), name, builderCallback);
+            TransfigurationTypeBuilder<TransfigurationType, AbstractRegistrate<?>>> entry(Supplier<P> owner, DeferredRegister<RecipeType<?>> register) {
+        return (name, builderCallback) -> create(owner.get(), owner.get(), name, builderCallback, register);
     }
 }

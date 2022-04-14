@@ -7,7 +7,7 @@ import com.minerarcana.transfiguration.recipe.builder.IngredientBuilder;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public class DustRecipeBuilder {
     private final TransfigurationType transfigurationType;
     private FinishedObject<BasicIngredientSerializer<?>> ingredient;
-    private Tag.Named<Fluid> fluidIngredient;
+    private TagKey<Fluid> fluidIngredient;
     private ItemStack output;
 
     public DustRecipeBuilder(TransfigurationType transfigurationType) {
@@ -31,7 +31,7 @@ public class DustRecipeBuilder {
         return this;
     }
 
-    public DustRecipeBuilder withFluid(Tag.Named<Fluid> fluid) {
+    public DustRecipeBuilder withFluid(TagKey<Fluid> fluid) {
         this.fluidIngredient = fluid;
         return this;
     }

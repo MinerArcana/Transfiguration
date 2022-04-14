@@ -1,6 +1,7 @@
 package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
+import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipeSerializer;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipe;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipeSerializer;
@@ -22,16 +23,32 @@ import com.minerarcana.transfiguration.recipe.result.FallingBlockResult;
 import com.minerarcana.transfiguration.recipe.result.ItemResultSerializer;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.*;
+
+import java.util.function.Supplier;
 
 public class TransfigurationRecipes {
     private static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(
-            ForgeRegistries.RECIPE_SERIALIZERS, Transfiguration.ID);
+            ForgeRegistries.RECIPE_SERIALIZERS,
+            Transfiguration.ID
+    );
+
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPE = DeferredRegister.create(
+            Registry.RECIPE_TYPE_REGISTRY,
+            Transfiguration.ID
+    );
+
+    @SuppressWarnings("UnstableApiUsage")
+    public static Supplier<IForgeRegistry<BasicIngredientSerializer<?>>> INGREDIENT_REGISTRY = Transfiguration.getRegistrate()
+            .makeRegistry("ingredient_serializers", BasicIngredientSerializer.class, RegistryBuilder::new);
+
+    @SuppressWarnings("UnstableApiUsage")
+    public static Supplier<IForgeRegistry<ResultSerializer<?>>> RESULT_REGISTRY = Transfiguration.getRegistrate()
+            .makeRegistry("result_serializers", ResultSerializer.class, RegistryBuilder::new);
 
     public static final RegistryObject<BlockTransfigurationRecipeSerializer> BLOCK_TRANSFIGURATION = SERIALIZERS.register(
             "block_transfiguration", BlockTransfigurationRecipeSerializer::new
@@ -113,9 +130,14 @@ public class TransfigurationRecipes {
                     .object("dust")
                     .simple(RecipeSerializer.class, DustRecipeSerializer::new);
 
-    public static final RecipeType<DustRecipe> DUST_RECIPE_TYPE = RecipeType.register(Transfiguration.rl("dust").toString());
+    public static final RegistryObject<RecipeType<DustRecipe>> DUST_RECIPE_TYPE = RECIPE_TYPE.register("dust", () -> new RecipeType<>() {
+        public String toString() {
+            return "transfiguration:dust";
+        }
+    });
 
     public static void register(IEventBus modEventBus) {
         SERIALIZERS.register(modEventBus);
+        RECIPE_TYPE.register(modEventBus);
     }
 }

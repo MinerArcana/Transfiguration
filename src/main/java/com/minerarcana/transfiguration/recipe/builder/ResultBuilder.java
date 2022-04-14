@@ -3,7 +3,7 @@ package com.minerarcana.transfiguration.recipe.builder;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -17,10 +17,12 @@ public class ResultBuilder {
                 Objects.requireNonNull(block.getRegistryName()).toString()));
     }
 
-    public static FinishedObject<ResultSerializer<?>> blockTag(Tag.Named<Block> tag) {
-        return new FinishedObject<>(TransfigurationRecipes.BLOCK_TAG_RESULT_SERIALIZER.get(),
-                tag::getName, jsonObject -> jsonObject.addProperty("tag",
-                tag.getName().toString()));
+    public static FinishedObject<ResultSerializer<?>> blockTag(TagKey<Block> tag) {
+        return new FinishedObject<>(
+                TransfigurationRecipes.BLOCK_TAG_RESULT_SERIALIZER.get(),
+                tag::location,
+                jsonObject -> jsonObject.addProperty("tag", tag.location().toString())
+        );
     }
 
     public static FinishedObject<ResultSerializer<?>> entityType(EntityType<?> entityType) {
@@ -29,10 +31,12 @@ public class ResultBuilder {
                 Objects.requireNonNull(entityType.getRegistryName()).toString()));
     }
 
-    public static FinishedObject<ResultSerializer<?>> entityTypeTag(Tag.Named<EntityType<?>> entityTypeTag) {
-        return new FinishedObject<>(TransfigurationRecipes.ENTITY_TAG_RESULT_SERIALIZER.get(),
-                entityTypeTag::getName, jsonObject -> jsonObject.addProperty("tag", entityTypeTag.getName()
-                .toString()));
+    public static FinishedObject<ResultSerializer<?>> entityTypeTag(TagKey<EntityType<?>> entityTypeTag) {
+        return new FinishedObject<>(
+                TransfigurationRecipes.ENTITY_TAG_RESULT_SERIALIZER.get(),
+                entityTypeTag::location,
+                jsonObject -> jsonObject.addProperty("tag", entityTypeTag.location().toString())
+        );
     }
 
     public static FinishedObject<ResultSerializer<?>> itemStack(ItemStack itemStack) {

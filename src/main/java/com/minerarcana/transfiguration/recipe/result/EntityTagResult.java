@@ -3,22 +3,26 @@ package com.minerarcana.transfiguration.recipe.result;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class EntityTagResult extends Result {
-    private final Tag<EntityType<?>> tag;
+    private final TagKey<EntityType<?>> tag;
 
-    public EntityTagResult(Tag<EntityType<?>> tag) {
+    public EntityTagResult(TagKey<EntityType<?>> tag) {
         this.tag = tag;
     }
 
     public void handle(@Nonnull TransfigurationContainer<?> transfigurationContainer, double powerModifier) {
-        EntityType<?> entityType = tag.getRandomElement(transfigurationContainer.getLevel().random);
-        EntityResult.summon(transfigurationContainer, entityType);
+        Objects.requireNonNull(ForgeRegistries.ENTITIES.tags())
+                .getTag(tag)
+                .getRandomElement(transfigurationContainer.getLevel().random)
+                .ifPresent(entityType -> EntityResult.summon(transfigurationContainer, entityType));
     }
 
     @Nonnull
@@ -39,7 +43,7 @@ public class EntityTagResult extends Result {
         return TransfigurationRecipes.ENTITY_TAG_RESULT_SERIALIZER.get();
     }
 
-    public Tag<EntityType<?>> getTag() {
+    public TagKey<EntityType<?>> getTag() {
         return tag;
     }
 }

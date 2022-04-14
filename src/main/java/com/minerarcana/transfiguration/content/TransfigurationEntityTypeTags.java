@@ -1,9 +1,17 @@
 package com.minerarcana.transfiguration.content;
 
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.Tag;
+import com.minerarcana.transfiguration.Transfiguration;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Objects;
 
 public class TransfigurationEntityTypeTags {
-    public static Tag.Named<EntityType<?>> OUTPUTS_ACCURSED = EntityTypeTags.bind("transfiguration:outputs/accursed");
+    public static TagKey<EntityType<?>> OUTPUTS_ACCURSED = createTagKey("outputs/accursed");
+
+    public static TagKey<EntityType<?>> createTagKey(String path) {
+        return Objects.requireNonNull(ForgeRegistries.ENTITIES.tags())
+                .createTagKey(Transfiguration.rl(path));
+    }
 }

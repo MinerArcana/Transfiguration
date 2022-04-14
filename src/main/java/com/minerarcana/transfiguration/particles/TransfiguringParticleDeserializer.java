@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.particles;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.util.Buffers;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -29,7 +30,7 @@ public class TransfiguringParticleDeserializer implements ParticleOptions.Deseri
         reader.expect(' ');
         int i = reader.getCursor();
         ResourceLocation name = ResourceLocation.read(reader);
-        TransfigurationType transfigurationType = Transfiguration.transfigurationTypes.getValue(name);
+        TransfigurationType transfigurationType = TransfigurationTypes.REGISTRY.get().getValue(name);
         reader.expect(' ');
         Vec3 direction = new Vec3(
                 reader.readDouble(),

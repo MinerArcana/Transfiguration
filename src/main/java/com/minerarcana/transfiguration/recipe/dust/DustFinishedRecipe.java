@@ -8,7 +8,7 @@ import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerialize
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.material.Fluid;
@@ -21,13 +21,13 @@ public class DustFinishedRecipe implements FinishedRecipe {
     private final ResourceLocation id;
     private final TransfigurationType type;
     private final FinishedObject<BasicIngredientSerializer<?>> blockState;
-    private final Tag.Named<Fluid> fluidState;
+    private final TagKey<Fluid> fluidState;
     private final ItemStack output;
 
 
     public DustFinishedRecipe(ResourceLocation id, TransfigurationType transfigurationType,
                               FinishedObject<BasicIngredientSerializer<?>> blockIngredient,
-                              Tag.Named<Fluid> fluidIngredient, ItemStack output) {
+                              TagKey<Fluid> fluidIngredient, ItemStack output) {
         this.id = id;
         this.type = transfigurationType;
         this.blockState = blockIngredient;
@@ -40,7 +40,7 @@ public class DustFinishedRecipe implements FinishedRecipe {
         json.addProperty("transfigurationType", Objects.requireNonNull(type.getRegistryName()).toString());
         json.add("block", blockState.getJson());
         if (fluidState != null) {
-            json.addProperty("fluid", fluidState.getName().toString());
+            json.addProperty("fluid", fluidState.location().toString());
         }
         json.add("output", ObjectJson.writeItemStack(output));
     }

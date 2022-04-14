@@ -6,11 +6,9 @@ import com.minerarcana.transfiguration.recipe.json.TagJson;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.SerializationTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 public class TagIngredientSerializer extends BasicIngredientSerializer<TagIngredient> {
     @Nonnull
@@ -33,25 +31,20 @@ public class TagIngredientSerializer extends BasicIngredientSerializer<TagIngred
 
     @Override
     public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull TagIngredient object) {
-        writeTag(Registry.BLOCK_REGISTRY, buffer, object.getBlockTag());
-        writeTag(Registry.ENTITY_TYPE_REGISTRY, buffer, object.getEntityTag());
+        writeTag(buffer, object.getBlockTag());
+        writeTag(buffer, object.getEntityTag());
     }
 
-    private <T extends Registry<U>, U> void writeTag(ResourceKey<T> key, FriendlyByteBuf buffer, Tag<U> tag) {
+    private <T extends Registry<U>, U> void writeTag(FriendlyByteBuf buffer, TagKey<U> tag) {
         buffer.writeBoolean(tag != null);
         if (tag != null) {
-            buffer.writeResourceLocation(Objects.requireNonNull(SerializationTags.getInstance()
-                    .getOrEmpty(key)
-                    .getId(tag)
-            ));
+            buffer.writeResourceLocation(tag.location());
         }
     }
 
-    private <T extends Registry<U>, U> Tag<U> getTag(ResourceKey<T> key, FriendlyByteBuf buffer) {
+    private <T extends Registry<U>, U> TagKey<U> getTag(ResourceKey<T> key, FriendlyByteBuf buffer) {
         if (buffer.readBoolean()) {
-            return SerializationTags.getInstance()
-                    .getOrEmpty(key)
-                    .getTag(buffer.readResourceLocation());
+            return TagKey.create(key, buffer.readResourceLocation());
         } else {
             return null;
         }

@@ -4,8 +4,7 @@ import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -13,7 +12,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.common.util.Lazy;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,18 +22,18 @@ public class DustRecipe implements Recipe<DustRecipeInventory> {
     private final ResourceLocation id;
     private final TransfigurationType type;
     private final BasicIngredient ingredient;
-    private final Lazy<Tag<Fluid>> fluid;
+    private final TagKey<Fluid> fluid;
     private final Predicate<FluidState> fluidPredicate;
     private final ItemStack output;
 
     public DustRecipe(ResourceLocation id, TransfigurationType type, BasicIngredient ingredient,
-                      ResourceLocation fluid, ItemStack output) {
+                      TagKey<Fluid> fluid, ItemStack output) {
         this.id = id;
         this.type = type;
         this.ingredient = ingredient;
-        this.fluid = Lazy.of(() -> FluidTags.getAllTags().getTag(fluid));
+        this.fluid = fluid;
         this.fluidPredicate = fluidState -> {
-            Tag<Fluid> fluidTag = this.getFluid();
+            TagKey<Fluid> fluidTag = this.getFluid();
             if (fluidTag == null) {
                 return fluidState.isEmpty();
             } else {
@@ -86,7 +84,7 @@ public class DustRecipe implements Recipe<DustRecipeInventory> {
     @Override
     @Nonnull
     public RecipeType<?> getType() {
-        return TransfigurationRecipes.DUST_RECIPE_TYPE;
+        return TransfigurationRecipes.DUST_RECIPE_TYPE.get();
     }
 
     @Override
@@ -107,7 +105,7 @@ public class DustRecipe implements Recipe<DustRecipeInventory> {
     }
 
     @Nullable
-    public Tag<Fluid> getFluid() {
-        return fluid.get();
+    public TagKey<Fluid> getFluid() {
+        return fluid;
     }
 }

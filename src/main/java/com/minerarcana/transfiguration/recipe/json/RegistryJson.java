@@ -5,6 +5,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
@@ -53,7 +54,7 @@ public class RegistryJson {
 
     @Nonnull
     public static TransfigurationType getTransfigurationType(JsonObject jsonObject, String fieldName) {
-        return getValue(jsonObject, fieldName, Transfiguration.transfigurationTypes);
+        return getValue(jsonObject, fieldName, TransfigurationTypes.REGISTRY.get());
     }
 
     @Nonnull

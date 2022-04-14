@@ -21,18 +21,15 @@ public class FallingBlockResult extends Result {
 
     private void handle(TransfigurationContainer<?> container, double powerModifier) {
         Object object = container.getTargeted();
-        if (object instanceof BlockState) {
-            Level world = container.getLevel();
+        if (object instanceof BlockState blockState) {
+            Level level = container.getLevel();
             BlockPos blockPos = container.getTargetedPos();
-            BlockState blockState = (BlockState) object;
-            if (blockState.getPistonPushReaction() != PushReaction.BLOCK && world.getBlockEntity(blockPos) == null &&
-                    blockState.getDestroySpeed(world, blockPos) > 0) {
-                world.addFreshEntity(new FallingBlockEntity(
-                        world,
-                        blockPos.getX() + 0.5,
-                        blockPos.getY(),
-                        blockPos.getZ() + 0.5,
-                        ((BlockState) object)
+            if (blockState.getPistonPushReaction() != PushReaction.BLOCK && level.getBlockEntity(blockPos) == null &&
+                    blockState.getDestroySpeed(level, blockPos) > 0) {
+                level.addFreshEntity(FallingBlockEntity.fall(
+                        level,
+                        blockPos,
+                        blockState
                 ));
             }
         }

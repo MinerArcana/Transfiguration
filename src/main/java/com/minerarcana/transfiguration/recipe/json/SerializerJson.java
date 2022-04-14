@@ -1,12 +1,7 @@
 package com.minerarcana.transfiguration.recipe.json;
 
 import com.google.common.collect.Lists;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.minerarcana.transfiguration.Transfiguration;
+import com.google.gson.*;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.result.Result;
@@ -33,7 +28,7 @@ public class SerializerJson {
         return getSerializable(
                 jsonObject,
                 fieldName,
-                Transfiguration.basicIngredientSerializers::getValue,
+                TransfigurationRecipes.INGREDIENT_REGISTRY.get()::getValue,
                 TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get()::parse
         );
     }
@@ -46,7 +41,7 @@ public class SerializerJson {
             if (jsonElement.isJsonObject()) {
                 ingredients.add(getSerializable(
                         jsonElement.getAsJsonObject(),
-                        Transfiguration.basicIngredientSerializers::getValue,
+                        TransfigurationRecipes.INGREDIENT_REGISTRY.get()::getValue,
                         TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get()::parse
                 ));
             } else {
@@ -63,7 +58,7 @@ public class SerializerJson {
 
     @Nonnull
     public static Result getResult(JsonObject jsonObject, String fieldName) {
-        return getSerializable(jsonObject, fieldName, Transfiguration.resultSerializers::getValue,
+        return getSerializable(jsonObject, fieldName, TransfigurationRecipes.RESULT_REGISTRY.get()::getValue,
                 TransfigurationRecipes.BLOCK_STATE_RESULT_SERIALIZER.get()::parse);
     }
 

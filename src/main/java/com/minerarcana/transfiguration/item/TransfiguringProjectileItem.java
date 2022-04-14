@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.item;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -38,7 +39,7 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
     public static TransfigurationType getTransfigurationType(ItemStack itemStack) {
         if (itemStack.getTag() != null) {
             String typeName = itemStack.getTag().getString("type");
-            return Transfiguration.transfigurationTypes.getValue(new ResourceLocation(typeName));
+            return TransfigurationTypes.REGISTRY.get().getValue(new ResourceLocation(typeName));
         } else {
             return null;
         }

@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.recipe.ingedient;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
@@ -10,10 +11,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nonnull;
 
 public class TagIngredient extends BasicIngredient {
-    private final Tag<Block> blockTag;
-    private final Tag<EntityType<?>> entityTag;
+    private final TagKey<Block> blockTag;
+    private final TagKey<EntityType<?>> entityTag;
 
-    public TagIngredient(Tag<Block> blockTag, Tag<EntityType<?>> entityTag) {
+    public TagIngredient(TagKey<Block> blockTag, TagKey<EntityType<?>> entityTag) {
         this.blockTag = blockTag;
         this.entityTag = entityTag;
     }
@@ -34,11 +35,11 @@ public class TagIngredient extends BasicIngredient {
         return TransfigurationRecipes.TAG_INGREDIENT_SERIALIZER.get();
     }
 
-    public Tag<Block> getBlockTag() {
+    public TagKey<Block> getBlockTag() {
         return blockTag;
     }
 
-    public Tag<EntityType<?>> getEntityTag() {
+    public TagKey<EntityType<?>> getEntityTag() {
         return entityTag;
     }
 }

@@ -29,10 +29,6 @@ import net.minecraftforge.registries.RegistryManager;
 public class Transfiguration {
     public static final String ID = "transfiguration";
 
-    public static IForgeRegistry<TransfigurationType> transfigurationTypes;
-    public static IForgeRegistry<BasicIngredientSerializer<?>> basicIngredientSerializers;
-    public static IForgeRegistry<ResultSerializer<?>> resultSerializers;
-
     private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(ID)
             .creativeModeTab(TransfiguringItemGroup::new, "Transfiguration")
             .addDataGenerator(ProviderType.ENTITY_TAGS, TransfigurationAdditionalData::addEntityTypeTags)
@@ -41,18 +37,7 @@ public class Transfiguration {
             .addDataGenerator(ProviderType.ITEM_TAGS, TransfigurationAdditionalData::addItemTags)
     );
 
-    @SuppressWarnings("unchecked")
     public Transfiguration() {
-        transfigurationTypes = new RegistryBuilder<TransfigurationType>()
-                .setName(rl("transfiguration_types"))
-                .setType(TransfigurationType.class)
-                .create();
-
-        makeRegistry("ingredient_serializers", BasicIngredientSerializer.class);
-        makeRegistry("result_serializers", ResultSerializer.class);
-        basicIngredientSerializers = RegistryManager.ACTIVE.getRegistry(BasicIngredientSerializer.class);
-        resultSerializers = RegistryManager.ACTIVE.getRegistry(ResultSerializer.class);
-
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         TransfigurationBlocks.setup();
         TransfigurationRecipes.register(modEventBus);
@@ -71,12 +56,5 @@ public class Transfiguration {
 
     public static ResourceLocation rl(String path) {
         return new ResourceLocation(ID, path);
-    }
-
-    private static <T extends IForgeRegistryEntry<T>> void makeRegistry(String name, Class<T> type) {
-        new RegistryBuilder<T>()
-                .setName(rl(name))
-                .setType(type)
-                .create();
     }
 }

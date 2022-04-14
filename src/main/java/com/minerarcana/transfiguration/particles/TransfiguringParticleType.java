@@ -1,6 +1,7 @@
 package com.minerarcana.transfiguration.particles;
 
 import com.minerarcana.transfiguration.Transfiguration;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.util.Codecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -11,7 +12,7 @@ import javax.annotation.Nonnull;
 public class TransfiguringParticleType extends ParticleType<TransfiguringParticleData> {
 
     public static final Codec<TransfiguringParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codecs.forRegistry("transfigurationType", Transfiguration.transfigurationTypes)
+            Codecs.forRegistry("transfigurationType", TransfigurationTypes.REGISTRY.get())
                     .forGetter(TransfiguringParticleData::getTransfigurationType),
             Codecs.VECTOR.fieldOf("direction")
                     .forGetter(TransfiguringParticleData::getEndPosition),

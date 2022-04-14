@@ -6,13 +6,13 @@ buildscript {
             url = "https://maven.minecraftforge.net"
         }
         maven {
-            name = "mixin"
-            url = 'https://repo.spongepowered.org/repository/maven-public/'
+            name = "parchment"
+            url = "https://maven.parchmentmc.org"
         }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: "org.spongepowered", name: "mixingradle", version: "0.7-SNAPSHOT"
+        classpath group: "org.parchmentmc", name: "librarian", version: "1.+"
     }
 }
 
@@ -21,7 +21,7 @@ plugins {
 }
 
 apply plugin: "net.minecraftforge.gradle"
-apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'maven-publish'
 apply plugin: "java"
 apply plugin: "idea"
@@ -59,11 +59,10 @@ test {
 }
 
 minecraft {
-    mappings channel: "official", version: "${mappings_version}"
+    mappings channel: 'parchment', version: '2022.03.13-1.18.2'
 
     runs {
         client {
-            arg "-mixin.config=transfiguration.mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
@@ -72,7 +71,6 @@ minecraft {
         }
 
         server {
-            arg "-mixin.config=transfiguration.mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
@@ -81,7 +79,6 @@ minecraft {
         }
 
         data {
-            arg "-mixin.config=transfiguration.mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
@@ -128,16 +125,14 @@ build.dependsOn reobfShadowJar
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("org.squiddev:cc-tweaked-1.18.1:${cctweaked_version}")
+    implementation fg.deobf("org.squiddev:cc-tweaked-1.18.2:${cctweaked_version}")
 
-    def registrate = "com.tterrag.registrate:Registrate:MC1.18-${registrate_version}"
+    def registrate = "com.tterrag.registrate:Registrate:MC1.18.2-${registrate_version}"
     implementation fg.deobf(registrate)
     shade registrate
 
-    compileOnly fg.deobf("mezz.jei:jei-1.18.1:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:${jei_version}")
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:${jei_version}")
 }
 
 task srcJar(type: Jar) {
@@ -160,8 +155,7 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : "${version}",
                 "Implementation-Vendor"   : "${team}",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "transfiguration.mixins.json"
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
@@ -217,9 +211,5 @@ gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xmaxerrs" << "10000"
     }
-}
-
-mixin {
-    add sourceSets.main, "transfiguration.refmap.json"
 }
 

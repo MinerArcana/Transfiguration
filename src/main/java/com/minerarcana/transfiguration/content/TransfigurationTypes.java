@@ -10,20 +10,39 @@ import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
+import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 
 import java.util.function.Supplier;
 
 public class TransfigurationTypes {
+
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_DEFERRED_REGISTER =
+            DeferredRegister.create(
+                    Registry.RECIPE_TYPE_REGISTRY,
+                    Transfiguration.ID
+            );
     private static final NonNullBiFunction<String, BuilderCallback, TransfigurationTypeBuilder<TransfigurationType,
-            AbstractRegistrate<?>>> TRANSFIGURATION_TYPE = TransfigurationTypeBuilder.entry(Transfiguration::getRegistrate);
+            AbstractRegistrate<?>>> TRANSFIGURATION_TYPE = TransfigurationTypeBuilder.entry(
+            Transfiguration::getRegistrate,
+            RECIPE_TYPE_DEFERRED_REGISTER
+    );
+
+    @SuppressWarnings("UnstableApiUsage")
+    public static Supplier<IForgeRegistry<TransfigurationType>> REGISTRY = Transfiguration.getRegistrate()
+            .makeRegistry("transfiguration_types", TransfigurationType.class, RegistryBuilder::new);
 
     public static final RegistryEntry<TransfigurationType> NETHERI = Transfiguration.getRegistrate()
             .object("netheri")
@@ -295,9 +314,6 @@ public class TransfigurationTypes {
             .defaultWand()
             .register();
 
-    public static void setup() {
-
-    }
 
     public static Item getDust(Supplier<TransfigurationType> transfigurationTypeSupplier) {
         ResourceLocation registryName = transfigurationTypeSupplier.get().getRegistryName();
@@ -314,4 +330,9 @@ public class TransfigurationTypes {
             }
         }
     }
+
+    public static void setup() {
+        RECIPE_TYPE_DEFERRED_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+    }
+
 }

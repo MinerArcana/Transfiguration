@@ -5,9 +5,10 @@ import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.ingedient.MatchIngredient;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
@@ -17,7 +18,6 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Objects;
 
 public class DustRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DustRecipe> {
     @Override
@@ -28,7 +28,10 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>
                 recipeId,
                 RegistryJson.getTransfigurationType(json),
                 json.has("block") ? SerializerJson.getBasicIngredient(json, "block") : new MatchIngredient(Blocks.AIR),
-                json.has("fluid") ? ResourceLocation.tryParse(GsonHelper.getAsString(json, "fluid")) : null,
+                json.has("fluid") ? TagKey.create(
+                        Registry.FLUID_REGISTRY,
+                        new ResourceLocation(GsonHelper.getAsString(json, "fluid"))
+                ) : null,
                 CraftingHelper.getItemStack(json.getAsJsonObject("output"), true)
         );
     }
@@ -41,7 +44,7 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>
                 recipeId,
                 buffer.readRegistryId(),
                 BasicIngredient.fromBuffer(buffer),
-                buffer.readBoolean() ? buffer.readResourceLocation() : null,
+                buffer.readBoolean() ? TagKey.create(Registry.FLUID_REGISTRY, buffer.readResourceLocation()) : null,
                 buffer.readItem()
         );
     }
@@ -53,7 +56,7 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>
         BasicIngredient.toBuffer(buffer, recipe.getIngredient());
         buffer.writeBoolean(recipe.getFluid() != null);
         if (recipe.getFluid() != null) {
-            buffer.writeResourceLocation(Objects.requireNonNull(FluidTags.getAllTags().getId(recipe.getFluid())));
+            buffer.writeResourceLocation(recipe.getFluid().location());
         }
         buffer.writeItem(recipe.getOutput());
     }

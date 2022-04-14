@@ -5,18 +5,16 @@ import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.json.TagJson;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.tags.SerializationTags;
+import net.minecraft.tags.TagKey;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 public class BlockTagResultSerializer extends ResultSerializer<BlockTagResult> {
     @Nonnull
     @Override
     public BlockTagResult parse(@Nonnull FriendlyByteBuf buffer) {
-        return new BlockTagResult(SerializationTags.getInstance()
-                .getOrEmpty(Registry.BLOCK_REGISTRY)
-                .getTag(buffer.readResourceLocation())
+        return new BlockTagResult(
+                TagKey.create(Registry.BLOCK_REGISTRY, buffer.readResourceLocation())
         );
     }
 
@@ -28,10 +26,6 @@ public class BlockTagResultSerializer extends ResultSerializer<BlockTagResult> {
 
     @Override
     public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull BlockTagResult object) {
-        buffer.writeResourceLocation(Objects.requireNonNull(
-                SerializationTags.getInstance()
-                        .getOrEmpty(Registry.BLOCK_REGISTRY)
-                        .getId(object.getTag())
-        ));
+        buffer.writeResourceLocation(object.getTag().location());
     }
 }
