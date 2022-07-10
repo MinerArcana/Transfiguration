@@ -1,10 +1,13 @@
 package com.minerarcana.transfiguration.content;
 
 import com.google.common.collect.Lists;
+import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.recipe.builder.IngredientBuilder;
 import com.minerarcana.transfiguration.recipe.builder.ResultBuilder;
 import com.minerarcana.transfiguration.recipe.builder.TransfigurationRecipeBuilder;
+import com.minerarcana.transfiguration.recipe.builder.WeightedResultBuilder;
+import com.minerarcana.transfiguration.recipe.result.WeightedResult;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import net.minecraft.tags.BlockTags;
@@ -255,6 +258,11 @@ public class TransfigurationRecipeData {
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.COARSE_DIRT))
+                .withResult(ResultBuilder.block(Blocks.SOUL_SOIL))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.matches(Blocks.GRASS))
                 .withResult(ResultBuilder.block(Blocks.NETHER_SPROUTS))
                 .build(provider);
@@ -319,7 +327,11 @@ public class TransfigurationRecipeData {
 
         TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.matches(Blocks.SOUL_SOIL))
-                .withResult(ResultBuilder.block(Blocks.DIRT))
+                .withResult(WeightedResultBuilder.of(Transfiguration.rl("overworld_soils"))
+                        .addResult(3, ResultBuilder.block(Blocks.DIRT))
+                        .addResult(1, ResultBuilder.block(Blocks.COARSE_DIRT))
+                        .build()
+                )
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context)
