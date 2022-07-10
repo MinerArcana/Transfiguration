@@ -5,6 +5,7 @@
     "minecraft:zombie",
     "minecraft:pillager",
     "minecraft:vindicator",
-    "minecraft:illusioner"
+    "minecraft:illusioner",
+    "minecraft:zombie_villager"
   ]
 }

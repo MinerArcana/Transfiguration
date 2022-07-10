@@ -1,13 +1,13 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:overni",
+  "transfigurationType": "transfiguration:netheri",
   "ingredient": {
     "type": "transfiguration:match",
-    "block": "minecraft:soul_soil"
+    "block": "minecraft:cracked_stone_bricks"
   },
   "result": {
     "type": "transfiguration:blockstate",
-    "block": "minecraft:dirt"
+    "block": "minecraft:cracked_nether_bricks"
   },
   "ticks": 240
 }

@@ -1,0 +1,28 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "transfigurationType": "transfiguration:overni",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "block": "minecraft:soul_soil"
+  },
+  "result": {
+    "type": "transfiguration:weighted",
+    "entries": [
+      {
+        "weight": 3,
+        "result": {
+          "type": "transfiguration:blockstate",
+          "block": "minecraft:dirt"
+        }
+      },
+      {
+        "weight": 1,
+        "result": {
+          "type": "transfiguration:blockstate",
+          "block": "minecraft:coarse_dirt"
+        }
+      }
+    ]
+  },
+  "ticks": 240
+}

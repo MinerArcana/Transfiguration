@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "transfiguration:magic_powder"
+            "items": [
+              "transfiguration:magic_powder"
+            ]
           }
         ]
       }

@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "transfigurationType": "transfiguration:blessed",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "entity": "minecraft:zombified_piglin"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:piglin"
+  },
+  "ticks": 240
+}

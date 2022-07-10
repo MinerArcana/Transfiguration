@@ -22,7 +22,8 @@ public class TransfigurationAdditionalData {
                         EntityType.ZOMBIE,
                         EntityType.PILLAGER,
                         EntityType.VINDICATOR,
-                        EntityType.ILLUSIONER
+                        EntityType.ILLUSIONER,
+                        EntityType.ZOMBIE_VILLAGER
                 );
     }
 

@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "transfiguration:blessed_catalyst"
+            "items": [
+              "transfiguration:blessed_catalyst"
+            ]
           }
         ]
       }

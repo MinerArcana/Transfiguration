@@ -13,15 +13,7 @@ import com.minerarcana.transfiguration.recipe.ingedient.TagIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.block.BlockPropertiesIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.ingedient.logic.AndIngredient;
 import com.minerarcana.transfiguration.recipe.ingedient.logic.NotIngredient;
-import com.minerarcana.transfiguration.recipe.result.BlankResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.BlockStateResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.BlockTagResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.ChanceResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.EntityResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.EntityTagResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.FallingBlockResult;
-import com.minerarcana.transfiguration.recipe.result.ItemResultSerializer;
-import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
+import com.minerarcana.transfiguration.recipe.result.*;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -124,6 +116,11 @@ public class TransfigurationRecipes {
             Transfiguration.getRegistrate()
                     .object("falling_block")
                     .simple(ResultSerializer.class, () -> new BlankResultSerializer<>(FallingBlockResult::new));
+
+    public static final RegistryEntry<WeightedResultSerializer> WEIGHTED_RESULT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("weighted")
+                    .simple(ResultSerializer.class, WeightedResultSerializer::new);
 
     public static final RegistryEntry<RecipeSerializer<DustRecipe>> DUST_RECIPE_SERIALIZER =
             Transfiguration.getRegistrate()

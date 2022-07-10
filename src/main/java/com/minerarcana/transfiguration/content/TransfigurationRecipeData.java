@@ -1,10 +1,13 @@
 package com.minerarcana.transfiguration.content;
 
 import com.google.common.collect.Lists;
+import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.recipe.builder.IngredientBuilder;
 import com.minerarcana.transfiguration.recipe.builder.ResultBuilder;
 import com.minerarcana.transfiguration.recipe.builder.TransfigurationRecipeBuilder;
+import com.minerarcana.transfiguration.recipe.builder.WeightedResultBuilder;
+import com.minerarcana.transfiguration.recipe.result.WeightedResult;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import net.minecraft.tags.BlockTags;
@@ -31,6 +34,15 @@ public class TransfigurationRecipeData {
                 .withIngredient(IngredientBuilder.matches(EntityType.VILLAGER))
                 .withResult(ResultBuilder.entityTypeTag(TransfigurationEntityTypeTags.OUTPUTS_ACCURSED))
                 .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.PIGLIN))
+                .withResult(WeightedResultBuilder.of(Transfiguration.rl("piglin_accursed"))
+                        .addResult(10, ResultBuilder.entityTypeTag(TransfigurationEntityTypeTags.OUTPUTS_ACCURSED))
+                        .addResult(1, ResultBuilder.entityType(EntityType.ZOMBIFIED_PIGLIN))
+                        .build()
+                )
+                .build(provider);
     }
 
     public static <T extends TransfigurationType> void blessedRecipes(DataGenContext<TransfigurationType, T> context,
@@ -41,8 +53,33 @@ public class TransfigurationRecipeData {
                 .build(provider);
 
         TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.ZOMBIE))
+                .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
                 .withIngredient(IngredientBuilder.matches(EntityType.WITCH))
                 .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.PILLAGER))
+                .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.ILLUSIONER))
+                .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.VINDICATOR))
+                .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.ZOMBIFIED_PIGLIN))
+                .withResult(ResultBuilder.entityType(EntityType.PIGLIN))
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context)
@@ -255,6 +292,11 @@ public class TransfigurationRecipeData {
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.COARSE_DIRT))
+                .withResult(ResultBuilder.block(Blocks.SOUL_SOIL))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.matches(Blocks.GRASS))
                 .withResult(ResultBuilder.block(Blocks.NETHER_SPROUTS))
                 .build(provider);
@@ -277,6 +319,11 @@ public class TransfigurationRecipeData {
         TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.matches(Blocks.STONE))
                 .withResult(ResultBuilder.block(Blocks.BASALT))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.CRACKED_STONE_BRICKS))
+                .withResult(ResultBuilder.block(Blocks.CRACKED_NETHER_BRICKS))
                 .build(provider);
     }
 
@@ -313,13 +360,22 @@ public class TransfigurationRecipeData {
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.CRACKED_NETHER_BRICKS))
+                .withResult(ResultBuilder.block(Blocks.CRACKED_STONE_BRICKS))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.blockTag(TransfigurationBlockTags.OUTPUTS_NETHERI_GRASS))
                 .withResult(ResultBuilder.block(Blocks.GRASS_BLOCK))
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.matches(Blocks.SOUL_SOIL))
-                .withResult(ResultBuilder.block(Blocks.DIRT))
+                .withResult(WeightedResultBuilder.of(Transfiguration.rl("overworld_soils"))
+                        .addResult(3, ResultBuilder.block(Blocks.DIRT))
+                        .addResult(1, ResultBuilder.block(Blocks.COARSE_DIRT))
+                        .build()
+                )
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context)
