@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "transfiguration:netheri_dust"
+            "items": [
+              "transfiguration:netheri_dust"
+            ]
           }
         ]
       }
