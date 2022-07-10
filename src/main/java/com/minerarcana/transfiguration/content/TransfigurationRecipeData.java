@@ -34,6 +34,15 @@ public class TransfigurationRecipeData {
                 .withIngredient(IngredientBuilder.matches(EntityType.VILLAGER))
                 .withResult(ResultBuilder.entityTypeTag(TransfigurationEntityTypeTags.OUTPUTS_ACCURSED))
                 .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.PIGLIN))
+                .withResult(WeightedResultBuilder.of(Transfiguration.rl("piglin_accursed"))
+                        .addResult(10, ResultBuilder.entityTypeTag(TransfigurationEntityTypeTags.OUTPUTS_ACCURSED))
+                        .addResult(1, ResultBuilder.entityType(EntityType.ZOMBIFIED_PIGLIN))
+                        .build()
+                )
+                .build(provider);
     }
 
     public static <T extends TransfigurationType> void blessedRecipes(DataGenContext<TransfigurationType, T> context,
@@ -44,8 +53,33 @@ public class TransfigurationRecipeData {
                 .build(provider);
 
         TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.ZOMBIE))
+                .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
                 .withIngredient(IngredientBuilder.matches(EntityType.WITCH))
                 .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.PILLAGER))
+                .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.ILLUSIONER))
+                .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.VINDICATOR))
+                .withResult(ResultBuilder.entityType(EntityType.VILLAGER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context)
+                .withIngredient(IngredientBuilder.matches(EntityType.ZOMBIFIED_PIGLIN))
+                .withResult(ResultBuilder.entityType(EntityType.PIGLIN))
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context)
@@ -286,6 +320,11 @@ public class TransfigurationRecipeData {
                 .withIngredient(IngredientBuilder.matches(Blocks.STONE))
                 .withResult(ResultBuilder.block(Blocks.BASALT))
                 .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.CRACKED_STONE_BRICKS))
+                .withResult(ResultBuilder.block(Blocks.CRACKED_NETHER_BRICKS))
+                .build(provider);
     }
 
     public static void overniRecipes(DataGenContext<TransfigurationType, TransfigurationType> context,
@@ -318,6 +357,11 @@ public class TransfigurationRecipeData {
         TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.matches(Blocks.NETHER_BRICKS))
                 .withResult(ResultBuilder.block(Blocks.STONE_BRICKS))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.CRACKED_NETHER_BRICKS))
+                .withResult(ResultBuilder.block(Blocks.CRACKED_STONE_BRICKS))
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context)
