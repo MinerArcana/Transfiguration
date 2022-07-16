@@ -9,6 +9,7 @@ import com.minerarcana.transfiguration.entity.EntityTransfiguringEntity;
 import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
+import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -26,8 +27,9 @@ import java.util.function.Supplier;
 
 public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
     public EntityTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
-                                       BasicIngredient ingredient, Result result, int time) {
-        super(recipeId, transfigurationType, ingredient, result, time);
+                                       BasicIngredient ingredient, Result result, TransfigurationPredicate[] predicate,
+                                       int time) {
+        super(recipeId, transfigurationType, ingredient, result, predicate, time);
     }
 
 
@@ -73,7 +75,7 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
 
     public static boolean tryTransfigure(TransfigurationType type, TransfigurationContainer<Entity> container,
                                          double powerModifier, double timeModifier) {
-        if (type != null && !(container.getTargeted().getVehicle() instanceof TransfiguringEntity<?,?>)) {
+        if (type != null && !(container.getTargeted().getVehicle() instanceof TransfiguringEntity<?, ?>)) {
             Level world = container.getLevel();
             Optional<ITransfigurationRecipe<Entity>> recipeOptional = world.getRecipeManager()
                     .getRecipeFor(type.getEntityRecipeType(), container, world);

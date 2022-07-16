@@ -1,10 +1,12 @@
 package com.minerarcana.transfiguration.recipe.entity;
 
 import com.google.gson.JsonObject;
+import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
+import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +30,7 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<Re
                 RegistryJson.getTransfigurationType(json),
                 SerializerJson.getBasicIngredient(json),
                 SerializerJson.getResult(json),
+                TransfigurationPredicate.fromJson(json),
                 GsonHelper.getAsInt(json, "ticks", 12)
         );
     }
@@ -36,11 +39,14 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<Re
     @Nullable
     @ParametersAreNonnullByDefault
     public EntityTransfigurationRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-        TransfigurationType transfigurationType = buffer.readRegistryId();
-        BasicIngredient ingredient = BasicIngredient.fromBuffer(buffer);
-        Result result = Result.fromBuffer(buffer);
-        int ticks = buffer.readInt();
-        return new EntityTransfigurationRecipe(recipeId, transfigurationType, ingredient, result, ticks);
+        return new EntityTransfigurationRecipe(
+                recipeId,
+                buffer.readRegistryId(),
+                BasicIngredient.fromBuffer(buffer),
+                Result.fromBuffer(buffer),
+                TransfigurationPredicate.fromBuffer(buffer),
+                buffer.readInt()
+        );
     }
 
     @Override
@@ -49,6 +55,7 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<Re
         buffer.writeRegistryId(recipe.getTransfigurationType());
         BasicIngredient.toBuffer(buffer, recipe.getIngredient());
         Result.toBuffer(buffer, recipe.getResult());
+        TransfigurationPredicate.toBuffer(buffer, recipe.getPredicates());
         buffer.writeInt(recipe.getTicks());
     }
 }

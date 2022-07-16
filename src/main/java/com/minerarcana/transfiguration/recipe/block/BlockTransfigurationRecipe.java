@@ -9,6 +9,7 @@ import com.minerarcana.transfiguration.entity.BlockTransfiguringEntity;
 import com.minerarcana.transfiguration.entity.TransfiguringEntity;
 import com.minerarcana.transfiguration.recipe.TransfigurationRecipe;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
+import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -30,8 +31,9 @@ import java.util.function.Supplier;
 
 public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState> {
     public BlockTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
-                                      BasicIngredient ingredient, Result result, int ticks) {
-        super(recipeId, transfigurationType, ingredient, result, ticks);
+                                      BasicIngredient ingredient, Result result, TransfigurationPredicate[] predicate,
+                                      int ticks) {
+        super(recipeId, transfigurationType, ingredient, result, predicate, ticks);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState
     @Override
     @ParametersAreNonnullByDefault
     public boolean matches(TransfigurationContainer<BlockState> container, Level world) {
-        return this.getIngredient().test(container.getTargeted());
+        return this.getIngredient().test(container.getTargeted()) && super.matches(container);
     }
 
     @Override
