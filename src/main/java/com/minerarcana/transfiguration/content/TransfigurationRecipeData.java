@@ -7,9 +7,10 @@ import com.minerarcana.transfiguration.recipe.builder.IngredientBuilder;
 import com.minerarcana.transfiguration.recipe.builder.ResultBuilder;
 import com.minerarcana.transfiguration.recipe.builder.TransfigurationRecipeBuilder;
 import com.minerarcana.transfiguration.recipe.builder.WeightedResultBuilder;
-import com.minerarcana.transfiguration.recipe.result.WeightedResult;
+import com.minerarcana.transfiguration.recipe.predicate.PositionPredicate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
@@ -325,6 +326,22 @@ public class TransfigurationRecipeData {
                 .withIngredient(IngredientBuilder.matches(Blocks.CRACKED_STONE_BRICKS))
                 .withResult(ResultBuilder.block(Blocks.CRACKED_NETHER_BRICKS))
                 .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withPredicate(new PositionPredicate(Direction.Axis.Y, -20, Integer.MAX_VALUE))
+                .withIngredient(IngredientBuilder.matches(Blocks.DEEPSLATE))
+                .withResult(WeightedResultBuilder.of(Transfiguration.rl("deepslate_out"))
+                        .addResult(3, ResultBuilder.block(Blocks.MAGMA_BLOCK))
+                        .addResult(1, ResultBuilder.block(Blocks.LAVA))
+                        .build()
+                )
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withIngredient(IngredientBuilder.matches(Blocks.POINTED_DRIPSTONE))
+                .withResult(ResultBuilder.block(Blocks.GLOWSTONE))
+                .build(provider);
+
     }
 
     public static void overniRecipes(DataGenContext<TransfigurationType, TransfigurationType> context,
@@ -410,7 +427,7 @@ public class TransfigurationRecipeData {
     }
 
     public static void animationRecipes(DataGenContext<TransfigurationType, TransfigurationType> context,
-                                     RegistrateRecipeProvider provider) {
+                                        RegistrateRecipeProvider provider) {
         TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.matches(Blocks.STONE))
                 .withResult(ResultBuilder.block(Blocks.INFESTED_STONE))

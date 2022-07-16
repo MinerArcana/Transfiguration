@@ -52,8 +52,8 @@ public class WeightedResultSerializer extends ResultSerializer<WeightedResult> {
     @Override
     public void write(@NotNull FriendlyByteBuf buffer, @NotNull WeightedResult object) {
         buffer.writeCollection(object.getWeightedResults().unwrap(), ((friendlyByteBuf, resultWrapper) -> {
-            friendlyByteBuf.writeInt(resultWrapper.getWeight().asInt());
             Result.toBuffer(friendlyByteBuf, resultWrapper.getData());
+            friendlyByteBuf.writeInt(resultWrapper.getWeight().asInt());
         }));
     }
 }

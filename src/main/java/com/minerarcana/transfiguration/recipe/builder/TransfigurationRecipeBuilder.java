@@ -3,12 +3,15 @@ package com.minerarcana.transfiguration.recipe.builder;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
+import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -16,6 +19,7 @@ import java.util.function.Supplier;
 public class TransfigurationRecipeBuilder {
     private final TransfigurationType transfigurationType;
     private final RecipeSerializer<?> recipeSerializer;
+    private final List<TransfigurationPredicate> predicates;
     private IFinishedObject<BasicIngredientSerializer<?>> ingredient;
     private IFinishedObject<ResultSerializer<?>> result;
     private int ticks = 12 * 20;
@@ -23,6 +27,7 @@ public class TransfigurationRecipeBuilder {
     private TransfigurationRecipeBuilder(TransfigurationType transfigurationType, RecipeSerializer<?> recipeSerializer) {
         this.transfigurationType = transfigurationType;
         this.recipeSerializer = recipeSerializer;
+        this.predicates = Lists.newArrayList();
     }
 
     public static TransfigurationRecipeBuilder createBlock(TransfigurationType transfigurationType) {
@@ -51,6 +56,11 @@ public class TransfigurationRecipeBuilder {
         return this;
     }
 
+    public TransfigurationRecipeBuilder withPredicate(TransfigurationPredicate predicate) {
+        this.predicates.add(predicate);
+        return this;
+    }
+
     public TransfigurationRecipeBuilder withTicks(int ticks) {
         this.ticks = ticks;
         return this;
@@ -69,7 +79,7 @@ public class TransfigurationRecipeBuilder {
                     + "_" + ingredient.getId().toString().replace(":", "_").replace("/", "_"));
         }
         recipeConsumer.accept(new TransfigurationFinishedRecipe<>(recipeSerializer, id, transfigurationType,
-                ingredient, result, ticks));
+                ingredient, result, predicates, ticks));
     }
 
     protected void validate(ResourceLocation id) {
