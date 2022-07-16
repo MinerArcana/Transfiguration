@@ -140,11 +140,6 @@ task srcJar(type: Jar) {
     classifier = "sources"
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = "javadoc"
-    from javadoc.destinationDir
-}
-
 jar {
     manifest {
         classifier = "nodep"
@@ -161,7 +156,6 @@ jar {
 }
 
 artifacts {
-    archives javadocJar
     archives srcJar
 }
 
@@ -169,7 +163,6 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             artifact jar
-            artifact javadocJar
         }
     }
     repositories {
