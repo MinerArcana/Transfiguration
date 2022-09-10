@@ -1,12 +1,12 @@
 package com.minerarcana.transfiguration.recipe.builder;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 

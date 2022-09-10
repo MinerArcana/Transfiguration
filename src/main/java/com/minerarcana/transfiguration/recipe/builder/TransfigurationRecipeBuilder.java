@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.recipe.builder;
 
+import com.google.common.collect.Lists;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
@@ -8,7 +9,6 @@ import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
 import java.util.List;

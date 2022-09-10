@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.recipe.result;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -7,7 +8,6 @@ import com.minerarcana.transfiguration.recipe.json.SerializerJson;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
