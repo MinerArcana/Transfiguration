@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "transfiguration:item/wand",
   "textures": {
-    "layer0": "transfiguration:item/wand",
-    "layer1": "transfiguration:item/wand_overlay"
+    "wand": "transfiguration:item/wand",
+    "orb": "transfiguration:item/wand_orb"
   }
 }

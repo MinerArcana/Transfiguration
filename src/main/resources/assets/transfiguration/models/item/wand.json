@@ -1,0 +1,720 @@
+{
+  "credit": "Made with Blockbench",
+  "textures": {
+    "particle": "#wand"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        1,
+        10
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          16,
+          8,
+          16
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            5,
+            16,
+            6
+          ],
+          "texture": "#wand"
+        },
+        "east": {
+          "uv": [
+            12,
+            5,
+            16,
+            6
+          ],
+          "texture": "#wand"
+        },
+        "south": {
+          "uv": [
+            12,
+            5,
+            16,
+            6
+          ],
+          "texture": "#wand"
+        },
+        "west": {
+          "uv": [
+            12,
+            5,
+            16,
+            6
+          ],
+          "texture": "#wand"
+        },
+        "up": {
+          "uv": [
+            12,
+            0,
+            16,
+            4
+          ],
+          "texture": "#wand"
+        },
+        "down": {
+          "uv": [
+            12,
+            0,
+            16,
+            4
+          ],
+          "texture": "#wand"
+        }
+      }
+    },
+    {
+      "name": "base",
+      "from": [
+        6,
+        16,
+        6
+      ],
+      "to": [
+        10,
+        17,
+        10
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          16,
+          24,
+          16
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            5,
+            16,
+            6
+          ],
+          "texture": "#wand"
+        },
+        "east": {
+          "uv": [
+            12,
+            5,
+            16,
+            6
+          ],
+          "texture": "#wand"
+        },
+        "south": {
+          "uv": [
+            12,
+            5,
+            16,
+            6
+          ],
+          "texture": "#wand"
+        },
+        "west": {
+          "uv": [
+            12,
+            5,
+            16,
+            6
+          ],
+          "texture": "#wand"
+        },
+        "up": {
+          "uv": [
+            12,
+            0,
+            16,
+            4
+          ],
+          "texture": "#wand"
+        },
+        "down": {
+          "uv": [
+            12,
+            0,
+            16,
+            4
+          ],
+          "texture": "#wand"
+        }
+      }
+    },
+    {
+      "name": "ring",
+      "from": [
+        6.5,
+        14,
+        6.5
+      ],
+      "to": [
+        9.5,
+        15,
+        9.5
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          16.5,
+          22,
+          16.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            4,
+            11,
+            5
+          ],
+          "texture": "#wand"
+        },
+        "east": {
+          "uv": [
+            8,
+            4,
+            11,
+            5
+          ],
+          "texture": "#wand"
+        },
+        "south": {
+          "uv": [
+            8,
+            4,
+            11,
+            5
+          ],
+          "texture": "#wand"
+        },
+        "west": {
+          "uv": [
+            8,
+            4,
+            11,
+            5
+          ],
+          "texture": "#wand"
+        },
+        "up": {
+          "uv": [
+            8,
+            0,
+            11,
+            3
+          ],
+          "texture": "#wand"
+        },
+        "down": {
+          "uv": [
+            8,
+            0,
+            11,
+            3
+          ],
+          "texture": "#wand"
+        }
+      }
+    },
+    {
+      "name": "rod",
+      "from": [
+        7,
+        1,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          16,
+          9,
+          16
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            2,
+            15
+          ],
+          "texture": "#wand"
+        },
+        "east": {
+          "uv": [
+            3,
+            0,
+            5,
+            15
+          ],
+          "texture": "#wand"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            2,
+            15
+          ],
+          "texture": "#wand"
+        },
+        "west": {
+          "uv": [
+            3,
+            0,
+            5,
+            15
+          ],
+          "texture": "#wand"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#wand"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#wand"
+        }
+      }
+    },
+    {
+      "name": "focus",
+      "from": [
+        5,
+        17.7,
+        5
+      ],
+      "to": [
+        11,
+        23.7,
+        11
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          13,
+          26,
+          13
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            6,
+            6
+          ],
+          "texture": "#orb",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            6,
+            6
+          ],
+          "texture": "#orb",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            6,
+            6
+          ],
+          "texture": "#orb",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            6,
+            6
+          ],
+          "texture": "#orb",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            6
+          ],
+          "texture": "#orb",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            6
+          ],
+          "texture": "#orb",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "setting",
+      "from": [
+        4.25,
+        14,
+        7
+      ],
+      "to": [
+        5.25,
+        20,
+        9
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "z",
+        "origin": [
+          5.5,
+          17.5,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            10,
+            7,
+            11,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "east": {
+          "uv": [
+            14,
+            7,
+            12,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "south": {
+          "uv": [
+            15,
+            7,
+            16,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "west": {
+          "uv": [
+            12,
+            7,
+            14,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "up": {
+          "uv": [
+            12,
+            14,
+            14,
+            15
+          ],
+          "rotation": 90,
+          "texture": "#wand"
+        },
+        "down": {
+          "uv": [
+            12,
+            14,
+            14,
+            15
+          ],
+          "rotation": 90,
+          "texture": "#wand"
+        }
+      }
+    },
+    {
+      "name": "setting",
+      "from": [
+        10.75,
+        14,
+        7
+      ],
+      "to": [
+        11.75,
+        20,
+        9
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "z",
+        "origin": [
+          10.5,
+          17.5,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15,
+            7,
+            16,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "east": {
+          "uv": [
+            12,
+            7,
+            14,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "south": {
+          "uv": [
+            10,
+            7,
+            11,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "west": {
+          "uv": [
+            14,
+            7,
+            12,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "up": {
+          "uv": [
+            14,
+            14,
+            12,
+            15
+          ],
+          "rotation": 90,
+          "texture": "#wand"
+        },
+        "down": {
+          "uv": [
+            12,
+            14,
+            14,
+            15
+          ],
+          "rotation": 90,
+          "texture": "#wand"
+        }
+      }
+    },
+    {
+      "name": "setting",
+      "from": [
+        7,
+        14,
+        4.25
+      ],
+      "to": [
+        9,
+        20,
+        5.25
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "x",
+        "origin": [
+          8,
+          17.5,
+          5.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            7,
+            14,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "east": {
+          "uv": [
+            10,
+            7,
+            11,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "south": {
+          "uv": [
+            14,
+            7,
+            12,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "west": {
+          "uv": [
+            15,
+            7,
+            16,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "up": {
+          "uv": [
+            14,
+            14,
+            12,
+            15
+          ],
+          "texture": "#wand"
+        },
+        "down": {
+          "uv": [
+            12,
+            14,
+            14,
+            15
+          ],
+          "texture": "#wand"
+        }
+      }
+    },
+    {
+      "name": "setting",
+      "from": [
+        7,
+        14,
+        10.75
+      ],
+      "to": [
+        9,
+        20,
+        11.75
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "x",
+        "origin": [
+          8,
+          17.5,
+          10.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            7,
+            12,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "east": {
+          "uv": [
+            15,
+            7,
+            16,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "south": {
+          "uv": [
+            12,
+            7,
+            14,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "west": {
+          "uv": [
+            10,
+            7,
+            11,
+            13
+          ],
+          "texture": "#wand"
+        },
+        "up": {
+          "uv": [
+            12,
+            14,
+            14,
+            15
+          ],
+          "texture": "#wand"
+        },
+        "down": {
+          "uv": [
+            12,
+            14,
+            14,
+            15
+          ],
+          "texture": "#wand"
+        }
+      }
+    }
+  ]
+}

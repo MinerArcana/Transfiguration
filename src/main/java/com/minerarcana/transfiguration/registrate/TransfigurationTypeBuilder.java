@@ -135,8 +135,10 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     public ItemBuilder<TransfiguringWandItem, TransfigurationTypeBuilder<T, P>> wand() {
         return this.item("wand", TransfiguringWandItem::new)
                 .properties(properties -> properties.durability(256))
-                .model((context, provider) -> provider.generated(context, provider.modLoc("item/wand"),
-                        provider.modLoc("item/wand_overlay")))
+                .model((context, provider) -> provider.withExistingParent(context.getName(), provider.modLoc("item/wand"))
+                        .texture("wand", provider.modLoc("item/wand"))
+                        .texture("orb", provider.modLoc("item/wand_orb"))
+                )
                 .color(TransfigurationColors.transfiguringTypeColors(1))
                 .lang("%s Wand")
                 .recipe((context, provider) -> {
@@ -159,7 +161,8 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     }
 
     public TransfigurationTypeBuilder<T, P> defaultWand() {
-        return wand().build();
+        return wand()
+                .build();
     }
 
     public <I extends Item> ItemBuilder<I, TransfigurationTypeBuilder<T, P>> item(
