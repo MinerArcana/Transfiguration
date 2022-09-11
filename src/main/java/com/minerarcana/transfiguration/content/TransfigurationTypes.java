@@ -145,6 +145,7 @@ public class TransfigurationTypes {
             .keyword(TransfiguringKeyword.SPREADING)
             .primaryColor(DyeColor.YELLOW)
             .secondaryColor(DyeColor.GREEN)
+            .skip(0.2F)
             .recipe(TransfigurationRecipeData::blessedRecipes)
             .dust()
             .recipe((context, provider) -> {

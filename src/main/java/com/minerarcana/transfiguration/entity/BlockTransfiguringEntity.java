@@ -46,8 +46,9 @@ public class BlockTransfiguringEntity extends TransfiguringEntity<BlockTransfigu
                 BlockTransfigurationRecipe.tryTransfigure(
                         currentRecipe.getTransfigurationType(),
                         newTransContainer,
-                        this.getPowerModifier() / 2.0D,
-                        this.getTimeModifier());
+                        this.getPowerModifier() / (this.isSkipping() ? 1D : 2.0D),
+                        this.getTimeModifier()
+                );
             }
         }
         return true;

@@ -9,7 +9,7 @@ import com.minerarcana.transfiguration.item.TransfiguringCatalystItem;
 import com.minerarcana.transfiguration.item.TransfiguringDustItem;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipeBuilder;
-import com.mojang.datafixers.util.Function6;
+import com.mojang.datafixers.util.Function7;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -39,11 +39,12 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extends AbstractBuilder<TransfigurationType, T, P, TransfigurationTypeBuilder<T, P>> {
-    private final Function6<Integer, Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>,
+    private final Function7<Integer, Integer, Float, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>,
             RegistryObject<RecipeType<ITransfigurationRecipe<BlockState>>>,
             RegistryObject<RecipeType<ITransfigurationRecipe<Entity>>>, T> creator;
     private int primaryColor = -1;
     private int secondaryColor = -1;
+    private float skip = 0F;
     private final List<TransfiguringKeyword> keywords;
     private final List<Supplier<TransfigurationType>> fallback;
 
@@ -52,7 +53,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
 
     public TransfigurationTypeBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback,
                                       Class<? super TransfigurationType> registryType,
-                                      Function6<Integer, Integer, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>,
+                                      Function7<Integer, Integer, Float, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>,
                                               RegistryObject<RecipeType<ITransfigurationRecipe<BlockState>>>,
                                               RegistryObject<RecipeType<ITransfigurationRecipe<Entity>>>, T> creator,
                                       DeferredRegister<RecipeType<?>> deferredRegister) {
@@ -94,6 +95,11 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
 
     public TransfigurationTypeBuilder<T, P> keyword(TransfiguringKeyword... keywords) {
         this.keywords.addAll(Arrays.asList(keywords));
+        return this;
+    }
+
+    public TransfigurationTypeBuilder<T, P> skip(float skip) {
+        this.skip = skip;
         return this;
     }
 
@@ -183,7 +189,8 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     @Override
     @Nonnull
     protected T createEntry() {
-        return creator.apply(primaryColor, secondaryColor, ImmutableList.copyOf(keywords), ImmutableList.copyOf(fallback), blockRecipeType, entityRecipeType);
+        return creator.apply(primaryColor, secondaryColor, skip, ImmutableList.copyOf(keywords),
+                ImmutableList.copyOf(fallback), blockRecipeType, entityRecipeType);
     }
 
     public static <P> TransfigurationTypeBuilder<TransfigurationType, P> create(AbstractRegistrate<?> owner, P parent,

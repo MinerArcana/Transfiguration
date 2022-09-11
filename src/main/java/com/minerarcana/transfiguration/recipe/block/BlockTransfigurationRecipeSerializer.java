@@ -30,7 +30,8 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<Rec
                 SerializerJson.getBasicIngredient(json),
                 SerializerJson.getResult(json),
                 TransfigurationPredicate.fromJson(json),
-                GsonHelper.getAsInt(json, "ticks", 12 * 20)
+                GsonHelper.getAsInt(json, "ticks", 12 * 20),
+                GsonHelper.getAsFloat(json, "skip", 0F)
         );
     }
 
@@ -38,18 +39,15 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<Rec
     @Nullable
     @ParametersAreNonnullByDefault
     public BlockTransfigurationRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-        try {
-            return new BlockTransfigurationRecipe(
-                    recipeId,
-                    buffer.readRegistryId(),
-                    BasicIngredient.fromBuffer(buffer),
-                    Result.fromBuffer(buffer),
-                    TransfigurationPredicate.fromBuffer(buffer),
-                    buffer.readInt()
-            );
-        } catch (RuntimeException e) {
-            throw e;
-        }
+        return new BlockTransfigurationRecipe(
+                recipeId,
+                buffer.readRegistryId(),
+                BasicIngredient.fromBuffer(buffer),
+                Result.fromBuffer(buffer),
+                TransfigurationPredicate.fromBuffer(buffer),
+                buffer.readInt(),
+                buffer.readFloat()
+        );
 
     }
 
@@ -61,5 +59,6 @@ public class BlockTransfigurationRecipeSerializer extends ForgeRegistryEntry<Rec
         Result.toBuffer(buffer, recipe.getResult());
         TransfigurationPredicate.toBuffer(buffer, recipe.getPredicates());
         buffer.writeInt(recipe.getTicks());
+        buffer.writeFloat(recipe.getSkip());
     }
 }

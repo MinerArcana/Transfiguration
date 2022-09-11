@@ -28,8 +28,8 @@ import java.util.function.Supplier;
 public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
     public EntityTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
                                        BasicIngredient ingredient, Result result, TransfigurationPredicate[] predicate,
-                                       int time) {
-        super(recipeId, transfigurationType, ingredient, result, predicate, time);
+                                       int time, float skip) {
+        super(recipeId, transfigurationType, ingredient, result, predicate, time, skip);
     }
 
 
@@ -81,9 +81,9 @@ public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
                     .getRecipeFor(type.getEntityRecipeType(), container, world);
             TransfigurationEvent transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
             MinecraftForge.EVENT_BUS.post(transfigurationEvent);
-            if (!recipeOptional.isPresent()) {
+            if (recipeOptional.isEmpty()) {
                 Iterator<Supplier<TransfigurationType>> supplierIterator = type.getFallbacks().iterator();
-                while (!recipeOptional.isPresent() && supplierIterator.hasNext()) {
+                while (recipeOptional.isEmpty() && supplierIterator.hasNext()) {
                     TransfigurationType nextType = supplierIterator.next().get();
                     transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
                     MinecraftForge.EVENT_BUS.post(transfigurationEvent);

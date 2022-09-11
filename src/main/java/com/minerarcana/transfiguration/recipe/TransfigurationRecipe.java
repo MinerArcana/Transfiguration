@@ -9,10 +9,10 @@ import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate
 import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 import java.util.function.Predicate;
 
 public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe<U> {
@@ -23,9 +23,10 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
     private final TransfigurationPredicate[] predicates;
     private final Predicate<TransfigurationContainer<?>> combinedPredicate;
     private final int ticks;
+    private final float skip;
 
     public TransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType, BasicIngredient ingredient,
-                                 Result result, TransfigurationPredicate[] predicates, int ticks) {
+                                 Result result, TransfigurationPredicate[] predicates, int ticks, float skip) {
         this.recipeId = recipeId;
         this.transfigurationType = transfigurationType;
         this.ingredient = ingredient;
@@ -33,6 +34,7 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
         this.predicates = predicates;
         this.combinedPredicate = LootItemConditions.andConditions(predicates);
         this.ticks = ticks;
+        this.skip = skip;
     }
 
     protected boolean matches(@Nonnull TransfigurationContainer<?> transfigurationContainer) {
@@ -93,6 +95,15 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
         return ticks;
     }
 
+    public float getSkip() {
+        return this.skip;
+    }
+
+    @Override
+    public boolean doSkip(Random random) {
+        float combineSkip = this.getSkip() + this.getTransfigurationType().getSkip();
+        return random.nextFloat() < combineSkip;
+    }
 
     public TransfigurationPredicate[] getPredicates() {
         return predicates;

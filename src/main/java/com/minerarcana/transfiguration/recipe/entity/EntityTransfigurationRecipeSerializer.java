@@ -31,7 +31,8 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<Re
                 SerializerJson.getBasicIngredient(json),
                 SerializerJson.getResult(json),
                 TransfigurationPredicate.fromJson(json),
-                GsonHelper.getAsInt(json, "ticks", 12)
+                GsonHelper.getAsInt(json, "ticks", 12),
+                GsonHelper.getAsFloat(json, "skip", 0F)
         );
     }
 
@@ -45,7 +46,8 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<Re
                 BasicIngredient.fromBuffer(buffer),
                 Result.fromBuffer(buffer),
                 TransfigurationPredicate.fromBuffer(buffer),
-                buffer.readInt()
+                buffer.readInt(),
+                buffer.readFloat()
         );
     }
 
@@ -57,5 +59,6 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<Re
         Result.toBuffer(buffer, recipe.getResult());
         TransfigurationPredicate.toBuffer(buffer, recipe.getPredicates());
         buffer.writeInt(recipe.getTicks());
+        buffer.writeFloat(recipe.getSkip());
     }
 }

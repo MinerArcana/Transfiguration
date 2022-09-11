@@ -32,8 +32,8 @@ import java.util.function.Supplier;
 public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState> {
     public BlockTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
                                       BasicIngredient ingredient, Result result, TransfigurationPredicate[] predicate,
-                                      int ticks) {
-        super(recipeId, transfigurationType, ingredient, result, predicate, ticks);
+                                      int ticks, float skip) {
+        super(recipeId, transfigurationType, ingredient, result, predicate, ticks, skip);
     }
 
     @Override
@@ -83,9 +83,9 @@ public class BlockTransfigurationRecipe extends TransfigurationRecipe<BlockState
                     .getRecipeFor(type.getBlockRecipeType(), container, world);
             TransfigurationEvent transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
             MinecraftForge.EVENT_BUS.post(transfigurationEvent);
-            if (!recipeOptional.isPresent()) {
+            if (recipeOptional.isEmpty()) {
                 Iterator<Supplier<TransfigurationType>> supplierIterator = type.getFallbacks().iterator();
-                while (!recipeOptional.isPresent() && supplierIterator.hasNext()) {
+                while (recipeOptional.isEmpty() && supplierIterator.hasNext()) {
                     TransfigurationType nextType = supplierIterator.next().get();
                     transfigurationEvent = new TransfigurationEvent(type, container, timeModifier, powerModifier);
                     MinecraftForge.EVENT_BUS.post(transfigurationEvent);

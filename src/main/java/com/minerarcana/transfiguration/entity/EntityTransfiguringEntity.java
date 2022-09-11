@@ -74,7 +74,7 @@ public class EntityTransfiguringEntity extends TransfiguringEntity<EntityTransfi
                     level,
                     recipe,
                     this.getTimeModifier() / 2,
-                    Math.ceil(this.getPowerModifier() / 2),
+                    Math.ceil(this.getPowerModifier() / (this.isSkipping() ? 1D : 2.0D)),
                     this.getX(),
                     this.getY(),
                     this.getZ()

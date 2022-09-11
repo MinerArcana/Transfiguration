@@ -39,6 +39,8 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
     private boolean hasTriggered;
     private boolean hasSpread;
 
+    private Boolean skip;
+
     public TransfiguringEntity(EntityType<? extends Entity> entityType, Level world) {
         super(entityType, world);
         this.hasTriggered = false;
@@ -76,7 +78,13 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
                     }
                     int remainingTicks = this.modifiedTime - (int) (this.getCommandSenderWorld().getGameTime() - startTime);
                     if (!hasSpread && remainingTicks < this.modifiedTime / 2) {
+                        if (this.skip == null) {
+                            this.skip = currentRecipe.doSkip(this.getLevel().getRandom());
+                        }
                         this.hasSpread = this.spread(currentRecipe, transfigurationContainer);
+                        if (this.hasSpread && this.skip) {
+                            this.discard();
+                        }
                     }
 
                     Level world = this.getCommandSenderWorld();
@@ -144,6 +152,7 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
         this.startTime = compound.getLong("startTime");
         this.modifiedTime = compound.getInt("modifiedTime");
         this.powerModifier = compound.getDouble("powerModifier");
+        this.hasSpread = compound.getBoolean("hasSpread");
     }
 
     @Override
@@ -152,6 +161,7 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
         compound.putLong("startTime", this.startTime);
         compound.putInt("modifiedTime", this.modifiedTime);
         compound.putDouble("powerModifier", this.powerModifier);
+        compound.putBoolean("hasSpread", this.hasSpread);
     }
 
     @Override
@@ -195,5 +205,9 @@ public abstract class TransfiguringEntity<T extends TransfigurationRecipe<V>, V>
 
     protected double getPowerModifier() {
         return powerModifier;
+    }
+
+    protected boolean isSkipping() {
+        return this.skip;
     }
 }
