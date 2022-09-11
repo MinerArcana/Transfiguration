@@ -3,6 +3,7 @@
   "values": [
     "#minecraft:saplings",
     "#minecraft:flowers",
-    "#minecraft:crops"
+    "#minecraft:crops",
+    "#minecraft:replaceable_plants"
   ]
 }

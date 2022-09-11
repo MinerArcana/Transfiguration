@@ -38,13 +38,15 @@ public class TransfigurationAdditionalData {
         tagsProvider.tag(TransfigurationBlockTags.INPUTS_MUTANDI)
                 .addTag(BlockTags.SAPLINGS)
                 .addTag(BlockTags.FLOWERS)
-                .addTag(BlockTags.CROPS);
+                .addTag(BlockTags.CROPS)
+                .addTag(BlockTags.REPLACEABLE_PLANTS);
 
 
         tagsProvider.tag(TransfigurationBlockTags.OUTPUTS_MUTANDI)
                 .addTag(BlockTags.SAPLINGS)
                 .addTag(BlockTags.FLOWERS)
-                .addTag(BlockTags.CROPS);
+                .addTag(BlockTags.CROPS)
+                .addTag(BlockTags.REPLACEABLE_PLANTS);
 
         tagsProvider.tag(TransfigurationBlockTags.OUTPUTS_FUNGAL_MUSHROOM)
                 .add(
