@@ -1,0 +1,8 @@
+{
+  "type": "transfiguration:transfiguring",
+  "transfigurationType": "transfiguration:netheri",
+  "itemStack": {
+    "item": "transfiguration:netheri_wand",
+    "nbt": "{Damage:0}"
+  }
+}

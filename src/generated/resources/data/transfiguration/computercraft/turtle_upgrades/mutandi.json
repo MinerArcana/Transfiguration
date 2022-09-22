@@ -1,0 +1,8 @@
+{
+  "type": "transfiguration:transfiguring",
+  "transfigurationType": "transfiguration:mutandi",
+  "itemStack": {
+    "item": "transfiguration:mutandi_wand",
+    "nbt": "{Damage:0}"
+  }
+}

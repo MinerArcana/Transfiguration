@@ -1,24 +1,29 @@
 package com.minerarcana.transfiguration.compat.cctweaked.turtle;
 
-import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.event.RegistryEvent;
+import dan200.computercraft.api.turtle.TurtleUpgradeSerialiser;
 
 public class Turtles {
-    public static void handleTurtles(RegistryEvent.Register<Item> itemRegister) {
-        Turtles.createTurtleFor(TransfigurationTypes.ACCURSED);
-        Turtles.createTurtleFor(TransfigurationTypes.BLESSED);
-        Turtles.createTurtleFor(TransfigurationTypes.DESTABILIZING);
-        Turtles.createTurtleFor(TransfigurationTypes.DISSOLUTION);
-        Turtles.createTurtleFor(TransfigurationTypes.FUNGAL);
-        Turtles.createTurtleFor(TransfigurationTypes.MUTANDI);
-        Turtles.createTurtleFor(TransfigurationTypes.NETHERI);
-        Turtles.createTurtleFor(TransfigurationTypes.OVERNI);
+    public static final RegistryEntry<TransfiguringTurtleSerializer> TRANSFIGURING_TURTLE = Transfiguration.getRegistrate()
+            .object("transfiguring")
+            .simple(TurtleUpgradeSerialiser.class, TransfiguringTurtleSerializer::new);
+
+    public static void setup() {
+        Transfiguration.getRegistrate()
+                .addDataGenerator(RegistrateTurtleUpgradeDataProvider.TYPE, Turtles::genData);
     }
 
-    public static void createTurtleFor(RegistryEntry<TransfigurationType> transfigurationType) {
-//        ComputerCraftAPI.registerTurtleUpgrade(new TransfiguringTurtleUpgrade(transfigurationType)); TODO: Re-enable registering of TransfigurationTypes
+    private static void genData(RegistrateTurtleUpgradeDataProvider provider) {
+        provider.accept(TransfiguringTurtleUpgrade.getUpgradeData(TransfigurationTypes.ACCURSED));
+        provider.accept(TransfiguringTurtleUpgrade.getUpgradeData(TransfigurationTypes.BLESSED));
+        provider.accept(TransfiguringTurtleUpgrade.getUpgradeData(TransfigurationTypes.DESTABILIZING));
+        provider.accept(TransfiguringTurtleUpgrade.getUpgradeData(TransfigurationTypes.DISSOLUTION));
+        provider.accept(TransfiguringTurtleUpgrade.getUpgradeData(TransfigurationTypes.FUNGAL));
+        provider.accept(TransfiguringTurtleUpgrade.getUpgradeData(TransfigurationTypes.MUTANDI));
+        provider.accept(TransfiguringTurtleUpgrade.getUpgradeData(TransfigurationTypes.NETHERI));
+        provider.accept(TransfiguringTurtleUpgrade.getUpgradeData(TransfigurationTypes.OVERNI));
+        provider.accept(TransfiguringTurtleUpgrade.getUpgradeData(TransfigurationTypes.ANIMATION));
     }
 }

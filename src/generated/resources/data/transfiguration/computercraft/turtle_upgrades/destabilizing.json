@@ -1,0 +1,8 @@
+{
+  "type": "transfiguration:transfiguring",
+  "transfigurationType": "transfiguration:destabilizing",
+  "itemStack": {
+    "item": "transfiguration:destabilizing_wand",
+    "nbt": "{Damage:0}"
+  }
+}

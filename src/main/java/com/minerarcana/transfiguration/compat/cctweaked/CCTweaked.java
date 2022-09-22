@@ -9,7 +9,7 @@ public class CCTweaked {
 
     public static void setup() {
         if (ModList.get().isLoaded("computercraft")) {
-            FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, Turtles::handleTurtles);
+            Turtles.setup();
         }
     }
 }
