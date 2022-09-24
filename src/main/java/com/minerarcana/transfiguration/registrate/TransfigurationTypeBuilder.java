@@ -160,7 +160,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                                 .pattern("I")
                                 .pattern("R")
                                 .define('C', catalyst)
-                                .define('I', Tags.Items.INGOTS)
+                                .define('I', Tags.Items.INGOTS_GOLD)
                                 .define('R', Items.END_ROD)
                                 .unlockedBy("has_item", RegistrateRecipeProvider.has(catalyst))
                                 .save(provider);
