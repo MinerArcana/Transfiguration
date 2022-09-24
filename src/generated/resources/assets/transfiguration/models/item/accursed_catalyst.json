@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "transfiguration:item/catalyst",
   "textures": {
-    "layer0": "transfiguration:item/catalyst"
+    "orb": "transfiguration:item/wand_orb"
   }
 }

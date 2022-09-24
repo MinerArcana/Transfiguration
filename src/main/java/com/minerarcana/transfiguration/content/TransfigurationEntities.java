@@ -6,6 +6,7 @@ import com.minerarcana.transfiguration.entity.EntityTransfiguringEntity;
 import com.minerarcana.transfiguration.entity.TransfiguringAreaEffectEntity;
 import com.minerarcana.transfiguration.entity.TransfiguringProjectileEntity;
 import com.minerarcana.transfiguration.item.TransfiguringProjectileItem;
+import com.minerarcana.transfiguration.registrate.TransfigurationColors;
 import com.minerarcana.transfiguration.renderer.TransfiguringEntityRenderer;
 import com.minerarcana.transfiguration.renderer.TransfiguringProjectileRenderer;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -28,8 +29,10 @@ public class TransfigurationEntities {
             Transfiguration.getRegistrate()
                     .object("transfiguring_projectile")
                     .item(TransfiguringProjectileItem::new)
-                    .model((context, modelProvider) -> modelProvider.generated(context, new ResourceLocation("item/fire_charge")))
-                    .color(() -> () -> TransfiguringProjectileItem::getColor)
+                    .model((context, provider) -> provider.withExistingParent(context.getName(), provider.modLoc("item/catalyst"))
+                            .texture("orb", provider.modLoc("item/wand_orb"))
+                    )
+                    .color(TransfigurationColors.transfiguringTypeColors(1))
                     .register();
 
     public static final RegistryEntry<EntityType<AreaEffectCloud>> TRANSFIGURING_AREA_EFFECT =
