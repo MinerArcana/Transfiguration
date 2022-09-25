@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.recipe.builder;
 
+import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
@@ -7,6 +8,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.Property;
 
 import java.util.Objects;
 
@@ -24,6 +26,19 @@ public class ResultBuilder {
                 jsonObject -> jsonObject.addProperty("tag", tag.location().toString())
         );
     }
+
+    public static <T extends Comparable<T>> FinishedObject<ResultSerializer<?>> blockTagWithProperty(TagKey<Block> tag, Property<T> property, T value) {
+        return new FinishedObject<>(
+                TransfigurationRecipes.BLOCK_TAG_WITH_PROPERTY_RESULT_SERIALIZER.get(),
+                tag::location,
+                jsonObject -> {
+                    jsonObject.addProperty("tag", tag.location().toString());
+                    JsonObject properties = new JsonObject();
+                    properties.addProperty(property.getName(), property.getName(value));
+                }
+        );
+    }
+
 
     public static FinishedObject<ResultSerializer<?>> entityType(EntityType<?> entityType) {
         return new FinishedObject<>(TransfigurationRecipes.ENTITY_RESULT_SERIALIZER.get(),

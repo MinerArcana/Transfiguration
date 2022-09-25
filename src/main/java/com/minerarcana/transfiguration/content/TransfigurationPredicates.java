@@ -2,10 +2,7 @@ package com.minerarcana.transfiguration.content;
 
 import com.google.common.base.Suppliers;
 import com.minerarcana.transfiguration.Transfiguration;
-import com.minerarcana.transfiguration.recipe.predicate.LevelPredicate;
-import com.minerarcana.transfiguration.recipe.predicate.PositionPredicate;
-import com.minerarcana.transfiguration.recipe.predicate.PredicateType;
-import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate;
+import com.minerarcana.transfiguration.recipe.predicate.*;
 import com.mojang.serialization.Codec;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -36,6 +33,10 @@ public class TransfigurationPredicates {
     public static final RegistryEntry<PredicateType> POSITION = Transfiguration.getRegistrate()
             .object("position")
             .simple(PredicateType.class, () -> PredicateType.of(PositionPredicate.CODEC));
+
+    public static final RegistryEntry<PredicateType> FLUIDSTATE = Transfiguration.getRegistrate()
+            .object("fluidstate")
+            .simple(PredicateType.class, () -> PredicateType.of(FluidStatePredicate.CODEC));
 
 
     public static void setup() {

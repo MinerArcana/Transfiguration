@@ -7,6 +7,7 @@ import com.minerarcana.transfiguration.recipe.builder.IngredientBuilder;
 import com.minerarcana.transfiguration.recipe.builder.ResultBuilder;
 import com.minerarcana.transfiguration.recipe.builder.TransfigurationRecipeBuilder;
 import com.minerarcana.transfiguration.recipe.builder.WeightedResultBuilder;
+import com.minerarcana.transfiguration.recipe.predicate.FluidStatePredicate;
 import com.minerarcana.transfiguration.recipe.predicate.PositionPredicate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
@@ -14,6 +15,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.common.Tags;
 import org.apache.commons.lang3.Range;
@@ -245,9 +248,16 @@ public class TransfigurationRecipeData {
     public static void mutandiRecipes(DataGenContext<TransfigurationType, TransfigurationType> context,
                                       RegistrateRecipeProvider provider) {
         TransfigurationRecipeBuilder.createBlock(context)
+                .withPredicate(new FluidStatePredicate(Fluids.EMPTY))
                 .withIngredient(IngredientBuilder.blockTag(TransfigurationBlockTags.INPUTS_MUTANDI))
                 .withResult(ResultBuilder.blockTag(TransfigurationBlockTags.OUTPUTS_MUTANDI))
-                .build(provider);
+                .build(provider, Transfiguration.rl("outputs_mutandi_from_mutandi_transfiguration_inputs_mutandi_empty"));
+
+        TransfigurationRecipeBuilder.createBlock(context)
+                .withPredicate(new FluidStatePredicate(Fluids.WATER))
+                .withIngredient(IngredientBuilder.blockTag(TransfigurationBlockTags.INPUTS_MUTANDI))
+                .withResult(ResultBuilder.blockTagWithProperty(TransfigurationBlockTags.OUTPUTS_MUTANDI, BlockStateProperties.WATERLOGGED, true))
+                .build(provider, Transfiguration.rl("outputs_mutandi_from_mutandi_transfiguration_inputs_mutandi_water"));
     }
 
     public static void netheriRecipes(DataGenContext<TransfigurationType, TransfigurationType> context,

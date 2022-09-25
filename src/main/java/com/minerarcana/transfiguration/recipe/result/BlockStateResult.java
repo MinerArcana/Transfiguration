@@ -16,7 +16,6 @@ public class BlockStateResult extends Result {
         this.blockState = blockState;
     }
 
-
     @Nonnull
     @Override
     public ResultInstance create() {

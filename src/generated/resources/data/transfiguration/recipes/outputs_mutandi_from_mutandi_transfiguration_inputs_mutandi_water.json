@@ -6,8 +6,14 @@
     "block": "transfiguration:inputs/mutandi"
   },
   "result": {
-    "type": "transfiguration:block_tag",
+    "type": "transfiguration:block_tag_with_property",
     "tag": "transfiguration:outputs/mutandi"
   },
-  "ticks": 240
+  "ticks": 240,
+  "predicates": [
+    {
+      "fluid": "minecraft:water",
+      "type": "transfiguration:fluidstate"
+    }
+  ]
 }

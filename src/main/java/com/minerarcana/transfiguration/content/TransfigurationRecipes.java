@@ -102,6 +102,11 @@ public class TransfigurationRecipes {
                     .object("block_tag")
                     .simple(ResultSerializer.class, BlockTagResultSerializer::new);
 
+    public static final RegistryEntry<BlockTagWithPropertyResultSerializer> BLOCK_TAG_WITH_PROPERTY_RESULT_SERIALIZER =
+            Transfiguration.getRegistrate()
+                    .object("block_tag_with_property")
+                    .simple(ResultSerializer.class, BlockTagWithPropertyResultSerializer::new);
+
     public static final RegistryEntry<ItemResultSerializer> ITEM_RESULT_SERIALIZER =
             Transfiguration.getRegistrate()
                     .object("item")
