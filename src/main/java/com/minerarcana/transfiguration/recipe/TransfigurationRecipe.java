@@ -8,11 +8,11 @@ import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate;
 import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 
 import javax.annotation.Nonnull;
-import java.util.Random;
 import java.util.function.Predicate;
 
 public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe<U> {
@@ -100,7 +100,7 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
     }
 
     @Override
-    public boolean doSkip(Random random) {
+    public boolean doSkip(RandomSource random) {
         float combineSkip = this.getSkip() + this.getTransfigurationType().getSkip();
         return random.nextFloat() < combineSkip;
     }

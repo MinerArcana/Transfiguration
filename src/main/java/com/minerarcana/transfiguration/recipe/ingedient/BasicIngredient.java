@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.recipe.ingedient;
 
+import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +25,7 @@ public abstract class BasicIngredient implements ISerializable<BasicIngredientSe
     @SuppressWarnings("unchecked")
     public static <T extends BasicIngredient> void toBuffer(FriendlyByteBuf packetBuffer, T basicIngredient) {
         BasicIngredientSerializer<T> blockIngredientSerializer = (BasicIngredientSerializer<T>) basicIngredient.getSerializer();
-        packetBuffer.writeRegistryId(blockIngredientSerializer);
+        packetBuffer.writeRegistryId(TransfigurationRecipes.getIngredientRegistry(), blockIngredientSerializer);
         blockIngredientSerializer.write(packetBuffer, basicIngredient);
     }
 }

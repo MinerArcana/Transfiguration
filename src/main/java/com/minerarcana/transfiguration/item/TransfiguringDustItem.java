@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -68,7 +69,7 @@ public class TransfiguringDustItem extends TransfiguringItem {
                         float progress = (float) age / (entity.lifespan / 2f);
                         if (progress > 0.95) {
                             if (!world.isClientSide()) {
-                                Random random = world.getRandom();
+                                RandomSource random = world.getRandom();
                                 ItemStack inputStack = entity.getItem();
                                 float chance = inputStack.getMaxStackSize() / (float) inputStack.getCount();
                                 if (random.nextFloat() < chance) {

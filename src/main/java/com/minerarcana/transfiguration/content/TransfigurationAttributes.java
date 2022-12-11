@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
@@ -14,7 +15,7 @@ public class TransfigurationAttributes {
     public static final UUID POWER_UUID = UUID.fromString("febfa6cf-5308-4513-bed2-e07a981e3efd");
     public static final RegistryEntry<Attribute> POWER_MODIFIER = Transfiguration.getRegistrate()
             .object("power")
-            .simple(Attribute.class, () -> new RangedAttribute(
+            .simple(Registry.ATTRIBUTE_REGISTRY, () -> new RangedAttribute(
                     "transfiguration.power",
                     0.0D,
                     0.0D,
@@ -24,7 +25,7 @@ public class TransfigurationAttributes {
     public static final UUID TIME_UUID = UUID.fromString("4d98ef73-cb31-41ca-bf41-113d3d6109f9");
     public static final RegistryEntry<Attribute> TIME_MODIFIER = Transfiguration.getRegistrate()
             .object("time")
-            .simple(Attribute.class, () -> new RangedAttribute(
+            .simple(Registry.ATTRIBUTE_REGISTRY, () -> new RangedAttribute(
                     "transfiguration.time",
                     0.0D,
                     0.0D,

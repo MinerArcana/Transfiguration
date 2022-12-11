@@ -3,7 +3,6 @@ package com.minerarcana.transfiguration.recipe.json;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -11,14 +10,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 
 public class RegistryJson {
     @Nonnull
-    public static <T extends IForgeRegistryEntry<T>> T getValue(JsonObject jsonObject, String fieldName,
-                                                                IForgeRegistry<T> forgeRegistry) {
+    public static <T> T getValue(JsonObject jsonObject, String fieldName, IForgeRegistry<T> forgeRegistry) {
         JsonPrimitive field = jsonObject.getAsJsonPrimitive(fieldName);
         if (field == null) {
             throw new JsonParseException("Failed to find Value for Field '" + fieldName + "'");
@@ -44,7 +41,7 @@ public class RegistryJson {
 
     @Nonnull
     public static EntityType<?> getEntity(JsonObject jsonObject, String fieldName) {
-        return getValue(jsonObject, fieldName, ForgeRegistries.ENTITIES);
+        return getValue(jsonObject, fieldName, ForgeRegistries.ENTITY_TYPES);
     }
 
     @Nonnull
@@ -54,7 +51,7 @@ public class RegistryJson {
 
     @Nonnull
     public static TransfigurationType getTransfigurationType(JsonObject jsonObject, String fieldName) {
-        return getValue(jsonObject, fieldName, TransfigurationTypes.REGISTRY.get());
+        return getValue(jsonObject, fieldName, TransfigurationTypes.getRegistry());
     }
 
     @Nonnull

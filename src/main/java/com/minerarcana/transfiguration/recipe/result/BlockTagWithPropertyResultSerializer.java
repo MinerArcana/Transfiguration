@@ -27,7 +27,7 @@ public class BlockTagWithPropertyResultSerializer extends ResultSerializer<Block
     public BlockTagWithPropertyResult parse(@Nonnull JsonObject json) throws JsonParseException {
         return new BlockTagWithPropertyResult(
                 TagJson.getBlockTag(json),
-                GsonHelper.getAsJsonObject(json, "properties")
+                GsonHelper.getAsJsonObject(json, "properties", new JsonObject())
                         .entrySet()
                         .stream()
                         .collect(Collectors.toMap(

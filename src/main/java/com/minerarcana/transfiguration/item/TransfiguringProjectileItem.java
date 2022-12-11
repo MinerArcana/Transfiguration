@@ -1,6 +1,5 @@
 package com.minerarcana.transfiguration.item;
 
-import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +19,7 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
 
     public ItemStack withTransfigurationType(TransfigurationType type) {
         CompoundTag tag = new CompoundTag();
-        tag.putString("type", Objects.requireNonNull(type.getRegistryName()).toString());
+        tag.putString("type", Objects.requireNonNull(TransfigurationTypes.getRegistry().getKey(type)).toString());
         ItemStack itemStack = new ItemStack(this);
         itemStack.setTag(tag);
         return itemStack;
@@ -28,7 +27,7 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
 
     public ItemStack withTypeAndStats(TransfigurationType type, double powerModifier, double timeModifier) {
         CompoundTag tag = new CompoundTag();
-        tag.putString("type", Objects.requireNonNull(type.getRegistryName()).toString());
+        tag.putString("type", Objects.requireNonNull(TransfigurationTypes.getRegistry().getKey(type)).toString());
         tag.putDouble("power", powerModifier);
         tag.putDouble("time", timeModifier);
         ItemStack itemStack = new ItemStack(this);
@@ -39,7 +38,7 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
     public static TransfigurationType getTransfigurationType(ItemStack itemStack) {
         if (itemStack.getTag() != null) {
             String typeName = itemStack.getTag().getString("type");
-            return TransfigurationTypes.REGISTRY.get().getValue(new ResourceLocation(typeName));
+            return TransfigurationTypes.getRegistry().getValue(new ResourceLocation(typeName));
         } else {
             return null;
         }
@@ -62,7 +61,7 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
 
     @Override
     public double getPowerModifier(ItemStack itemStack) {
-        return itemStack.getTag() != null && itemStack.getTag().contains("power")? itemStack.getTag().getDouble("power") : 1.0F;
+        return itemStack.getTag() != null && itemStack.getTag().contains("power") ? itemStack.getTag().getDouble("power") : 1.0F;
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.minerarcana.transfiguration.recipe.entity;
 
 import com.google.gson.JsonObject;
-import com.minerarcana.transfiguration.Transfiguration;
-import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
@@ -12,14 +11,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>>
-        implements RecipeSerializer<EntityTransfigurationRecipe> {
+public class EntityTransfigurationRecipeSerializer implements RecipeSerializer<EntityTransfigurationRecipe> {
 
     @Override
     @Nonnull
@@ -54,7 +51,7 @@ public class EntityTransfigurationRecipeSerializer extends ForgeRegistryEntry<Re
     @Override
     @ParametersAreNonnullByDefault
     public void toNetwork(FriendlyByteBuf buffer, EntityTransfigurationRecipe recipe) {
-        buffer.writeRegistryId(recipe.getTransfigurationType());
+        buffer.writeRegistryId(TransfigurationTypes.getRegistry(), recipe.getTransfigurationType());
         BasicIngredient.toBuffer(buffer, recipe.getIngredient());
         Result.toBuffer(buffer, recipe.getResult());
         TransfigurationPredicate.toBuffer(buffer, recipe.getPredicates());

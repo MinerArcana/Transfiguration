@@ -28,7 +28,7 @@ public class SerializerJson {
         return getSerializable(
                 jsonObject,
                 fieldName,
-                TransfigurationRecipes.INGREDIENT_REGISTRY.get()::getValue,
+                TransfigurationRecipes.getIngredientRegistry()::getValue,
                 TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get()::parse
         );
     }
@@ -41,7 +41,7 @@ public class SerializerJson {
             if (jsonElement.isJsonObject()) {
                 ingredients.add(getSerializable(
                         jsonElement.getAsJsonObject(),
-                        TransfigurationRecipes.INGREDIENT_REGISTRY.get()::getValue,
+                        TransfigurationRecipes.getIngredientRegistry()::getValue,
                         TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get()::parse
                 ));
             } else {
@@ -58,7 +58,7 @@ public class SerializerJson {
 
     @Nonnull
     public static Result getResult(JsonObject jsonObject, String fieldName) {
-        return getSerializable(jsonObject, fieldName, TransfigurationRecipes.RESULT_REGISTRY.get()::getValue,
+        return getSerializable(jsonObject, fieldName, TransfigurationRecipes.getResultRegistry()::getValue,
                 TransfigurationRecipes.BLOCK_STATE_RESULT_SERIALIZER.get()::parse);
     }
 

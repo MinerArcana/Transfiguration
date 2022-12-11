@@ -1,6 +1,5 @@
 package com.minerarcana.transfiguration;
 
-import com.minerarcana.transfiguration.compat.cctweaked.CCTweaked;
 import com.minerarcana.transfiguration.content.*;
 import com.minerarcana.transfiguration.item.TransfiguringItemGroup;
 import com.tterrag.registrate.Registrate;
@@ -35,8 +34,6 @@ public class Transfiguration {
         TransfigurationItems.setup();
         TransfigurationAttributes.setup(modEventBus);
         TransfigurationParticles.setup();
-
-        CCTweaked.setup();
     }
 
     public static Registrate getRegistrate() {

@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 public class TransfiguringParticleType extends ParticleType<TransfiguringParticleData> {
 
     public static final Codec<TransfiguringParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codecs.forRegistry("transfigurationType", TransfigurationTypes.REGISTRY.get())
+            Codecs.forRegistry("transfigurationType", TransfigurationTypes.getRegistry())
                     .forGetter(TransfiguringParticleData::getTransfigurationType),
             Codecs.VECTOR.fieldOf("direction")
                     .forGetter(TransfiguringParticleData::getEndPosition),

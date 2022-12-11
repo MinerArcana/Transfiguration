@@ -14,17 +14,16 @@ public class ForgeCommonEventHandler {
 
     @SubscribeEvent
     public static void handleEntityInteract(PlayerInteractEvent.EntityInteract event) {
-        ItemStack itemStack = event.getPlayer()
+        ItemStack itemStack = event.getEntity()
                 .getItemInHand(event.getHand());
-        if (itemStack.getItem() instanceof ITransfiguring) {
-            ITransfiguring transfiguring = (ITransfiguring) itemStack.getItem();
+        if (itemStack.getItem() instanceof ITransfiguring transfiguring) {
             boolean transfigured = transfiguring.transfigureEntity(
                     event.getTarget(),
-                    event.getPlayer(),
+                    event.getEntity(),
                     itemStack
             );
             if (transfigured) {
-                transfiguring.afterTransfiguration(itemStack, event.getPlayer(), event.getHand());
+                transfiguring.afterTransfiguration(itemStack, event.getEntity(), event.getHand());
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }

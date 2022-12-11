@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.TransfiguringKeyword;
 import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.item.TransfiguringCatalystItem;
 import com.minerarcana.transfiguration.item.TransfiguringDustItem;
 import com.minerarcana.transfiguration.item.TransfiguringWandItem;
@@ -19,7 +20,9 @@ import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
+import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
@@ -52,7 +55,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
     private final RegistryObject<RecipeType<ITransfigurationRecipe<Entity>>> entityRecipeType;
 
     public TransfigurationTypeBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback,
-                                      Class<? super TransfigurationType> registryType,
+                                      ResourceKey<Registry<TransfigurationType>> registryType,
                                       Function7<Integer, Integer, Float, List<TransfiguringKeyword>, List<Supplier<TransfigurationType>>,
                                               RegistryObject<RecipeType<ITransfigurationRecipe<BlockState>>>,
                                               RegistryObject<RecipeType<ITransfigurationRecipe<Entity>>>, T> creator,
@@ -61,18 +64,8 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
         this.creator = creator;
         this.keywords = Lists.newArrayList();
         this.fallback = Lists.newArrayList();
-        this.entityRecipeType = deferredRegister.register(name + "/entity", () -> new RecipeType<>() {
-            @Override
-            public String toString() {
-                return owner.getModid() + ":" + name + "/entity";
-            }
-        });
-        this.blockRecipeType = deferredRegister.register(name + "/block", () -> new RecipeType<>() {
-            @Override
-            public String toString() {
-                return owner.getModid() + ":" + name + "/block";
-            }
-        });
+        this.entityRecipeType = deferredRegister.register(name + "/entity", () -> RecipeType.simple(new ResourceLocation(owner.getModid(), name + "/entity")));
+        this.blockRecipeType = deferredRegister.register(name + "/block", () -> RecipeType.simple(new ResourceLocation(owner.getModid(), name + "/block")));
     }
 
     public TransfigurationTypeBuilder<T, P> primaryColor(DyeColor primaryColor) {
@@ -203,7 +196,7 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
                 parent,
                 name,
                 callback,
-                TransfigurationType.class,
+                TransfigurationTypes.REGISTRY_KEY,
                 TransfigurationType::new,
                 deferredRegister
         );

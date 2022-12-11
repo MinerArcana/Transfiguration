@@ -5,21 +5,28 @@ import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.recipe.predicate.*;
 import com.mojang.serialization.Codec;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryManager;
 
 import java.util.List;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"UnstableApiUsage"})
 public class TransfigurationPredicates {
-    public static final Supplier<IForgeRegistry<PredicateType>> PREDICATE_TYPE_REGISTRY = Transfiguration.getRegistrate()
-            .makeRegistry("predicate", PredicateType.class, RegistryBuilder::new);
+    public static final ResourceKey<Registry<PredicateType>> PREDICATE_TYPE_REGISTRY_KEY = Transfiguration.getRegistrate()
+            .makeRegistry("predicate", RegistryBuilder::new);
+
+    private static final Supplier<IForgeRegistry<PredicateType>> PREDICATE_TYPE_REGISTRY = Suppliers.memoize(() ->
+            RegistryManager.ACTIVE.getRegistry(PREDICATE_TYPE_REGISTRY_KEY)
+    );
 
     public static final Supplier<Codec<TransfigurationPredicate>> CODEC = Suppliers.memoize(
             () -> PREDICATE_TYPE_REGISTRY.get()
                     .getCodec()
-                    .dispatch(TransfigurationPredicate::getType, PredicateType::getCodec)
+                    .dispatch(TransfigurationPredicate::getType, PredicateType::codec)
     );
 
     public static final Supplier<Codec<List<TransfigurationPredicate>>> LIST_CODEC = Suppliers.memoize(
@@ -28,16 +35,19 @@ public class TransfigurationPredicates {
 
     public static final RegistryEntry<PredicateType> LEVEL = Transfiguration.getRegistrate()
             .object("level")
-            .simple(PredicateType.class, () -> PredicateType.of(LevelPredicate.CODEC));
+            .simple(PREDICATE_TYPE_REGISTRY_KEY, () -> PredicateType.of(LevelPredicate.CODEC));
 
     public static final RegistryEntry<PredicateType> POSITION = Transfiguration.getRegistrate()
             .object("position")
-            .simple(PredicateType.class, () -> PredicateType.of(PositionPredicate.CODEC));
+            .simple(PREDICATE_TYPE_REGISTRY_KEY, () -> PredicateType.of(PositionPredicate.CODEC));
 
     public static final RegistryEntry<PredicateType> FLUIDSTATE = Transfiguration.getRegistrate()
             .object("fluidstate")
-            .simple(PredicateType.class, () -> PredicateType.of(FluidStatePredicate.CODEC));
+            .simple(PREDICATE_TYPE_REGISTRY_KEY, () -> PredicateType.of(FluidStatePredicate.CODEC));
 
+    public static IForgeRegistry<PredicateType> getRegistry() {
+        return PREDICATE_TYPE_REGISTRY.get();
+    }
 
     public static void setup() {
 

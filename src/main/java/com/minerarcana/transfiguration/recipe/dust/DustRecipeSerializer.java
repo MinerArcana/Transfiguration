@@ -1,6 +1,7 @@
 package com.minerarcana.transfiguration.recipe.dust;
 
 import com.google.gson.JsonObject;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
 import com.minerarcana.transfiguration.recipe.ingedient.MatchIngredient;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
@@ -13,13 +14,12 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class DustRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DustRecipe> {
+public class DustRecipeSerializer implements RecipeSerializer<DustRecipe> {
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
@@ -52,7 +52,7 @@ public class DustRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>
     @Override
     @ParametersAreNonnullByDefault
     public void toNetwork(FriendlyByteBuf buffer, DustRecipe recipe) {
-        buffer.writeRegistryId(recipe.getTransfigurationType());
+        buffer.writeRegistryId(TransfigurationTypes.getRegistry(), recipe.getTransfigurationType());
         BasicIngredient.toBuffer(buffer, recipe.getIngredient());
         buffer.writeBoolean(recipe.getFluid() != null);
         if (recipe.getFluid() != null) {

@@ -6,14 +6,15 @@ import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
+import com.minerarcana.transfiguration.util.RegistryHelpers;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.Range;
 
 import java.util.List;
-import java.util.Objects;
 
 public class IngredientBuilder {
     public static FinishedObject<BasicIngredientSerializer<?>> blockTag(TagKey<Block> blockTag) {
@@ -25,11 +26,12 @@ public class IngredientBuilder {
     }
 
     public static FinishedObject<BasicIngredientSerializer<?>> matches(Block block) {
-        return new FinishedObject<>(TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get(),
-                block::getRegistryName,
+        return new FinishedObject<>(
+                TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get(),
+                RegistryHelpers.supplyRegistryName(ForgeRegistries.BLOCKS, block),
                 jsonObject -> jsonObject.addProperty(
                         "block",
-                        Objects.requireNonNull(block.getRegistryName()).toString()
+                        RegistryHelpers.getRegistryName(ForgeRegistries.BLOCKS, block).toString()
                 )
         );
     }
@@ -37,15 +39,16 @@ public class IngredientBuilder {
     public static FinishedObject<BasicIngredientSerializer<?>> matches(EntityType<?> entityType) {
         return new FinishedObject<>(
                 TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get(),
-                entityType::getRegistryName,
+                RegistryHelpers.supplyRegistryName(ForgeRegistries.ENTITY_TYPES, entityType),
                 jsonObject -> jsonObject.addProperty(
                         "entity",
-                        Objects.requireNonNull(entityType.getRegistryName()).toString()
+                        RegistryHelpers.getRegistryName(ForgeRegistries.ENTITY_TYPES, entityType).toString()
                 )
         );
     }
 
     @SafeVarargs
+    @SuppressWarnings("unused")
     public static FinishedObject<BasicIngredientSerializer<?>> and(FinishedObject<BasicIngredientSerializer<?>>... inputs) {
         return new FinishedObject<>(
                 TransfigurationRecipes.AND_INGREDIENT_SERIALIZER.get(),

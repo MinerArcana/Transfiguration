@@ -7,7 +7,6 @@ import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationAttributes;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipe;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -58,7 +57,7 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
     @Override
     @Nonnull
     public Component getName(@Nonnull ItemStack itemStack) {
-        return new TranslatableComponent(this.getOrCreateDescriptionId(), this.getType(itemStack).getDisplayName());
+        return Component.translatable(this.getOrCreateDescriptionId(), this.getType(itemStack).getDisplayName());
     }
 
     @Override

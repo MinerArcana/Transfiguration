@@ -3,6 +3,7 @@ package com.minerarcana.transfiguration.recipe.dust;
 import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.recipe.builder.FinishedObject;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.material.Fluid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Objects;
 
 public class DustFinishedRecipe implements FinishedRecipe {
     private final ResourceLocation id;
@@ -37,7 +37,7 @@ public class DustFinishedRecipe implements FinishedRecipe {
 
     @Override
     public void serializeRecipeData(@Nonnull JsonObject json) {
-        json.addProperty("transfigurationType", Objects.requireNonNull(type.getRegistryName()).toString());
+        json.addProperty("transfigurationType", TransfigurationTypes.getKey(this.type).toString());
         json.add("block", blockState.getJson());
         if (fluidState != null) {
             json.addProperty("fluid", fluidState.location().toString());

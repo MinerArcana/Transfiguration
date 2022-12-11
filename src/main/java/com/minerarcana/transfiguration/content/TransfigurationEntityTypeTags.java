@@ -11,7 +11,7 @@ public class TransfigurationEntityTypeTags {
     public static TagKey<EntityType<?>> OUTPUTS_ACCURSED = createTagKey("outputs/accursed");
 
     public static TagKey<EntityType<?>> createTagKey(String path) {
-        return Objects.requireNonNull(ForgeRegistries.ENTITIES.tags())
+        return Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.tags())
                 .createTagKey(Transfiguration.rl(path));
     }
 }

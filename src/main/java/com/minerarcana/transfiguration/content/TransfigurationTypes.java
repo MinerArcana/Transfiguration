@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.content;
 
+import com.google.common.base.Suppliers;
 import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.TransfiguringKeyword;
@@ -12,6 +13,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
@@ -20,13 +22,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.*;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public class TransfigurationTypes {
 
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_DEFERRED_REGISTER =
@@ -41,8 +43,12 @@ public class TransfigurationTypes {
     );
 
     @SuppressWarnings("UnstableApiUsage")
-    public static Supplier<IForgeRegistry<TransfigurationType>> REGISTRY = Transfiguration.getRegistrate()
-            .makeRegistry("transfiguration_types", TransfigurationType.class, RegistryBuilder::new);
+    public static ResourceKey<Registry<TransfigurationType>> REGISTRY_KEY = Transfiguration.getRegistrate()
+            .makeRegistry("transfiguration_types", RegistryBuilder::new);
+
+    private static final Supplier<IForgeRegistry<TransfigurationType>> REGISTRY = Suppliers.memoize(() ->
+            RegistryManager.ACTIVE.getRegistry(REGISTRY_KEY)
+    );
 
     public static final RegistryEntry<TransfigurationType> NETHERI = Transfiguration.getRegistrate()
             .object("netheri")
@@ -317,7 +323,7 @@ public class TransfigurationTypes {
 
 
     public static Item getDust(Supplier<TransfigurationType> transfigurationTypeSupplier) {
-        ResourceLocation registryName = transfigurationTypeSupplier.get().getRegistryName();
+        ResourceLocation registryName = getRegistry().getKey(transfigurationTypeSupplier.get());
         if (registryName == null) {
             throw new IllegalStateException("Registry Name was null");
         } else {
@@ -330,6 +336,15 @@ public class TransfigurationTypes {
                 return dustItem;
             }
         }
+    }
+
+    public static IForgeRegistry<TransfigurationType> getRegistry() {
+        return REGISTRY.get();
+    }
+
+    @NotNull
+    public static ResourceLocation getKey(TransfigurationType transfigurationType) {
+        return Objects.requireNonNull(getRegistry().getKey(transfigurationType));
     }
 
     public static void setup() {

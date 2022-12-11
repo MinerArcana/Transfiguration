@@ -3,25 +3,24 @@ package com.minerarcana.transfiguration.recipe.builder;
 import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
-public interface IFinishedObject<T extends ISerializer<?> & IForgeRegistryEntry<T>> {
+public interface IFinishedObject<T extends ISerializer<?>> {
     void serialize(JsonObject jsonObject);
 
     @Nonnull
     default JsonObject getJson() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("type", Objects.requireNonNull(this.getSerializer().getRegistryName()).toString());
+        jsonObject.addProperty("type", this.getSerializer().getKey().toString());
         this.serialize(jsonObject);
         return jsonObject;
     }
 
-    @Nonnull
+    @NotNull
     T getSerializer();
 
-    @Nonnull
+    @NotNull
     ResourceLocation getId();
 }

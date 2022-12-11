@@ -1,8 +1,6 @@
 package com.minerarcana.transfiguration.content;
 
 import com.minerarcana.transfiguration.Transfiguration;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;

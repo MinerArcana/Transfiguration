@@ -6,6 +6,7 @@ import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -36,9 +37,9 @@ public class MatchIngredientSerializer extends BasicIngredientSerializer<MatchIn
     public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull MatchIngredient object) {
         buffer.writeBoolean(object.getBlock() != null);
         if (object.getBlock() != null) {
-            buffer.writeRegistryId(object.getBlock());
+            buffer.writeRegistryId(ForgeRegistries.BLOCKS, object.getBlock());
         } else {
-            buffer.writeRegistryId(object.getEntityType());
+            buffer.writeRegistryId(ForgeRegistries.ENTITY_TYPES, object.getEntityType());
         }
     }
 }

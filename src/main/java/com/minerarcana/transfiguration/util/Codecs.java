@@ -6,7 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.Objects;
 
@@ -17,11 +16,11 @@ public class Codecs {
             Codec.DOUBLE.fieldOf("z").forGetter(Vec3::z)
     ).apply(instance, Vec3::new));
 
-    public static <T extends IForgeRegistryEntry<T>> MapCodec<T> forRegistry(String fieldName, IForgeRegistry<T> registry) {
+    public static <T> MapCodec<T> forRegistry(String fieldName, IForgeRegistry<T> registry) {
         return Codec.STRING.fieldOf(fieldName)
                 .xmap(
                         string -> registry.getValue(new ResourceLocation(string)),
-                        entry -> Objects.requireNonNull(entry.getRegistryName()).toString()
+                        entry -> Objects.requireNonNull(registry.getKey(entry)).toString()
                 );
     }
 }

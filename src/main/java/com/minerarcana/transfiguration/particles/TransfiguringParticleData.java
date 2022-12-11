@@ -2,6 +2,7 @@ package com.minerarcana.transfiguration.particles;
 
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationParticles;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.util.Buffers;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -54,7 +55,7 @@ public class TransfiguringParticleData implements ParticleOptions {
 
     @Override
     public void writeToNetwork(@Nonnull FriendlyByteBuf buffer) {
-        buffer.writeRegistryId(type);
+        buffer.writeRegistryId(TransfigurationTypes.getRegistry(), type);
         Buffers.writeVector3d(endPosition, buffer);
         buffer.writeInt(delay);
         buffer.writeInt(maxAge);
@@ -64,7 +65,7 @@ public class TransfiguringParticleData implements ParticleOptions {
     @Override
     @Nonnull
     public String writeToString() {
-        return Objects.requireNonNull(type.getRegistryName()) + " " + endPosition + " " + delay + " " + maxAge + " " + colorOffset;
+        return TransfigurationTypes.getKey(this.type) + " " + endPosition + " " + delay + " " + maxAge + " " + colorOffset;
     }
 
     public static TransfiguringParticleData create(TransfigurationType transfigurationType, Vec3 direction,

@@ -5,6 +5,7 @@ import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -23,6 +24,6 @@ public class BlockStateResultSerializer extends ResultSerializer<BlockStateResul
 
     @Override
     public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull BlockStateResult object) {
-        buffer.writeRegistryId(object.getBlockState().getBlock());
+        buffer.writeRegistryId(ForgeRegistries.BLOCKS, object.getBlockState().getBlock());
     }
 }

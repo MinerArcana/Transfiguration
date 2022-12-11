@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.Range;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class ObjectJson {
 
     public static JsonObject writeItemStack(ItemStack itemStack) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("item", Objects.requireNonNull(itemStack.getItem().getRegistryName()).toString());
+        jsonObject.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(itemStack.getItem())).toString());
         if (itemStack.getCount() > 1) {
             jsonObject.addProperty("count", itemStack.getCount());
         }

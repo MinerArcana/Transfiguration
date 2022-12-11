@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.recipe.result;
 
+import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +23,7 @@ public abstract class Result implements ISerializable<ResultSerializer<?>> {
     @SuppressWarnings("unchecked")
     public static <T extends Result> void toBuffer(FriendlyByteBuf buffer, T result) {
         ResultSerializer<T> resultSerializer = (ResultSerializer<T>) result.getSerializer();
-        buffer.writeRegistryId(resultSerializer);
+        buffer.writeRegistryId(TransfigurationRecipes.getResultRegistry(), resultSerializer);
         resultSerializer.write(buffer, result);
     }
 }

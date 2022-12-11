@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -22,6 +23,6 @@ public class EntityResultSerializer extends ResultSerializer<EntityResult> {
 
     @Override
     public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull EntityResult object) {
-        buffer.writeRegistryId(object.getEntityType());
+        buffer.writeRegistryId(ForgeRegistries.ENTITY_TYPES, object.getEntityType());
     }
 }

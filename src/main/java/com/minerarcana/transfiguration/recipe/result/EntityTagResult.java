@@ -19,7 +19,7 @@ public class EntityTagResult extends Result {
     }
 
     public void handle(@Nonnull TransfigurationContainer<?> transfigurationContainer, double powerModifier) {
-        Objects.requireNonNull(ForgeRegistries.ENTITIES.tags())
+        Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.tags())
                 .getTag(tag)
                 .getRandomElement(transfigurationContainer.getLevel().random)
                 .ifPresent(entityType -> EntityResult.summon(transfigurationContainer, entityType));

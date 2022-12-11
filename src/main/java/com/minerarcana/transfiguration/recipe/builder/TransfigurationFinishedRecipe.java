@@ -3,6 +3,7 @@ package com.minerarcana.transfiguration.recipe.builder;
 import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationPredicates;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
@@ -10,14 +11,12 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 
-public class TransfigurationFinishedRecipe<T extends ISerializer<?> & IForgeRegistryEntry<T>> implements FinishedRecipe {
+public class TransfigurationFinishedRecipe<T extends ISerializer<?>> implements FinishedRecipe {
 
     private final RecipeSerializer<?> recipeSerializer;
     private final ResourceLocation id;
@@ -43,7 +42,7 @@ public class TransfigurationFinishedRecipe<T extends ISerializer<?> & IForgeRegi
 
     @Override
     public void serializeRecipeData(@Nonnull JsonObject json) {
-        json.addProperty("transfigurationType", Objects.requireNonNull(transfigurationType.getRegistryName()).toString());
+        json.addProperty("transfigurationType", TransfigurationTypes.getKey(transfigurationType).toString());
         json.add("ingredient", ingredient.getJson());
         json.add("result", result.getJson());
         json.addProperty("ticks", ticks);

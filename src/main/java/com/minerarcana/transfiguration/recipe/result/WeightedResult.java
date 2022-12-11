@@ -2,8 +2,11 @@ package com.minerarcana.transfiguration.recipe.result;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.Random;
 
 public class WeightedResult extends Result {
     private final SimpleWeightedRandomList<Result> weightedResults;
-    private final Random random;
+    private final RandomSource random;
 
     public WeightedResult(List<Pair<Result, Integer>> results) {
         SimpleWeightedRandomList.Builder<Result> weightedBuilder = SimpleWeightedRandomList.builder();
@@ -19,7 +22,7 @@ public class WeightedResult extends Result {
             weightedBuilder.add(result.getFirst(), result.getSecond());
         }
         this.weightedResults = weightedBuilder.build();
-        this.random = new Random();
+        this.random = RandomSource.create();
     }
 
     public SimpleWeightedRandomList<Result> getWeightedResults() {

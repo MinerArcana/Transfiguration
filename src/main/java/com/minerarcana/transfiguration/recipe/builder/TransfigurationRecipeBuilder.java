@@ -3,6 +3,7 @@ package com.minerarcana.transfiguration.recipe.builder;
 import com.google.common.collect.Lists;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
+import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
@@ -12,7 +13,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -61,6 +61,7 @@ public class TransfigurationRecipeBuilder {
         return this;
     }
 
+    @SuppressWarnings("unused")
     public TransfigurationRecipeBuilder withTicks(int ticks) {
         this.ticks = ticks;
         return this;
@@ -75,7 +76,7 @@ public class TransfigurationRecipeBuilder {
         if (id == null) {
             ResourceLocation resultId = this.result.getId();
             id = new ResourceLocation(resultId.getNamespace(), "transfiguration/" + resultId.getPath().replace("/", "_")
-                    + "_from_" + Objects.requireNonNull(transfigurationType.getRegistryName()).getPath().replace("/", "_")
+                    + "_from_" + TransfigurationTypes.getKey(this.transfigurationType).getPath().replace("/", "_")
                     + "_" + ingredient.getId().toString().replace(":", "_").replace("/", "_"));
         }
         recipeConsumer.accept(new TransfigurationFinishedRecipe<>(recipeSerializer, id, transfigurationType,

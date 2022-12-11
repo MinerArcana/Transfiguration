@@ -1,7 +1,6 @@
 package com.minerarcana.transfiguration.recipe.ingedient;
 
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

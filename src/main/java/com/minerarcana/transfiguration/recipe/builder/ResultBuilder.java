@@ -4,19 +4,21 @@ import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
+import com.minerarcana.transfiguration.util.RegistryHelpers;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.Property;
-
-import java.util.Objects;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ResultBuilder {
     public static FinishedObject<ResultSerializer<?>> block(Block block) {
-        return new FinishedObject<>(TransfigurationRecipes.BLOCK_STATE_RESULT_SERIALIZER.get(),
-                block::getRegistryName, jsonObject -> jsonObject.addProperty("block",
-                Objects.requireNonNull(block.getRegistryName()).toString()));
+        return new FinishedObject<>(
+                TransfigurationRecipes.BLOCK_STATE_RESULT_SERIALIZER.get(),
+                RegistryHelpers.supplyRegistryName(ForgeRegistries.BLOCKS, block),
+                jsonObject -> jsonObject.addProperty("block",
+                        RegistryHelpers.getRegistryName(ForgeRegistries.BLOCKS, block).toString()));
     }
 
     public static FinishedObject<ResultSerializer<?>> blockTag(TagKey<Block> tag) {
@@ -41,9 +43,11 @@ public class ResultBuilder {
 
 
     public static FinishedObject<ResultSerializer<?>> entityType(EntityType<?> entityType) {
-        return new FinishedObject<>(TransfigurationRecipes.ENTITY_RESULT_SERIALIZER.get(),
-                entityType::getRegistryName, jsonObject -> jsonObject.addProperty("entity",
-                Objects.requireNonNull(entityType.getRegistryName()).toString()));
+        return new FinishedObject<>(
+                TransfigurationRecipes.ENTITY_RESULT_SERIALIZER.get(),
+                RegistryHelpers.supplyRegistryName(ForgeRegistries.ENTITY_TYPES, entityType),
+                jsonObject -> jsonObject.addProperty("entity",
+                        RegistryHelpers.getRegistryName(ForgeRegistries.ENTITY_TYPES, entityType).toString()));
     }
 
     public static FinishedObject<ResultSerializer<?>> entityTypeTag(TagKey<EntityType<?>> entityTypeTag) {
@@ -57,11 +61,12 @@ public class ResultBuilder {
     public static FinishedObject<ResultSerializer<?>> itemStack(ItemStack itemStack) {
         return new FinishedObject<>(
                 TransfigurationRecipes.ITEM_RESULT_SERIALIZER.get(),
-                itemStack.getItem()::getRegistryName,
+                RegistryHelpers.supplyRegistryName(itemStack),
                 jsonObject -> jsonObject.add("itemStack", ObjectJson.writeItemStack(itemStack))
         );
     }
 
+    @SuppressWarnings("unused")
     public static FinishedObject<ResultSerializer<?>> chance(float chance, FinishedObject<ResultSerializer<?>> result) {
         return new FinishedObject<>(
                 TransfigurationRecipes.CHANCE_RESULT_SERIALIZER.get(),
