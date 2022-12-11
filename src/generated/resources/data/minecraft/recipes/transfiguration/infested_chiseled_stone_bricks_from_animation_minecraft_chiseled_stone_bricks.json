@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:animation",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:chiseled_stone_bricks"
@@ -9,5 +8,6 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:infested_chiseled_stone_bricks"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:animation"
 }

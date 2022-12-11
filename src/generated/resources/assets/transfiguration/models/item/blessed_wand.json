@@ -1,7 +1,7 @@
 {
   "parent": "transfiguration:item/wand",
   "textures": {
-    "wand": "transfiguration:item/wand",
-    "orb": "transfiguration:item/wand_orb"
+    "orb": "transfiguration:item/wand_orb",
+    "wand": "transfiguration:item/wand"
   }
 }

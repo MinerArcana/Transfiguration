@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:netheri",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:sand"
@@ -9,5 +8,6 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:soul_sand"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:netheri"
 }

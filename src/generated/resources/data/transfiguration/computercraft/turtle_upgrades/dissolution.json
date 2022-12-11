@@ -1,8 +1,0 @@
-{
-  "type": "transfiguration:transfiguring",
-  "transfigurationType": "transfiguration:dissolution",
-  "itemStack": {
-    "item": "transfiguration:dissolution_wand",
-    "nbt": "{Damage:0}"
-  }
-}

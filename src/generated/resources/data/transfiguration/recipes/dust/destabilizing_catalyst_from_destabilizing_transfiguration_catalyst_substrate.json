@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:dust",
-  "transfigurationType": "transfiguration:destabilizing",
   "block": {
     "type": "transfiguration:match",
     "block": "transfiguration:catalyst_substrate"
@@ -9,5 +8,6 @@
   "output": {
     "item": "transfiguration:destabilizing_catalyst",
     "nbt": "{Damage:0}"
-  }
+  },
+  "transfigurationType": "transfiguration:destabilizing"
 }

@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:entity_transfiguration",
-  "transfigurationType": "transfiguration:accursed",
   "ingredient": {
     "type": "transfiguration:match",
     "entity": "minecraft:villager"
@@ -9,5 +8,6 @@
     "type": "transfiguration:entity_tag",
     "tag": "transfiguration:outputs/accursed"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:accursed"
 }

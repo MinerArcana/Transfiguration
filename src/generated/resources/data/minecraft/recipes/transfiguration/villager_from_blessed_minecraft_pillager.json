@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:entity_transfiguration",
-  "transfigurationType": "transfiguration:blessed",
   "ingredient": {
     "type": "transfiguration:match",
     "entity": "minecraft:pillager"
@@ -9,5 +8,6 @@
     "type": "transfiguration:entity",
     "entity": "minecraft:villager"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:blessed"
 }

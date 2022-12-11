@@ -1,18 +1,18 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:mutandi",
   "ingredient": {
     "type": "transfiguration:tag",
     "block": "transfiguration:inputs/mutandi"
   },
+  "predicates": [
+    {
+      "type": "transfiguration:fluidstate"
+    }
+  ],
   "result": {
     "type": "transfiguration:block_tag",
     "tag": "transfiguration:outputs/mutandi"
   },
   "ticks": 240,
-  "predicates": [
-    {
-      "type": "transfiguration:fluidstate"
-    }
-  ]
+  "transfigurationType": "transfiguration:mutandi"
 }

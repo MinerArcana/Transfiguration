@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:fungal",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:tall_grass"
@@ -9,5 +8,6 @@
     "type": "transfiguration:block_tag",
     "tag": "transfiguration:outputs/fungal/mushroom"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:fungal"
 }

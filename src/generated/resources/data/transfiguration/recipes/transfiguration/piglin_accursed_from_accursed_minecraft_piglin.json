@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:entity_transfiguration",
-  "transfigurationType": "transfiguration:accursed",
   "ingredient": {
     "type": "transfiguration:match",
     "entity": "minecraft:piglin"
@@ -9,20 +8,21 @@
     "type": "transfiguration:weighted",
     "entries": [
       {
-        "weight": 10,
         "result": {
           "type": "transfiguration:entity_tag",
           "tag": "transfiguration:outputs/accursed"
-        }
+        },
+        "weight": 10
       },
       {
-        "weight": 1,
         "result": {
           "type": "transfiguration:entity",
           "entity": "minecraft:zombified_piglin"
-        }
+        },
+        "weight": 1
       }
     ]
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:accursed"
 }

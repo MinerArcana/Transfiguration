@@ -1,8 +1,0 @@
-{
-  "type": "transfiguration:transfiguring",
-  "transfigurationType": "transfiguration:fungal",
-  "itemStack": {
-    "item": "transfiguration:fungal_wand",
-    "nbt": "{Damage:0}"
-  }
-}

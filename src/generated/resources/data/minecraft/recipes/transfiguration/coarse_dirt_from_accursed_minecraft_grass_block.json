@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:accursed",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:grass_block"
@@ -9,5 +8,6 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:coarse_dirt"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:accursed"
 }

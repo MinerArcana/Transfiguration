@@ -1,8 +1,0 @@
-{
-  "type": "transfiguration:transfiguring",
-  "transfigurationType": "transfiguration:blessed",
-  "itemStack": {
-    "item": "transfiguration:blessed_wand",
-    "nbt": "{Damage:0}"
-  }
-}

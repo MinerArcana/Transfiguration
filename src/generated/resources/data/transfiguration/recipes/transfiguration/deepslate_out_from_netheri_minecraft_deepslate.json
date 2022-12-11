@@ -1,35 +1,35 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:netheri",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:deepslate"
   },
+  "predicates": [
+    {
+      "type": "transfiguration:position",
+      "axis": "y",
+      "min": -20
+    }
+  ],
   "result": {
     "type": "transfiguration:weighted",
     "entries": [
       {
-        "weight": 3,
         "result": {
           "type": "transfiguration:blockstate",
           "block": "minecraft:magma_block"
-        }
+        },
+        "weight": 3
       },
       {
-        "weight": 1,
         "result": {
           "type": "transfiguration:blockstate",
           "block": "minecraft:lava"
-        }
+        },
+        "weight": 1
       }
     ]
   },
   "ticks": 240,
-  "predicates": [
-    {
-      "axis": "y",
-      "min": -20,
-      "type": "transfiguration:position"
-    }
-  ]
+  "transfigurationType": "transfiguration:netheri"
 }

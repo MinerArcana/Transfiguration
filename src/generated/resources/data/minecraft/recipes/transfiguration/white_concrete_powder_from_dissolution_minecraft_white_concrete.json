@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:dissolution",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:white_concrete"
@@ -9,5 +8,6 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:white_concrete_powder"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:dissolution"
 }

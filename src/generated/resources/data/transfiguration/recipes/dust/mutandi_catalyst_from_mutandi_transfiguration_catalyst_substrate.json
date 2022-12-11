@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:dust",
-  "transfigurationType": "transfiguration:mutandi",
   "block": {
     "type": "transfiguration:match",
     "block": "transfiguration:catalyst_substrate"
@@ -9,5 +8,6 @@
   "output": {
     "item": "transfiguration:mutandi_catalyst",
     "nbt": "{Damage:0}"
-  }
+  },
+  "transfigurationType": "transfiguration:mutandi"
 }

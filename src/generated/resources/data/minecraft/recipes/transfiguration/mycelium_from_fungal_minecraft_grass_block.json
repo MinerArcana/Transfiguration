@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:fungal",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:grass_block"
@@ -9,5 +8,6 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:mycelium"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:fungal"
 }

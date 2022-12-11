@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:animation",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:cobblestone"
@@ -9,5 +8,6 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:infested_cobblestone"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:animation"
 }

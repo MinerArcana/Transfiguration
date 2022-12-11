@@ -1,8 +1,0 @@
-{
-  "type": "transfiguration:transfiguring",
-  "transfigurationType": "transfiguration:animation",
-  "itemStack": {
-    "item": "transfiguration:animation_wand",
-    "nbt": "{Damage:0}"
-  }
-}

@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:overni",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:nether_sprouts"
@@ -9,5 +8,6 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:grass_block"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:overni"
 }

@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:overni",
   "ingredient": {
     "type": "transfiguration:tag",
     "block": "transfiguration:outputs/netheri/mushroom"
@@ -9,5 +8,6 @@
     "type": "transfiguration:block_tag",
     "tag": "transfiguration:inputs/netheri/mushroom"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:overni"
 }

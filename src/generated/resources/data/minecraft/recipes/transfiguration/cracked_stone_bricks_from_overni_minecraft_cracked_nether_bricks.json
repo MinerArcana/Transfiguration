@@ -1,6 +1,5 @@
 {
   "type": "transfiguration:block_transfiguration",
-  "transfigurationType": "transfiguration:overni",
   "ingredient": {
     "type": "transfiguration:match",
     "block": "minecraft:cracked_nether_bricks"
@@ -9,5 +8,6 @@
     "type": "transfiguration:blockstate",
     "block": "minecraft:cracked_stone_bricks"
   },
-  "ticks": 240
+  "ticks": 240,
+  "transfigurationType": "transfiguration:overni"
 }
