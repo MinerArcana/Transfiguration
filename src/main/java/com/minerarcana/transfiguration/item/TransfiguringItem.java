@@ -16,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -61,6 +62,7 @@ public abstract class TransfiguringItem extends Item implements ITransfiguring {
     }
 
     @Override
+    @NotNull
     public TransfigurationType getType(ItemStack itemStack) {
         return type.get();
     }

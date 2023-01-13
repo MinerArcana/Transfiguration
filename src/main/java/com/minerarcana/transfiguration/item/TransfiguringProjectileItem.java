@@ -8,6 +8,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -44,17 +46,8 @@ public class TransfiguringProjectileItem extends Item implements ITransfiguring 
         }
     }
 
-    public static int getColor(ItemStack itemStack, int layer) {
-        if (layer == 0) {
-            TransfigurationType type = getTransfigurationType(itemStack);
-            if (type != null) {
-                return type.getPrimaryColor();
-            }
-        }
-        return -1;
-    }
-
     @Override
+    @Nullable
     public TransfigurationType getType(ItemStack itemStack) {
         return getTransfigurationType(itemStack);
     }

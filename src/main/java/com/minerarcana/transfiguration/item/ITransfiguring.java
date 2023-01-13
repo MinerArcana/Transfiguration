@@ -8,12 +8,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.ToDoubleFunction;
 
 public interface ITransfiguring {
+    @Nullable
     TransfigurationType getType(ItemStack itemStack);
 
     default double getPowerModifier(ItemStack itemStack) {
