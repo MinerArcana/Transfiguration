@@ -7,6 +7,7 @@ import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredientSerializer;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
 import com.minerarcana.transfiguration.util.RegistryHelpers;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
@@ -37,13 +38,30 @@ public class IngredientBuilder {
     }
 
     public static FinishedObject<BasicIngredientSerializer<?>> matches(EntityType<?> entityType) {
+        return matches(entityType, null);
+    }
+
+    public static FinishedObject<BasicIngredientSerializer<?>> matches(EntityType<?> entityType, EntityPredicate predicate) {
         return new FinishedObject<>(
                 TransfigurationRecipes.MATCH_INGREDIENT_SERIALIZER.get(),
                 RegistryHelpers.supplyRegistryName(ForgeRegistries.ENTITY_TYPES, entityType),
-                jsonObject -> jsonObject.addProperty(
-                        "entity",
-                        RegistryHelpers.getRegistryName(ForgeRegistries.ENTITY_TYPES, entityType).toString()
-                )
+                jsonObject -> {
+                    jsonObject.addProperty(
+                            "entity",
+                            RegistryHelpers.getRegistryName(ForgeRegistries.ENTITY_TYPES, entityType).toString()
+                    );
+                    if (predicate != null) {
+                        jsonObject.add("predicate", predicate.serializeToJson());
+                    }
+                }
+        );
+    }
+
+    public static FinishedObject<BasicIngredientSerializer<?>> entityTag(TagKey<EntityType<?>> entityTypeTagKey) {
+        return new FinishedObject<>(
+                TransfigurationRecipes.TAG_INGREDIENT_SERIALIZER.get(),
+                entityTypeTagKey::location,
+                jsonObject -> jsonObject.addProperty("entity", entityTypeTagKey.location().toString())
         );
     }
 

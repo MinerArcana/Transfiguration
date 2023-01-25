@@ -7,21 +7,29 @@ import com.minerarcana.transfiguration.recipe.builder.IngredientBuilder;
 import com.minerarcana.transfiguration.recipe.builder.ResultBuilder;
 import com.minerarcana.transfiguration.recipe.builder.TransfigurationRecipeBuilder;
 import com.minerarcana.transfiguration.recipe.builder.WeightedResultBuilder;
+import com.minerarcana.transfiguration.recipe.nbt.CompoundTagBuilder;
+import com.minerarcana.transfiguration.recipe.nbt.NBTCopier;
 import com.minerarcana.transfiguration.recipe.predicate.FluidStatePredicate;
+import com.minerarcana.transfiguration.recipe.predicate.InStructurePredicate;
+import com.minerarcana.transfiguration.recipe.predicate.OnEndExitPortalPredicate;
 import com.minerarcana.transfiguration.recipe.predicate.PositionPredicate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.common.Tags;
 import org.apache.commons.lang3.Range;
 
 public class TransfigurationRecipeData {
+
     public static <T extends TransfigurationType> void accursedRecipes(DataGenContext<TransfigurationType, T> context,
                                                                        RegistrateRecipeProvider provider) {
         TransfigurationRecipeBuilder.createBlock(context)
@@ -466,6 +474,55 @@ public class TransfigurationRecipeData {
         TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.matches(Blocks.STONE_BRICKS))
                 .withResult(ResultBuilder.block(Blocks.INFESTED_STONE_BRICKS))
+                .build(provider);
+    }
+
+    public static void xenoiRecipes(DataGenContext<TransfigurationType, TransfigurationType> context, RegistrateRecipeProvider provider) {
+        TransfigurationRecipeBuilder.createEntity(context.get())
+                .withIngredient(IngredientBuilder.entityTag(TransfigurationEntityTypeTags.VILLAGER))
+                .withResult(ResultBuilder.entityType(EntityType.ENDERMAN))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context.get())
+                .withIngredient(IngredientBuilder.matches(EntityType.CHICKEN))
+                .withResult(ResultBuilder.entityType(EntityType.PHANTOM))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context.get())
+                .withIngredient(IngredientBuilder.matches(EntityType.WITHER_SKELETON))
+                .withResult(ResultBuilder.entityType(EntityType.END_CRYSTAL))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context.get())
+                .withIngredient(IngredientBuilder.matches(EntityType.STRIDER))
+                .withResult(ResultBuilder.entityType(EntityType.SHULKER))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context.get())
+                .withIngredient(IngredientBuilder.matches(Blocks.PURPUR_BLOCK))
+                .withResult(ResultBuilder.chance(0.5F, ResultBuilder.block(Blocks.SHULKER_BOX)))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createEntity(context.get())
+                .withPredicate(new InStructurePredicate(BuiltinStructures.END_CITY))
+                .withIngredient(IngredientBuilder.matches(EntityType.ITEM_FRAME))
+                .withResult(ResultBuilder.entityType(
+                        EntityType.ITEM_FRAME,
+                        CompoundTagBuilder.start()
+                                .with("Item", new ItemStack(Items.ELYTRA))
+                                .build(),
+                        NBTCopier.builder()
+                                .copy("Facing")
+                                .copy("Invisible")
+                                .copy("Fixed")
+                                .build()
+                ))
+                .build(provider);
+
+        TransfigurationRecipeBuilder.createBlock(context.get())
+                .withPredicate(new OnEndExitPortalPredicate())
+                .withIngredient(IngredientBuilder.matches(Blocks.BEACON))
+                .withResult(ResultBuilder.block(Blocks.DRAGON_EGG))
                 .build(provider);
     }
 }

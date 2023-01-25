@@ -1,21 +1,29 @@
 package com.minerarcana.transfiguration.recipe.result;
 
+import com.google.common.base.Suppliers;
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
+import com.minerarcana.transfiguration.recipe.nbt.NBTCopier;
 import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.function.Supplier;
 
 public class EntityResult extends Result {
     private final EntityType<?> entityType;
+    private final CompoundTag defaultTag;
+    private final NBTCopier nbtCopier;
 
-    public EntityResult(EntityType<?> entityType) {
+    public EntityResult(EntityType<?> entityType, CompoundTag defaultTag, NBTCopier nbtCopier) {
         this.entityType = entityType;
+        this.defaultTag = defaultTag;
+        this.nbtCopier = nbtCopier;
     }
 
     @Nonnull
@@ -25,7 +33,24 @@ public class EntityResult extends Result {
     }
 
     public void handle(@Nonnull TransfigurationContainer<?> transfigurationContainer, double powerModifier) {
-        summon(transfigurationContainer, entityType);
+        Entity entity = entityType.create(transfigurationContainer.getLevel());
+        if (entity != null) {
+            if (!transfigurationContainer.getLevel().isClientSide()) {
+                BlockPos blockPos = transfigurationContainer.getTargetedPos();
+                entity.setPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                Supplier<CompoundTag> entityNBT = Suppliers.memoize(() -> entity.saveWithoutId(new CompoundTag()));
+                if (this.getDefaultNBT() != null) {
+                    entityNBT.get().merge(this.getDefaultNBT());
+                }
+                if (this.nbtCopier.hasOperations() && transfigurationContainer.getTargeted() instanceof Entity priorEntity) {
+                    this.nbtCopier.copy(priorEntity.saveWithoutId(new CompoundTag()), entityNBT::get);
+                }
+
+                entity.load(entityNBT.get());
+
+                transfigurationContainer.getLevel().addFreshEntity(entity);
+            }
+        }
     }
 
     @Override
@@ -44,24 +69,26 @@ public class EntityResult extends Result {
         return entityType;
     }
 
-    public static EntityResult create(EntityType<?> entityType) {
-        return new EntityResult(entityType);
+    public CompoundTag getDefaultNBT() {
+        return this.defaultTag;
     }
 
-    public static InteractionResult summon(TransfigurationContainer<?> transfigurationContainer, EntityType<?> entityType) {
+    public static EntityResult create(EntityType<?> entityType, CompoundTag defaultTag) {
+        return new EntityResult(entityType, defaultTag, new NBTCopier(Collections.emptyList()));
+    }
+
+    public static EntityResult create(EntityType<?> entityType, CompoundTag defaultTag, NBTCopier nbtCopier) {
+        return new EntityResult(entityType, defaultTag, nbtCopier);
+    }
+
+    public static void summon(TransfigurationContainer<?> transfigurationContainer, EntityType<?> entityType) {
         Entity entity = entityType.create(transfigurationContainer.getLevel());
         if (entity != null) {
-            if (transfigurationContainer.getLevel().isClientSide()) {
-                return InteractionResult.CONSUME;
-            } else {
+            if (!transfigurationContainer.getLevel().isClientSide()) {
                 BlockPos blockPos = transfigurationContainer.getTargetedPos();
                 entity.setPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                 transfigurationContainer.getLevel().addFreshEntity(entity);
-                return InteractionResult.SUCCESS;
             }
-
-        } else {
-            return InteractionResult.FAIL;
         }
     }
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "transfiguration:item/wand",
+  "textures": {
+    "orb": "transfiguration:item/wand_orb",
+    "wand": "transfiguration:item/wand"
+  }
+}

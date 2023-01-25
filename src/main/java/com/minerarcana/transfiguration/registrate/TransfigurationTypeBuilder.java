@@ -31,6 +31,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -70,6 +71,10 @@ public class TransfigurationTypeBuilder<T extends TransfigurationType, P> extend
 
     public TransfigurationTypeBuilder<T, P> primaryColor(DyeColor primaryColor) {
         return this.primaryColor(primaryColor.getTextColor());
+    }
+
+    public TransfigurationTypeBuilder<T, P> primaryColor(MaterialColor primaryColor) {
+        return this.primaryColor(primaryColor.calculateRGBColor(MaterialColor.Brightness.NORMAL));
     }
 
     public TransfigurationTypeBuilder<T, P> primaryColor(int primaryColor) {

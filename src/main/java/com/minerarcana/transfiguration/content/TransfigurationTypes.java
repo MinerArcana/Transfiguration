@@ -20,6 +20,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.*;
@@ -315,6 +317,26 @@ public class TransfigurationTypes {
                     .requires(Tags.Items.EGGS)
                     .requires(Items.JACK_O_LANTERN)
                     .unlockedBy("has_item", RegistrateRecipeProvider.has(getDust(TransfigurationTypes.MUTANDI)))
+                    .save(provider))
+            .build()
+            .defaultCatalyst()
+            .defaultWand()
+            .register();
+
+    public static final RegistryEntry<TransfigurationType> XENOI = Transfiguration.getRegistrate()
+            .object("xenoi")
+            .entry(TRANSFIGURATION_TYPE)
+            .lang("Xenoi")
+            .primaryColor(MaterialColor.SAND)
+            .secondaryColor(DyeColor.PURPLE)
+            .recipe(TransfigurationRecipeData::xenoiRecipes)
+            .dust()
+            .recipe((context, provider) -> ShapelessRecipeBuilder.shapeless(context.get(), 6)
+                    .requires(TransfigurationItems.MAGIC_POWDER.get(), 6)
+                    .requires(Items.SHULKER_BOX)
+                    .requires(Items.WARPED_NYLIUM)
+                    .requires(Items.CHORUS_FRUIT)
+                    .unlockedBy("has_item", RegistrateRecipeProvider.has(TransfigurationItems.MAGIC_POWDER.get()))
                     .save(provider))
             .build()
             .defaultCatalyst()

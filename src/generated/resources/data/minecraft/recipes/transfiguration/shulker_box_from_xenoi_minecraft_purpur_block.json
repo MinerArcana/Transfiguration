@@ -1,0 +1,17 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "block": "minecraft:purpur_block"
+  },
+  "result": {
+    "type": "transfiguration:chance",
+    "chance": 0.5,
+    "result": {
+      "type": "transfiguration:blockstate",
+      "block": "minecraft:shulker_box"
+    }
+  },
+  "ticks": 240,
+  "transfigurationType": "transfiguration:xenoi"
+}

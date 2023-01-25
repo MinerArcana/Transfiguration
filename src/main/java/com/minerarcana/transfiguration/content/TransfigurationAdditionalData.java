@@ -25,6 +25,12 @@ public class TransfigurationAdditionalData {
                         EntityType.ILLUSIONER,
                         EntityType.ZOMBIE_VILLAGER
                 );
+
+        tagsProvider.tag(TransfigurationEntityTypeTags.VILLAGER)
+                .add(
+                        EntityType.VILLAGER,
+                        EntityType.WANDERING_TRADER
+                );
     }
 
     public static void addBlockTags(RegistrateTagsProvider<Block> tagsProvider) {

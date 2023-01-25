@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "transfiguration:xenoi_catalyst"
+    },
+    "I": {
+      "tag": "forge:ingots/gold"
+    },
+    "R": {
+      "item": "minecraft:end_rod"
+    }
+  },
+  "pattern": [
+    "C",
+    "I",
+    "R"
+  ],
+  "result": {
+    "item": "transfiguration:xenoi_wand"
+  }
+}

@@ -3,8 +3,10 @@ package com.minerarcana.transfiguration.recipe.builder;
 import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.json.ObjectJson;
+import com.minerarcana.transfiguration.recipe.nbt.NBTCopier;
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import com.minerarcana.transfiguration.util.RegistryHelpers;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -41,13 +43,24 @@ public class ResultBuilder {
         );
     }
 
-
     public static FinishedObject<ResultSerializer<?>> entityType(EntityType<?> entityType) {
+        return entityType(entityType, null, null);
+    }
+
+
+    public static FinishedObject<ResultSerializer<?>> entityType(EntityType<?> entityType, CompoundTag defaultTag, NBTCopier copier) {
         return new FinishedObject<>(
                 TransfigurationRecipes.ENTITY_RESULT_SERIALIZER.get(),
                 RegistryHelpers.supplyRegistryName(ForgeRegistries.ENTITY_TYPES, entityType),
-                jsonObject -> jsonObject.addProperty("entity",
-                        RegistryHelpers.getRegistryName(ForgeRegistries.ENTITY_TYPES, entityType).toString()));
+                jsonObject -> {
+                    jsonObject.addProperty("entity", RegistryHelpers.getRegistryName(ForgeRegistries.ENTITY_TYPES, entityType).toString());
+                    if (defaultTag != null) {
+                        jsonObject.addProperty("nbt", defaultTag.toString());
+                    }
+                    if (copier != null && copier.hasOperations()) {
+                        jsonObject.add("copy", copier.toJson());
+                    }
+                });
     }
 
     public static FinishedObject<ResultSerializer<?>> entityTypeTag(TagKey<EntityType<?>> entityTypeTag) {

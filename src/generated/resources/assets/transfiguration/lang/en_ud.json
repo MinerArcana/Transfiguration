@@ -33,6 +33,9 @@
   "item.transfiguration.overni_dust": "ʇsnᗡ %s",
   "item.transfiguration.overni_wand": "puɐM %s",
   "item.transfiguration.transfiguring_projectile": "ǝןıʇɔǝظoɹԀ buıɹnbıɟsuɐɹ⟘",
+  "item.transfiguration.xenoi_catalyst": "ʇsʎןɐʇɐƆ %s",
+  "item.transfiguration.xenoi_dust": "ʇsnᗡ %s",
+  "item.transfiguration.xenoi_wand": "puɐM %s",
   "itemGroup.transfiguration": "uoıʇɐɹnbıɟsuɐɹ⟘",
   "transfiguration_type.transfiguration.accursed": "pǝsɹnɔɔⱯ",
   "transfiguration_type.transfiguration.animation": "uoıʇɐɯıuⱯ",
@@ -43,5 +46,6 @@
   "transfiguration_type.transfiguration.mutandi": "ıpuɐʇnW",
   "transfiguration_type.transfiguration.netheri": "ıɹǝɥʇǝN",
   "transfiguration_type.transfiguration.overni": "ıuɹǝʌO",
+  "transfiguration_type.transfiguration.xenoi": "ıouǝX",
   "upgrade.transfiguration.transfiguring.advective": "buıɹnbıɟsuɐɹ⟘"
 }

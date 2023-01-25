@@ -1,0 +1,18 @@
+{
+  "type": "transfiguration:block_transfiguration",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "block": "minecraft:beacon"
+  },
+  "predicates": [
+    {
+      "type": "transfiguration:on_end_podium"
+    }
+  ],
+  "result": {
+    "type": "transfiguration:blockstate",
+    "block": "minecraft:dragon_egg"
+  },
+  "ticks": 240,
+  "transfigurationType": "transfiguration:xenoi"
+}

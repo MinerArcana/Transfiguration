@@ -1,0 +1,6 @@
+{
+  "parent": "transfiguration:item/catalyst",
+  "textures": {
+    "orb": "transfiguration:item/wand_orb"
+  }
+}

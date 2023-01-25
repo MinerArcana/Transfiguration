@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "entity": "minecraft:strider"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:shulker"
+  },
+  "ticks": 240,
+  "transfigurationType": "transfiguration:xenoi"
+}

@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:dust",
+  "block": {
+    "type": "transfiguration:match",
+    "block": "transfiguration:catalyst_substrate"
+  },
+  "fluid": "minecraft:water",
+  "output": {
+    "item": "transfiguration:xenoi_catalyst",
+    "nbt": "{Damage:0}"
+  },
+  "transfigurationType": "transfiguration:xenoi"
+}

@@ -26,14 +26,15 @@ public class Transfiguration {
 
     public Transfiguration() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        TransfigurationAttributes.setup(modEventBus);
         TransfigurationBlocks.setup();
+        TransfigurationItems.setup();
+        TransfigurationEntities.setup();
         TransfigurationRecipes.register(modEventBus);
+        TransfigurationParticles.setup();
         TransfigurationPredicates.setup();
         TransfigurationTypes.setup();
-        TransfigurationEntities.setup();
-        TransfigurationItems.setup();
-        TransfigurationAttributes.setup(modEventBus);
-        TransfigurationParticles.setup();
     }
 
     public static Registrate getRegistrate() {

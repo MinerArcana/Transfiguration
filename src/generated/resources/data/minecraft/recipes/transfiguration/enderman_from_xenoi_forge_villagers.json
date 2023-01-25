@@ -1,0 +1,13 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "ingredient": {
+    "type": "transfiguration:tag",
+    "entity": "forge:villagers"
+  },
+  "result": {
+    "type": "transfiguration:entity",
+    "entity": "minecraft:enderman"
+  },
+  "ticks": 240,
+  "transfigurationType": "transfiguration:xenoi"
+}

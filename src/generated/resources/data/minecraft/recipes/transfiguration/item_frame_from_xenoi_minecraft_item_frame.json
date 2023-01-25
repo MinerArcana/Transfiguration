@@ -1,0 +1,37 @@
+{
+  "type": "transfiguration:entity_transfiguration",
+  "ingredient": {
+    "type": "transfiguration:match",
+    "entity": "minecraft:item_frame"
+  },
+  "predicates": [
+    {
+      "type": "transfiguration:in_structure",
+      "structure": "minecraft:end_city"
+    }
+  ],
+  "result": {
+    "type": "transfiguration:entity",
+    "copy": [
+      {
+        "op": "replace",
+        "source": "Facing",
+        "target": "Facing"
+      },
+      {
+        "op": "replace",
+        "source": "Invisible",
+        "target": "Invisible"
+      },
+      {
+        "op": "replace",
+        "source": "Fixed",
+        "target": "Fixed"
+      }
+    ],
+    "entity": "minecraft:item_frame",
+    "nbt": "{Item:{Count:1b,id:\"minecraft:elytra\",tag:{Damage:0}}}"
+  },
+  "ticks": 240,
+  "transfigurationType": "transfiguration:xenoi"
+}

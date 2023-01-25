@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "transfiguration:magic_powder"
+    },
+    {
+      "item": "minecraft:shulker_box"
+    },
+    {
+      "item": "minecraft:warped_nylium"
+    },
+    {
+      "item": "minecraft:chorus_fruit"
+    }
+  ],
+  "result": {
+    "count": 6,
+    "item": "transfiguration:xenoi_dust"
+  }
+}

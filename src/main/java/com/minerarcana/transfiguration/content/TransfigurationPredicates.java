@@ -45,6 +45,14 @@ public class TransfigurationPredicates {
             .object("fluidstate")
             .simple(PREDICATE_TYPE_REGISTRY_KEY, () -> PredicateType.of(FluidStatePredicate.CODEC));
 
+    public static final RegistryEntry<PredicateType> IN_STRUCTURE = Transfiguration.getRegistrate()
+            .object("in_structure")
+            .simple(PREDICATE_TYPE_REGISTRY_KEY, () -> PredicateType.of(InStructurePredicate.CODEC));
+
+    public static final RegistryEntry<PredicateType> ON_END_PODIUM = Transfiguration.getRegistrate()
+            .object("on_end_podium")
+            .simple(PREDICATE_TYPE_REGISTRY_KEY, () -> PredicateType.of(OnEndExitPortalPredicate.CODEC));
+
     public static IForgeRegistry<PredicateType> getRegistry() {
         return PREDICATE_TYPE_REGISTRY.get();
     }
