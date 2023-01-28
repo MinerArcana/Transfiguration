@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.minerarcana.transfiguration.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "transfiguration.refmap.json",
+  "mixins": [
+    "EndDragonFightAccessor"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

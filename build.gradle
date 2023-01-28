@@ -9,10 +9,15 @@ buildscript {
             name = "parchment"
             url = "https://maven.parchmentmc.org"
         }
+        maven {
+            name = "mixins"
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: "org.parchmentmc", name: "librarian", version: "1.+"
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 
@@ -25,6 +30,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'maven-publish'
 apply plugin: "java"
 apply plugin: "idea"
+apply plugin: 'org.spongepowered.mixin'
 
 version = "${minecraft_version}-" + getVersion()
 group = "${group}"
@@ -89,6 +95,12 @@ minecraft {
     }
 }
 
+mixin {
+    add sourceSets.main, "transfiguration.refmap.json"
+
+    config "transfiguration.mixins.json"
+}
+
 sourceSets {
     main {
         resources {
@@ -128,6 +140,8 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.4.0.282")
     compileOnly fg.deobf("mezz.jei:jei-1.19.2-common-api:11.4.0.282")
     runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:11.4.0.282")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 task srcJar(type: Jar) {

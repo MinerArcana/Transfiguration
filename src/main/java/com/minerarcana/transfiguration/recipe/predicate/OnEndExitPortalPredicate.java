@@ -2,10 +2,11 @@ package com.minerarcana.transfiguration.recipe.predicate;
 
 import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationPredicates;
+import com.minerarcana.transfiguration.mixin.EndDragonFightAccessor;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.dimension.end.EndDragonFight;
-import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
 
 public class OnEndExitPortalPredicate implements TransfigurationPredicate {
     public static final Codec<OnEndExitPortalPredicate> CODEC = Codec.unit(OnEndExitPortalPredicate::new);
@@ -20,7 +21,10 @@ public class OnEndExitPortalPredicate implements TransfigurationPredicate {
         if (transfigurationContainer.getLevel() instanceof ServerLevel serverLevel) {
             EndDragonFight fight = serverLevel.dragonFight();
             if (fight != null && fight.hasPreviouslyKilledDragon()) {
-                return transfigurationContainer.getTargetedPos().distManhattan(EndPodiumFeature.END_PODIUM_LOCATION) < 7;
+                BlockPos portalPos = ((EndDragonFightAccessor) fight).getPortalLocation();
+                if (portalPos != null) {
+                    return transfigurationContainer.getTargetedPos().distManhattan(portalPos) < 5;
+                }
             }
         }
         return false;
