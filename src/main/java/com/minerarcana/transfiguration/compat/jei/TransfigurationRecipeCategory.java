@@ -1,15 +1,10 @@
 package com.minerarcana.transfiguration.compat.jei;
 
-import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
-import com.minerarcana.transfiguration.content.TransfigurationEntities;
-import com.minerarcana.transfiguration.content.TransfigurationItems;
 import com.minerarcana.transfiguration.content.TransfigurationTypes;
-import com.minerarcana.transfiguration.item.TransfiguringProjectileItem;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -20,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Arrays;
 
 public abstract class TransfigurationRecipeCategory<T extends ITransfigurationRecipe<U>, U> implements IRecipeCategory<T> {
     private final IDrawable background;
@@ -63,7 +57,7 @@ public abstract class TransfigurationRecipeCategory<T extends ITransfigurationRe
                 .setSlotName("catalyst");
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 108, 1)
-                .addItemStack(recipe.getResult().getRepresentation())
+                .addItemStacks(recipe.getResult().getAllRepresentations())
                 .setSlotName("output");
     }
 }

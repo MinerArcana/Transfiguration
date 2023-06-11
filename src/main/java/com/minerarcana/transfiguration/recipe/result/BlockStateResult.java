@@ -29,7 +29,7 @@ public class BlockStateResult extends Result {
     @Override
     @Nonnull
     public ItemStack getRepresentation() {
-        return new ItemStack(blockState.getBlock().asItem());
+        return this.getBlockAsItem(this.getBlockState().getBlock());
     }
 
     @Nonnull

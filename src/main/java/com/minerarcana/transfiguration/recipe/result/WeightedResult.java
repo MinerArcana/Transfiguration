@@ -5,16 +5,14 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
 
 public class WeightedResult extends Result {
     private final SimpleWeightedRandomList<Result> weightedResults;
     private final RandomSource random;
+    private final List<ItemStack> representations;
 
     public WeightedResult(List<Pair<Result, Integer>> results) {
         SimpleWeightedRandomList.Builder<Result> weightedBuilder = SimpleWeightedRandomList.builder();
@@ -23,6 +21,10 @@ public class WeightedResult extends Result {
         }
         this.weightedResults = weightedBuilder.build();
         this.random = RandomSource.create();
+        this.representations = results.stream()
+                .map(Pair::getFirst)
+                .flatMap(result -> result.getAllRepresentations().stream())
+                .toList();
     }
 
     public SimpleWeightedRandomList<Result> getWeightedResults() {
@@ -41,6 +43,11 @@ public class WeightedResult extends Result {
     @Override
     public ItemStack getRepresentation() {
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public List<ItemStack> getAllRepresentations() {
+        return this.representations;
     }
 
     @NotNull

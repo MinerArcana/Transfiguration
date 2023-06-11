@@ -35,7 +35,7 @@ public class TagIngredientSerializer extends BasicIngredientSerializer<TagIngred
         writeTag(buffer, object.getEntityTag());
     }
 
-    private <T extends Registry<U>, U> void writeTag(FriendlyByteBuf buffer, TagKey<U> tag) {
+    private <U> void writeTag(FriendlyByteBuf buffer, TagKey<U> tag) {
         buffer.writeBoolean(tag != null);
         if (tag != null) {
             buffer.writeResourceLocation(tag.location());
