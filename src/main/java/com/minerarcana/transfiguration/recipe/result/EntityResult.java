@@ -10,6 +10,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -19,11 +22,14 @@ public class EntityResult extends Result {
     private final EntityType<?> entityType;
     private final CompoundTag defaultTag;
     private final NBTCopier nbtCopier;
+    private final ItemStack representation;
 
     public EntityResult(EntityType<?> entityType, CompoundTag defaultTag, NBTCopier nbtCopier) {
         this.entityType = entityType;
         this.defaultTag = defaultTag;
         this.nbtCopier = nbtCopier;
+        SpawnEggItem item = ForgeSpawnEggItem.fromEntityType(entityType);
+        this.representation = item != null ? new ItemStack(item) : ItemStack.EMPTY;
     }
 
     @Nonnull
@@ -56,7 +62,12 @@ public class EntityResult extends Result {
     @Override
     @Nonnull
     public ItemStack getRepresentation() {
-        return ItemStack.EMPTY;
+        return this.representation;
+    }
+
+    @Override
+    public Ingredient getView() {
+        return Ingredient.of(this.getRepresentation());
     }
 
     @Nonnull

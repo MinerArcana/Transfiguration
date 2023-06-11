@@ -6,6 +6,7 @@ import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInst
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import javax.annotation.Nonnull;
 
@@ -37,6 +38,11 @@ public class ItemResult extends Result {
     @Override
     public ItemStack getRepresentation() {
         return output;
+    }
+
+    @Override
+    public Ingredient getView() {
+        return Ingredient.of(this.output);
     }
 
     @Nonnull

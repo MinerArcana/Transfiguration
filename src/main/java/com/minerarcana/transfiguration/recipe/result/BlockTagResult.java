@@ -5,17 +5,27 @@ import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Objects;
 
 public class BlockTagResult extends Result {
     private final TagKey<Block> tag;
+    private final Lazy<Ingredient> representations;
 
     public BlockTagResult(TagKey<Block> tag) {
         this.tag = tag;
+        this.representations = Lazy.of(() -> Ingredient.of(Objects.requireNonNull(ForgeRegistries.BLOCKS.tags())
+                .getTag(this.getTag())
+                .stream()
+                .map(this::getBlockAsItem)
+                .toArray(ItemStack[]::new)
+        ));
     }
 
     public void handle(@Nonnull TransfigurationContainer<?> transfigurationContainer, double powerModifier) {
@@ -41,6 +51,12 @@ public class BlockTagResult extends Result {
     public ItemStack getRepresentation() {
         return ItemStack.EMPTY;
     }
+
+    @Override
+    public Ingredient getView() {
+        return this.representations.get();
+    }
+
 
     @Nonnull
     @Override

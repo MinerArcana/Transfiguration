@@ -37,6 +37,8 @@
   "item.transfiguration.xenoi_dust": "ʇsnᗡ %s",
   "item.transfiguration.xenoi_wand": "puɐM %s",
   "itemGroup.transfiguration": "uoıʇɐɹnbıɟsuɐɹ⟘",
+  "screen.transfiguration.block_transfiguration": "uoıʇɐɹnbıɟsuɐɹ⟘ ʞɔoןᗺ",
+  "screen.transfiguration.entity_transfiguration": "uoıʇɐɹnbıɟsuɐɹ⟘ ʎʇıʇuƎ",
   "transfiguration_type.transfiguration.accursed": "pǝsɹnɔɔⱯ",
   "transfiguration_type.transfiguration.animation": "uoıʇɐɯıuⱯ",
   "transfiguration_type.transfiguration.blessed": "pǝssǝןᗺ",
@@ -46,6 +48,5 @@
   "transfiguration_type.transfiguration.mutandi": "ıpuɐʇnW",
   "transfiguration_type.transfiguration.netheri": "ıɹǝɥʇǝN",
   "transfiguration_type.transfiguration.overni": "ıuɹǝʌO",
-  "transfiguration_type.transfiguration.xenoi": "ıouǝX",
-  "upgrade.transfiguration.transfiguring.advective": "buıɹnbıɟsuɐɹ⟘"
+  "transfiguration_type.transfiguration.xenoi": "ıouǝX"
 }

@@ -1,6 +1,5 @@
 package com.minerarcana.transfiguration.content;
 
-import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
@@ -10,10 +9,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public class TransfigurationAdditionalData {
-
-    public static void addLang(RegistrateLangProvider langProvider) {
-        langProvider.add("upgrade.transfiguration.transfiguring.advective", "Transfiguring");
-    }
 
     public static void addEntityTypeTags(RegistrateTagsProvider<EntityType<?>> tagsProvider) {
         tagsProvider.tag(TransfigurationEntityTypeTags.OUTPUTS_ACCURSED)
@@ -100,5 +95,16 @@ public class TransfigurationAdditionalData {
                         Items.HORN_CORAL_FAN
                 );
 
+        tagsProvider.tag(TransfigurationItemTags.INPUTS_NETHERI_MUSHROOM)
+                .add(
+                        Items.BROWN_MUSHROOM,
+                        Items.RED_MUSHROOM
+                );
+
+        tagsProvider.tag(TransfigurationItemTags.OUTPUTS_NETHERI_MUSHROOM)
+                .add(
+                        Items.CRIMSON_FUNGUS,
+                        Items.WARPED_FUNGUS
+                );
     }
 }

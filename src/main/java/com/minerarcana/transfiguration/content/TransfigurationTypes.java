@@ -20,7 +20,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -345,12 +344,28 @@ public class TransfigurationTypes {
 
 
     public static Item getDust(Supplier<TransfigurationType> transfigurationTypeSupplier) {
-        ResourceLocation registryName = getRegistry().getKey(transfigurationTypeSupplier.get());
+        return getDust(transfigurationTypeSupplier.get());
+    }
+
+    public static Item getDust(TransfigurationType transfigurationType) {
+        return getItem(transfigurationType, "dust");
+    }
+
+    public static Item getWand(TransfigurationType transfigurationType) {
+        return getItem(transfigurationType, "wand");
+    }
+
+    public static Item getCatalyst(TransfigurationType transfigurationType) {
+        return getItem(transfigurationType, "catalyst");
+    }
+
+    public static Item getItem(TransfigurationType transfigurationType, String type) {
+        ResourceLocation registryName = getRegistry().getKey(transfigurationType);
         if (registryName == null) {
             throw new IllegalStateException("Registry Name was null");
         } else {
             Item dustItem = ForgeRegistries.ITEMS.getValue(
-                    new ResourceLocation(registryName.getNamespace(), registryName.getPath() + "_dust")
+                    new ResourceLocation(registryName.getNamespace(), registryName.getPath() + "_" + type)
             );
             if (dustItem == null) {
                 throw new IllegalStateException("Failed to find Dust for Type: " + registryName);
@@ -359,6 +374,8 @@ public class TransfigurationTypes {
             }
         }
     }
+
+
 
     public static IForgeRegistry<TransfigurationType> getRegistry() {
         return REGISTRY.get();

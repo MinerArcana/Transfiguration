@@ -1,12 +1,12 @@
 package com.minerarcana.transfiguration.recipe.json;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.*;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.Range;
 
@@ -64,7 +64,7 @@ public class ObjectJson {
     }
 
     public static <T extends Number & Comparable<T>> Range<T> getRange(JsonObject jsonObject, String fieldName,
-                                                                Function<JsonElement, T> transformer) {
+                                                                       Function<JsonElement, T> transformer) {
         Range<T> range;
         if (jsonObject.has(fieldName) && jsonObject.get(fieldName).isJsonObject()) {
             JsonObject rangeObject = jsonObject.getAsJsonObject(fieldName);
@@ -79,5 +79,26 @@ public class ObjectJson {
             );
         }
         return range;
+    }
+
+    public static Pair<Ingredient, Ingredient> getViewOverrides(JsonObject jsonObject) {
+        Ingredient ingredient = null;
+        Ingredient result = null;
+        if (jsonObject.has("view")) {
+            JsonObject viewObject = GsonHelper.getAsJsonObject(jsonObject, "view");
+            if (viewObject.has("ingredient")) {
+                ingredient = CraftingHelper.getIngredient(viewObject.get("ingredient"));
+                if (ingredient.isEmpty()) {
+                    throw new JsonParseException("Failed to find valid Ingredient in view.ingredient");
+                }
+            }
+            if (viewObject.has("result")) {
+                result = CraftingHelper.getIngredient(viewObject.get("result"));
+                if (result.isEmpty()) {
+                    throw new JsonParseException("Failed to find valid Ingredient in view.result");
+                }
+            }
+        }
+        return Pair.of(ingredient, result);
     }
 }

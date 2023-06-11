@@ -6,6 +6,7 @@ import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInst
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -39,6 +40,11 @@ public class FallingBlockResult extends Result {
     @Override
     public ItemStack getRepresentation() {
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public Ingredient getView() {
+        return Ingredient.EMPTY;
     }
 
     @Nonnull

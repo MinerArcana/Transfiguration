@@ -20,7 +20,6 @@ public class Transfiguration {
             .creativeModeTab(TransfiguringItemGroup::new, "Transfiguration")
             .addDataGenerator(ProviderType.ENTITY_TAGS, TransfigurationAdditionalData::addEntityTypeTags)
             .addDataGenerator(ProviderType.BLOCK_TAGS, TransfigurationAdditionalData::addBlockTags)
-            .addDataGenerator(ProviderType.LANG, TransfigurationAdditionalData::addLang)
             .addDataGenerator(ProviderType.ITEM_TAGS, TransfigurationAdditionalData::addItemTags)
     );
 
@@ -34,6 +33,7 @@ public class Transfiguration {
         TransfigurationRecipes.register(modEventBus);
         TransfigurationParticles.setup();
         TransfigurationPredicates.setup();
+        TransfigurationText.setup();
         TransfigurationTypes.setup();
     }
 

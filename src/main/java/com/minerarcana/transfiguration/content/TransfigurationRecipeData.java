@@ -20,6 +20,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
@@ -327,7 +328,9 @@ public class TransfigurationRecipeData {
 
         TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.blockTag(TransfigurationBlockTags.INPUTS_NETHERI_MUSHROOM))
+                .withViewIngredient(Ingredient.of(TransfigurationItemTags.INPUTS_NETHERI_MUSHROOM))
                 .withResult(ResultBuilder.blockTag(TransfigurationBlockTags.OUTPUTS_NETHERI_MUSHROOM))
+                .withViewResult(Ingredient.of(TransfigurationItemTags.OUTPUTS_NETHERI_MUSHROOM))
                 .build(provider);
 
         TransfigurationRecipeBuilder.createEntity(context)
@@ -425,7 +428,9 @@ public class TransfigurationRecipeData {
 
         TransfigurationRecipeBuilder.createBlock(context)
                 .withIngredient(IngredientBuilder.blockTag(TransfigurationBlockTags.OUTPUTS_NETHERI_MUSHROOM))
+                .withViewIngredient(Ingredient.of(TransfigurationItemTags.OUTPUTS_NETHERI_MUSHROOM))
                 .withResult(ResultBuilder.blockTag(TransfigurationBlockTags.INPUTS_NETHERI_MUSHROOM))
+                .withViewResult(Ingredient.of(TransfigurationItemTags.INPUTS_NETHERI_MUSHROOM))
                 .build(provider);
 
         TransfigurationRecipeBuilder.createEntity(context)
@@ -491,6 +496,7 @@ public class TransfigurationRecipeData {
         TransfigurationRecipeBuilder.createEntity(context.get())
                 .withIngredient(IngredientBuilder.matches(EntityType.WITHER_SKELETON))
                 .withResult(ResultBuilder.entityType(EntityType.END_CRYSTAL))
+                .withViewResult(Ingredient.of(Items.END_CRYSTAL))
                 .build(provider);
 
         TransfigurationRecipeBuilder.createEntity(context.get())
@@ -506,6 +512,7 @@ public class TransfigurationRecipeData {
         TransfigurationRecipeBuilder.createEntity(context.get())
                 .withPredicate(new InStructurePredicate(BuiltinStructures.END_CITY))
                 .withIngredient(IngredientBuilder.matches(EntityType.ITEM_FRAME))
+                .withViewIngredient(Ingredient.of(Items.ITEM_FRAME))
                 .withResult(ResultBuilder.entityType(
                         EntityType.ITEM_FRAME,
                         CompoundTagBuilder.start()
@@ -517,6 +524,7 @@ public class TransfigurationRecipeData {
                                 .copy("Fixed")
                                 .build()
                 ))
+                .withViewResult(Ingredient.of(Items.ELYTRA))
                 .build(provider);
 
         TransfigurationRecipeBuilder.createBlock(context.get())

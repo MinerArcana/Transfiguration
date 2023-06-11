@@ -13,6 +13,8 @@ import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate
 import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -22,14 +24,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 public class EntityTransfigurationRecipe extends TransfigurationRecipe<Entity> {
     public EntityTransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType,
                                        BasicIngredient ingredient, Result result, TransfigurationPredicate[] predicate,
-                                       int time, float skip) {
-        super(recipeId, transfigurationType, ingredient, result, predicate, time, skip);
+                                       int time, float skip, Ingredient viewIngredient, Ingredient viewResult) {
+        super(recipeId, transfigurationType, ingredient, result, predicate, time, skip, viewIngredient, viewResult);
     }
 
 

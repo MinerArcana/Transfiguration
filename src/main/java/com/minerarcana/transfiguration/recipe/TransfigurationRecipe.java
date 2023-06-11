@@ -10,9 +10,11 @@ import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.function.Predicate;
 
 public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe<U> {
@@ -24,9 +26,11 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
     private final Predicate<TransfigurationContainer<?>> combinedPredicate;
     private final int ticks;
     private final float skip;
+    private final Ingredient viewIngredient;
+    private final Ingredient viewResult;
 
     public TransfigurationRecipe(ResourceLocation recipeId, TransfigurationType transfigurationType, BasicIngredient ingredient,
-                                 Result result, TransfigurationPredicate[] predicates, int ticks, float skip) {
+                                 Result result, TransfigurationPredicate[] predicates, int ticks, float skip, Ingredient viewIngredient, Ingredient viewResult) {
         this.recipeId = recipeId;
         this.transfigurationType = transfigurationType;
         this.ingredient = ingredient;
@@ -35,6 +39,8 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
         this.combinedPredicate = LootItemConditions.andConditions(predicates);
         this.ticks = ticks;
         this.skip = skip;
+        this.viewIngredient = viewIngredient;
+        this.viewResult = viewResult;
     }
 
     protected boolean matches(@Nonnull TransfigurationContainer<?> transfigurationContainer) {
@@ -79,14 +85,17 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
             TransfigurationContainer<U> transfigurationContainer, double timeModifier, double powerModifier
     );
 
+    @Override
     public TransfigurationType getTransfigurationType() {
         return transfigurationType;
     }
 
+    @Override
     public BasicIngredient getIngredient() {
         return ingredient;
     }
 
+    @Override
     public Result getResult() {
         return result;
     }
@@ -107,5 +116,15 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
 
     public TransfigurationPredicate[] getPredicates() {
         return predicates;
+    }
+
+    @Override
+    public Ingredient getViewIngredient() {
+        return this.viewIngredient != null ? this.viewIngredient : this.getIngredient().asItemIngredient();
+    }
+
+    @Override
+    public Ingredient getViewResults() {
+        return this.viewResult != null ? this.viewResult : this.getResult().getView();
     }
 }

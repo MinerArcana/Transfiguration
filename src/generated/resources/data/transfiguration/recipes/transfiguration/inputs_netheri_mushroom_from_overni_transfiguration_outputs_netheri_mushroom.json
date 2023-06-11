@@ -9,5 +9,13 @@
     "tag": "transfiguration:inputs/netheri/mushroom"
   },
   "ticks": 240,
-  "transfigurationType": "transfiguration:overni"
+  "transfigurationType": "transfiguration:overni",
+  "view": {
+    "ingredient": {
+      "tag": "transfiguration:outputs/netheri/mushroom"
+    },
+    "result": {
+      "tag": "transfiguration:inputs/netheri/mushroom"
+    }
+  }
 }

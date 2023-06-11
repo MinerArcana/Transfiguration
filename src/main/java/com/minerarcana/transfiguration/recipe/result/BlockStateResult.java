@@ -4,6 +4,7 @@ import com.minerarcana.transfiguration.api.recipe.TransfigurationContainer;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.resultinstance.AfterDoneResultInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -29,7 +30,12 @@ public class BlockStateResult extends Result {
     @Override
     @Nonnull
     public ItemStack getRepresentation() {
-        return new ItemStack(blockState.getBlock().asItem());
+        return this.getBlockAsItem(this.getBlockState().getBlock());
+    }
+
+    @Override
+    public Ingredient getView() {
+        return Ingredient.of(this.getRepresentation());
     }
 
     @Nonnull

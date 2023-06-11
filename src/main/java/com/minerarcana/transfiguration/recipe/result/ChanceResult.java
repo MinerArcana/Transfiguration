@@ -3,6 +3,7 @@ package com.minerarcana.transfiguration.recipe.result;
 import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.resultinstance.ChanceResultInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
@@ -28,6 +29,11 @@ public class ChanceResult extends Result {
     @Override
     public ItemStack getRepresentation() {
         return result.getRepresentation();
+    }
+
+    @Override
+    public Ingredient getView() {
+        return this.result.getView();
     }
 
     @Nonnull

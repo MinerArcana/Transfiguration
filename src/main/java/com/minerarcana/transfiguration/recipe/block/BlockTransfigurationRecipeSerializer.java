@@ -3,13 +3,16 @@ package com.minerarcana.transfiguration.recipe.block;
 import com.google.gson.JsonObject;
 import com.minerarcana.transfiguration.content.TransfigurationTypes;
 import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
+import com.minerarcana.transfiguration.recipe.json.ObjectJson;
 import com.minerarcana.transfiguration.recipe.json.RegistryJson;
 import com.minerarcana.transfiguration.recipe.json.SerializerJson;
 import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate;
 import com.minerarcana.transfiguration.recipe.result.Result;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import javax.annotation.Nonnull;
@@ -22,6 +25,7 @@ public class BlockTransfigurationRecipeSerializer implements RecipeSerializer<Bl
     @Nonnull
     @ParametersAreNonnullByDefault
     public BlockTransfigurationRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+        Pair<Ingredient, Ingredient> viewOverrides = ObjectJson.getViewOverrides(json);
         return new BlockTransfigurationRecipe(
                 recipeId,
                 RegistryJson.getTransfigurationType(json),
@@ -29,7 +33,9 @@ public class BlockTransfigurationRecipeSerializer implements RecipeSerializer<Bl
                 SerializerJson.getResult(json),
                 TransfigurationPredicate.fromJson(json),
                 GsonHelper.getAsInt(json, "ticks", 12 * 20),
-                GsonHelper.getAsFloat(json, "skip", 0F)
+                GsonHelper.getAsFloat(json, "skip", 0F),
+                viewOverrides.getFirst(),
+                viewOverrides.getSecond()
         );
     }
 
@@ -44,7 +50,9 @@ public class BlockTransfigurationRecipeSerializer implements RecipeSerializer<Bl
                 Result.fromBuffer(buffer),
                 TransfigurationPredicate.fromBuffer(buffer),
                 buffer.readInt(),
-                buffer.readFloat()
+                buffer.readFloat(),
+                buffer.readBoolean() ? Ingredient.fromNetwork(buffer) : null,
+                buffer.readBoolean() ? Ingredient.fromNetwork(buffer) : null
         );
 
     }
@@ -58,5 +66,13 @@ public class BlockTransfigurationRecipeSerializer implements RecipeSerializer<Bl
         TransfigurationPredicate.toBuffer(buffer, recipe.getPredicates());
         buffer.writeInt(recipe.getTicks());
         buffer.writeFloat(recipe.getSkip());
+        buffer.writeBoolean(recipe.getViewIngredient() != null);
+        if (recipe.getViewIngredient() != null) {
+            recipe.getViewIngredient().toNetwork(buffer);
+        }
+        buffer.writeBoolean(recipe.getViewResults() != null);
+        if (recipe.getViewResults() != null) {
+            recipe.getViewResults().toNetwork(buffer);
+        }
     }
 }

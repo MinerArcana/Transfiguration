@@ -4,6 +4,7 @@ import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
@@ -27,5 +28,9 @@ public abstract class BasicIngredient implements ISerializable<BasicIngredientSe
         BasicIngredientSerializer<T> blockIngredientSerializer = (BasicIngredientSerializer<T>) basicIngredient.getSerializer();
         packetBuffer.writeRegistryId(TransfigurationRecipes.getIngredientRegistry(), blockIngredientSerializer);
         blockIngredientSerializer.write(packetBuffer, basicIngredient);
+    }
+
+    public Ingredient asItemIngredient() {
+        return Ingredient.EMPTY;
     }
 }
