@@ -33,5 +33,13 @@
     "nbt": "{Item:{Count:1b,id:\"minecraft:elytra\",tag:{Damage:0}}}"
   },
   "ticks": 240,
-  "transfigurationType": "transfiguration:xenoi"
+  "transfigurationType": "transfiguration:xenoi",
+  "view": {
+    "ingredient": {
+      "item": "minecraft:item_frame"
+    },
+    "result": {
+      "item": "minecraft:elytra"
+    }
+  }
 }

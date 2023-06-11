@@ -9,9 +9,12 @@ import com.minerarcana.transfiguration.recipe.predicate.TransfigurationPredicate
 import com.minerarcana.transfiguration.recipe.result.ResultSerializer;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -22,6 +25,8 @@ public class TransfigurationRecipeBuilder {
     private final List<TransfigurationPredicate> predicates;
     private IFinishedObject<BasicIngredientSerializer<?>> ingredient;
     private IFinishedObject<ResultSerializer<?>> result;
+    private Ingredient viewIngredient;
+    private Ingredient viewResult;
     private int ticks = 12 * 20;
 
     private TransfigurationRecipeBuilder(TransfigurationType transfigurationType, RecipeSerializer<?> recipeSerializer) {
@@ -67,6 +72,16 @@ public class TransfigurationRecipeBuilder {
         return this;
     }
 
+    public TransfigurationRecipeBuilder withViewIngredient(Ingredient ingredient) {
+        this.viewIngredient = ingredient;
+        return this;
+    }
+
+    public TransfigurationRecipeBuilder withViewResult(Ingredient viewResult) {
+        this.viewResult = viewResult;
+        return this;
+    }
+
     public void build(Consumer<FinishedRecipe> recipeConsumer) {
         this.build(recipeConsumer, null);
     }
@@ -80,7 +95,7 @@ public class TransfigurationRecipeBuilder {
                     + "_" + ingredient.getId().toString().replace(":", "_").replace("/", "_"));
         }
         recipeConsumer.accept(new TransfigurationFinishedRecipe<>(recipeSerializer, id, transfigurationType,
-                ingredient, result, predicates, ticks));
+                ingredient, result, predicates, ticks, viewIngredient, viewResult));
     }
 
     protected void validate(ResourceLocation id) {

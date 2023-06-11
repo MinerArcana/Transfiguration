@@ -4,6 +4,7 @@ import com.minerarcana.transfiguration.content.TransfigurationRecipes;
 import com.minerarcana.transfiguration.recipe.serializer.ISerializable;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -19,9 +20,7 @@ public abstract class Result implements ISerializable<ResultSerializer<?>> {
     @Nonnull
     public abstract ItemStack getRepresentation();
 
-    public List<ItemStack> getAllRepresentations() {
-        return List.of(this.getRepresentation());
-    }
+    public abstract Ingredient getView();
 
     public static Result fromBuffer(FriendlyByteBuf buffer) {
         ResultSerializer<?> serializer = buffer.readRegistryId();

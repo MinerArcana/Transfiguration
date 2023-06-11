@@ -9,5 +9,10 @@
     "entity": "minecraft:end_crystal"
   },
   "ticks": 240,
-  "transfigurationType": "transfiguration:xenoi"
+  "transfigurationType": "transfiguration:xenoi",
+  "view": {
+    "result": {
+      "item": "minecraft:end_crystal"
+    }
+  }
 }

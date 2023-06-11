@@ -1,5 +1,6 @@
 package com.minerarcana.transfiguration.compat.jei;
 
+import com.minerarcana.transfiguration.Transfiguration;
 import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.api.recipe.ITransfigurationRecipe;
 import com.minerarcana.transfiguration.content.TransfigurationTypes;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Arrays;
 
 public abstract class TransfigurationRecipeCategory<T extends ITransfigurationRecipe<U>, U> implements IRecipeCategory<T> {
     private final IDrawable background;
@@ -48,16 +50,20 @@ public abstract class TransfigurationRecipeCategory<T extends ITransfigurationRe
     @Override
     @ParametersAreNonnullByDefault
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 1)
-                .addIngredients(recipe.getIngredient().asItemIngredient())
-                .setSlotName("input");
+        if (recipe.getViewIngredient().isEmpty() || recipe.getViewResults().isEmpty()) {
+            Transfiguration.LOGGER.error("Found Errored Recipe View: " + recipe.getId());
+        } else {
+            builder.addSlot(RecipeIngredientRole.INPUT, 1, 1)
+                    .addIngredients(recipe.getViewIngredient())
+                    .setSlotName("input");
 
-        builder.addSlot(RecipeIngredientRole.CATALYST, 50, 1)
-                .addItemStack(new ItemStack(TransfigurationTypes.getDust(recipe::getTransfigurationType)))
-                .setSlotName("catalyst");
+            builder.addSlot(RecipeIngredientRole.CATALYST, 50, 1)
+                    .addItemStack(new ItemStack(TransfigurationTypes.getDust(recipe::getTransfigurationType)))
+                    .setSlotName("catalyst");
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 108, 1)
-                .addItemStacks(recipe.getResult().getAllRepresentations())
-                .setSlotName("output");
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 108, 1)
+                    .addIngredients(recipe.getViewResults())
+                    .setSlotName("output");
+        }
     }
 }

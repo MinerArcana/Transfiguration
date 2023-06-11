@@ -9,10 +9,12 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.Util;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.tags.ITag;
 import org.jetbrains.annotations.NotNull;
@@ -25,11 +27,18 @@ public class BlockTagWithPropertyResult extends Result {
     private final TagKey<Block> tag;
     private final Map<String, String> properties;
     private final Supplier<List<BlockState>> blockStates;
+    private final Lazy<Ingredient> view;
 
     public BlockTagWithPropertyResult(TagKey<Block> tag, Map<String, String> properties) {
         this.tag = tag;
         this.properties = properties;
         this.blockStates = Suppliers.memoize(this::setupBlockStates);
+        this.view = Lazy.of(() -> Ingredient.of(Objects.requireNonNull(ForgeRegistries.BLOCKS.tags())
+                .getTag(this.getTag())
+                .stream()
+                .map(this::getBlockAsItem)
+                .toArray(ItemStack[]::new)
+        ));
     }
 
     private List<BlockState> setupBlockStates() {
@@ -81,6 +90,11 @@ public class BlockTagWithPropertyResult extends Result {
     @Override
     public ItemStack getRepresentation() {
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public Ingredient getView() {
+        return this.view.get();
     }
 
     @NotNull

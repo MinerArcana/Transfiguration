@@ -10,6 +10,7 @@ import com.minerarcana.transfiguration.recipe.serializer.ISerializer;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import javax.annotation.Nonnull;
@@ -25,12 +26,14 @@ public class TransfigurationFinishedRecipe<T extends ISerializer<?>> implements 
     private final IFinishedObject<ResultSerializer<?>> result;
     private final List<TransfigurationPredicate> predicates;
     private final int ticks;
+    private final Ingredient viewIngredient;
+    private final Ingredient viewResult;
 
     public TransfigurationFinishedRecipe(RecipeSerializer<?> recipeSerializer, ResourceLocation id,
                                          TransfigurationType transfigurationType, IFinishedObject<T> ingredient,
                                          IFinishedObject<ResultSerializer<?>> result,
                                          List<TransfigurationPredicate> predicates,
-                                         int ticks) {
+                                         int ticks, Ingredient viewIngredient, Ingredient viewResult) {
         this.recipeSerializer = recipeSerializer;
         this.id = id;
         this.transfigurationType = transfigurationType;
@@ -38,6 +41,8 @@ public class TransfigurationFinishedRecipe<T extends ISerializer<?>> implements 
         this.result = result;
         this.predicates = predicates;
         this.ticks = ticks;
+        this.viewIngredient = viewIngredient;
+        this.viewResult = viewResult;
     }
 
     @Override
@@ -54,6 +59,18 @@ public class TransfigurationFinishedRecipe<T extends ISerializer<?>> implements 
                             .getOrThrow(false, message -> {
                             })
             );
+        }
+        if (viewIngredient != null || viewResult != null) {
+            JsonObject viewObject = new JsonObject();
+
+            if (viewIngredient != null) {
+                viewObject.add("ingredient", viewIngredient.toJson());
+            }
+            if (viewResult != null) {
+                viewObject.add("result", viewResult.toJson());
+            }
+
+            json.add("view", viewObject);
         }
     }
 

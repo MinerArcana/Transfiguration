@@ -95,5 +95,16 @@ public class TransfigurationAdditionalData {
                         Items.HORN_CORAL_FAN
                 );
 
+        tagsProvider.tag(TransfigurationItemTags.INPUTS_NETHERI_MUSHROOM)
+                .add(
+                        Items.BROWN_MUSHROOM,
+                        Items.RED_MUSHROOM
+                );
+
+        tagsProvider.tag(TransfigurationItemTags.OUTPUTS_NETHERI_MUSHROOM)
+                .add(
+                        Items.CRIMSON_FUNGUS,
+                        Items.WARPED_FUNGUS
+                );
     }
 }

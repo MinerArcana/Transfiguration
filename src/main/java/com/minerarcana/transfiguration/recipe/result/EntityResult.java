@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 
 import javax.annotation.Nonnull;
@@ -62,6 +63,11 @@ public class EntityResult extends Result {
     @Nonnull
     public ItemStack getRepresentation() {
         return this.representation;
+    }
+
+    @Override
+    public Ingredient getView() {
+        return Ingredient.of(this.getRepresentation());
     }
 
     @Nonnull
