@@ -51,11 +51,23 @@ public class TransfigurationJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
-        recipeTypes.forEach((type, categories) -> registration.addRecipeCatalyst(
-                new ItemStack(TransfigurationTypes.getDust(type)),
-                categories.getFirst().getRecipeType(),
-                categories.getSecond().getRecipeType()
-        ));
+        recipeTypes.forEach((type, categories) -> {
+            registration.addRecipeCatalyst(
+                    new ItemStack(TransfigurationTypes.getDust(type)),
+                    categories.getFirst().getRecipeType(),
+                    categories.getSecond().getRecipeType()
+            );
+            registration.addRecipeCatalyst(
+                    new ItemStack(TransfigurationTypes.getCatalyst(type)),
+                    categories.getFirst().getRecipeType(),
+                    categories.getSecond().getRecipeType()
+            );
+            registration.addRecipeCatalyst(
+                    new ItemStack(TransfigurationTypes.getWand(type)),
+                    categories.getFirst().getRecipeType(),
+                    categories.getSecond().getRecipeType()
+            );
+        });
     }
 
     @Override

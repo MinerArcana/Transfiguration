@@ -15,7 +15,7 @@ public class EntityTransfigurationRecipeCategory extends TransfigurationRecipeCa
     private final RecipeType<ITransfigurationRecipe<Entity>> recipeType;
 
     public EntityTransfigurationRecipeCategory(IGuiHelper guiHelper, TransfigurationType transfigurationType) {
-        super(guiHelper);
+        super(guiHelper, transfigurationType);
         this.recipeType = new RecipeType<>(
                 new ResourceLocation(transfigurationType.getEntityRecipeType().toString()),
                 EntityTransfigurationRecipe.class

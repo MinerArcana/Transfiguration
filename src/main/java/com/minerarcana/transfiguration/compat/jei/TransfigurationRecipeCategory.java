@@ -26,7 +26,7 @@ public abstract class TransfigurationRecipeCategory<T extends ITransfigurationRe
     private final IDrawable background;
     private final IDrawable icon;
 
-    public TransfigurationRecipeCategory(IGuiHelper guiHelper) {
+    public TransfigurationRecipeCategory(IGuiHelper guiHelper, TransfigurationType transfigurationType) {
         ResourceLocation location = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
         background = guiHelper.drawableBuilder(location, 0, 168, 125, 18)
                 .addPadding(0, 20, 0, 0)
@@ -34,7 +34,8 @@ public abstract class TransfigurationRecipeCategory<T extends ITransfigurationRe
 
         icon = guiHelper.createDrawableIngredient(
                 VanillaTypes.ITEM_STACK,
-                TransfigurationItems.MAGIC_POWDER.asStack()
+                TransfigurationTypes.getDust(transfigurationType)
+                        .getDefaultInstance()
         );
     }
 
@@ -57,7 +58,7 @@ public abstract class TransfigurationRecipeCategory<T extends ITransfigurationRe
                 .addIngredients(recipe.getIngredient().asItemIngredient())
                 .setSlotName("input");
 
-       builder.addSlot(RecipeIngredientRole.CATALYST, 50, 1)
+        builder.addSlot(RecipeIngredientRole.CATALYST, 50, 1)
                 .addItemStack(new ItemStack(TransfigurationTypes.getDust(recipe::getTransfigurationType)))
                 .setSlotName("catalyst");
 

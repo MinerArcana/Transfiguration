@@ -15,7 +15,7 @@ public class BlockTransfigurationRecipeCategory extends TransfigurationRecipeCat
     private final RecipeType<ITransfigurationRecipe<BlockState>> recipeType;
 
     public BlockTransfigurationRecipeCategory(IGuiHelper guiHelper, TransfigurationType transfigurationType) {
-        super(guiHelper);
+        super(guiHelper, transfigurationType);
         this.recipeType = new RecipeType<>(
                 new ResourceLocation(transfigurationType.getBlockRecipeType().toString()),
                 BlockTransfigurationRecipe.class
