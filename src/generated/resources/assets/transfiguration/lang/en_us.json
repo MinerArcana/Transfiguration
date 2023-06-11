@@ -37,6 +37,8 @@
   "item.transfiguration.xenoi_dust": "%s Dust",
   "item.transfiguration.xenoi_wand": "%s Wand",
   "itemGroup.transfiguration": "Transfiguration",
+  "screen.transfiguration.block_transfiguration": "Block Transfiguration",
+  "screen.transfiguration.entity_transfiguration": "Entity Transfiguration",
   "transfiguration_type.transfiguration.accursed": "Accursed",
   "transfiguration_type.transfiguration.animation": "Animation",
   "transfiguration_type.transfiguration.blessed": "Blessed",
@@ -46,6 +48,5 @@
   "transfiguration_type.transfiguration.mutandi": "Mutandi",
   "transfiguration_type.transfiguration.netheri": "Netheri",
   "transfiguration_type.transfiguration.overni": "Overni",
-  "transfiguration_type.transfiguration.xenoi": "Xenoi",
-  "upgrade.transfiguration.transfiguring.advective": "Transfiguring"
+  "transfiguration_type.transfiguration.xenoi": "Xenoi"
 }

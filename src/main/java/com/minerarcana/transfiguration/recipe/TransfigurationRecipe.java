@@ -79,14 +79,17 @@ public abstract class TransfigurationRecipe<U> implements ITransfigurationRecipe
             TransfigurationContainer<U> transfigurationContainer, double timeModifier, double powerModifier
     );
 
+    @Override
     public TransfigurationType getTransfigurationType() {
         return transfigurationType;
     }
 
+    @Override
     public BasicIngredient getIngredient() {
         return ingredient;
     }
 
+    @Override
     public Result getResult() {
         return result;
     }

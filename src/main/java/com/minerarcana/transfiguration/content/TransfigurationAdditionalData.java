@@ -1,6 +1,5 @@
 package com.minerarcana.transfiguration.content;
 
-import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
@@ -10,10 +9,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public class TransfigurationAdditionalData {
-
-    public static void addLang(RegistrateLangProvider langProvider) {
-        langProvider.add("upgrade.transfiguration.transfiguring.advective", "Transfiguring");
-    }
 
     public static void addEntityTypeTags(RegistrateTagsProvider<EntityType<?>> tagsProvider) {
         tagsProvider.tag(TransfigurationEntityTypeTags.OUTPUTS_ACCURSED)

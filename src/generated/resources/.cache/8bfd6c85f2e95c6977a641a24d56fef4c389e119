@@ -1,8 +1,8 @@
-// 1.19.2	2023-01-24T23:27:22.201578	Registrate Provider for transfiguration [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2023-06-11T15:32:02.753257	Registrate Provider for transfiguration [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 f59dc14e5193249b2c9e218f80c338cd3e8eb677 assets/transfiguration/blockstates/catalyst_substrate.json
 7eb4e046b4dfea192e5279e6800acf2336b5f3a3 assets/transfiguration/blockstates/catalyst_substrate_block.json
-8529f088b749c0b8b210caeb11853368a897e933 assets/transfiguration/lang/en_ud.json
-c702877d2a0b20805bd694eb0b1f76dea7eece8b assets/transfiguration/lang/en_us.json
+a867b0d31b5e16c678cd1137f9ae0b283623db09 assets/transfiguration/lang/en_ud.json
+615c9d242293aefc7c8228bd01eaa46ba2a19c99 assets/transfiguration/lang/en_us.json
 d6240e98a1a256ed62ac44a459e0efd98798a8f5 assets/transfiguration/models/item/accursed_catalyst.json
 79ec3dab6ab5a8af524bfeba5794937cc15efb2a assets/transfiguration/models/item/accursed_dust.json
 eb41bdedb503595a0019b89098820f1b2eec4440 assets/transfiguration/models/item/accursed_wand.json

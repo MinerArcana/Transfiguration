@@ -20,7 +20,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -345,7 +344,11 @@ public class TransfigurationTypes {
 
 
     public static Item getDust(Supplier<TransfigurationType> transfigurationTypeSupplier) {
-        ResourceLocation registryName = getRegistry().getKey(transfigurationTypeSupplier.get());
+        return getDust(transfigurationTypeSupplier.get());
+    }
+
+    public static Item getDust(TransfigurationType transfigurationType) {
+        ResourceLocation registryName = getRegistry().getKey(transfigurationType);
         if (registryName == null) {
             throw new IllegalStateException("Registry Name was null");
         } else {

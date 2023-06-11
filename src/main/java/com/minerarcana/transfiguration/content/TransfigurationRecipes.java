@@ -2,7 +2,6 @@ package com.minerarcana.transfiguration.content;
 
 import com.google.common.base.Suppliers;
 import com.minerarcana.transfiguration.Transfiguration;
-import com.minerarcana.transfiguration.api.TransfigurationType;
 import com.minerarcana.transfiguration.recipe.block.BlockTransfigurationRecipeSerializer;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipe;
 import com.minerarcana.transfiguration.recipe.dust.DustRecipeSerializer;

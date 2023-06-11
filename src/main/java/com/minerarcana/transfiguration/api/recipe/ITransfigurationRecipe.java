@@ -1,5 +1,8 @@
 package com.minerarcana.transfiguration.api.recipe;
 
+import com.minerarcana.transfiguration.api.TransfigurationType;
+import com.minerarcana.transfiguration.recipe.ingedient.BasicIngredient;
+import com.minerarcana.transfiguration.recipe.result.Result;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.crafting.Recipe;
 
@@ -9,4 +12,10 @@ public interface ITransfigurationRecipe<T> extends Recipe<TransfigurationContain
     boolean transfigure(TransfigurationContainer<T> container, double powerModifier, double timeModifier);
 
     boolean doSkip(RandomSource random);
+
+    BasicIngredient getIngredient();
+
+    Result getResult();
+
+    TransfigurationType getTransfigurationType();
 }
